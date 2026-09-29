@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Tasks & Checklist — EventFlow</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
+</head>
+<body>
+  <div class="ef-loader" id="ef-loader"><div class="ef-loader-mark">Event<span>Flow</span></div><div class="ef-loader-bar"><i></i></div></div>
+  <canvas class="ef-scene" id="ef-scene"></canvas>
+  <div class="ef-scene-veil"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar ef-manager-sidebar" id="manager-sidebar">
+      <a href="index.html" class="side-brand" id="brand-link">
+        <div class="brand-mark">✦</div>
+        <div>
+          <strong>Event<span>Flow</span></strong>
+          <span class="side-brand-tag">Manager Suite</span>
+        </div>
+      </a>
+
+      <div class="sidebar-nav-group">
+        <a href="manager-dashboard.html" class="side-link" id="side-nav-dashboard">
+          <span class="side-icon-box" data-ef-icon="layoutDashboard" data-size="18"></span>
+          <span class="side-label">Dashboard</span>
+        </a>
+        <a href="manager-requirements.html" class="side-link" id="side-nav-requirements">
+          <span class="side-icon-box" data-ef-icon="clipboardList" data-size="18"></span>
+          <span class="side-label">Open Requirements</span>
+        </a>
+        <a href="manager-proposals.html" class="side-link" id="side-nav-proposals">
+          <span class="side-icon-box" data-ef-icon="arrowLeftRight" data-size="18"></span>
+          <span class="side-label">My Proposals</span>
+        </a>
+        <a href="services.html" class="side-link" id="side-nav-services">
+          <span class="side-icon-box" data-ef-icon="sparkles" data-size="18"></span>
+          <span class="side-label">Services</span>
+        </a>
+        <a href="bookings.html" class="side-link" id="side-nav-bookings">
+          <span class="side-icon-box" data-ef-icon="calendarCheck" data-size="18"></span>
+          <span class="side-label">Bookings</span>
+        </a>
+        <a href="tasks.html" class="side-link active" id="side-nav-tasks">
+          <span class="side-icon-box" data-ef-icon="checkSquare" data-size="18"></span>
+          <span class="side-label">Tasks</span>
+        </a>
+        <a href="feedback.html" class="side-link" id="side-nav-feedback">
+          <span class="side-icon-box" data-ef-icon="star" data-size="18"></span>
+          <span class="side-label">Feedback</span>
+        </a>
+        <a href="#support" class="side-link" id="side-nav-support" onclick="EventFlow.openSupportModal(event)">
+          <span class="side-icon-box" data-ef-icon="helpCircle" data-size="18"></span>
+          <span class="side-label">Support</span>
+        </a>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-user-card" id="side-user-card">
+          <div class="sidebar-user-avatar">AM</div>
+          <div class="sidebar-user-info">
+            <strong class="sidebar-user-name">Arjun Mehta</strong>
+            <span class="sidebar-user-role">Event Producer</span>
+          </div>
+        </div>
+        <a href="login.html" class="side-link side-link-logout" id="side-nav-logout" onclick="EventFlow.handleLogout(event)">
+          <span class="side-icon-box" data-ef-icon="logout" data-size="18"></span>
+          <span class="side-label">Logout</span>
+        </a>
+      </div>
+    </aside>
+
+    <div class="app-main">
+      <header class="app-top">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <a href="booking.html" class="text-link">← Event</a>
+          <h1>Event Production Tasks</h1>
+        </div>
+        <div class="top-tools">
+          <div class="eventflow-account"></div>
+        </div>
+      </header>
+
+      <main class="dash-content">
+        <div class="dash-grid">
+          <div>
+            <div class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2 style="font-size:20px;">Checklist & Responsibilities</h2>
+                  <p style="font-size:13px;color:var(--muted);margin-top:2px;">Shared between host and manager to ensure no loose ends.</p>
+                </div>
+              </div>
+
+              <div class="list" id="task-items">
+                <div class="list-row">
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <input type="checkbox" checked class="task-toggle" style="width:18px;height:18px;">
+                    <div>
+                      <strong>Finalize Palatial Mandap Floral Samples</strong>
+                      <small>Assigned to: Arjun Mehta • Due: 25 Oct 2026</small>
+                    </div>
+                  </div>
+                  <span class="badge completed">COMPLETED</span>
+                </div>
+
+                <div class="list-row">
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <input type="checkbox" checked class="task-toggle" style="width:18px;height:18px;">
+                    <div>
+                      <strong>Rajasthani Thali Food Tasting Session</strong>
+                      <small>Assigned to: Host & Manager • Due: 28 Oct 2026</small>
+                    </div>
+                  </div>
+                  <span class="badge completed">COMPLETED</span>
+                </div>
+
+                <div class="list-row">
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <input type="checkbox" class="task-toggle" style="width:18px;height:18px;">
+                    <div>
+                      <strong>Lake Venue Sound Line-Array Acoustic Test</strong>
+                      <small>Assigned to: Sound Crew • Due: 08 Nov 2026</small>
+                    </div>
+                  </div>
+                  <span class="badge pending">IN PROGRESS</span>
+                </div>
+
+                <div class="list-row">
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <input type="checkbox" class="task-toggle" style="width:18px;height:18px;">
+                    <div>
+                      <strong>VIP Airport Cab Dispatch Schedule</strong>
+                      <small>Assigned to: Logistics Lead • Due: 12 Nov 2026</small>
+                    </div>
+                  </div>
+                  <span class="badge open">PENDING</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="panel">
+              <h3 style="font-size:18px;margin-bottom:14px;">Add New Production Task</h3>
+              <form id="new-task-form" class="form-stack">
+                <label>
+                  Task Description *
+                  <input type="text" id="t-title" placeholder="e.g. Confirm wedding cake design" required>
+                </label>
+
+                <label>
+                  Assignee
+                  <select id="t-assignee">
+                    <option value="Event Manager">Arjun Mehta (Event Manager)</option>
+                    <option value="Host">Priyanshu Sharma (Host)</option>
+                    <option value="Vendor Lead">Catering / Decor Vendor</option>
+                  </select>
+                </label>
+
+                <label>
+                  Target Due Date
+                  <input type="date" id="t-date" required>
+                </label>
+
+                <button type="submit" class="btn btn-primary" style="margin-top:6px;">Add Task to Checklist</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script src="experience.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var urlParams = new URLSearchParams(window.location.search);
+      var bookingId = urlParams.get('id');
+      var list = document.getElementById('task-items');
+      var form = document.getElementById('new-task-form');
+
+      if (!bookingId) {
+        list.innerHTML = '<div class="ef-empty-state"><h3>No Booking ID Provided</h3><p>Please access this page from a booking.</p></div>';
+        return;
+      }
+
+      function loadTasks() {
+        EventFlow.apiGet('/bookings/' + bookingId + '/tasks').then(function(res) {
+          var tasks = Array.isArray(res) ? res : (res.tasks || []);
+          if (!tasks.length) {
+            list.innerHTML = '<div class="ef-empty-state"><h3>No Tasks Found</h3><p>Start adding tasks to manage your event checklist.</p></div>';
+            return;
+          }
+          
+          list.innerHTML = tasks.map(function(task) {
+            var id = task.id || task.task_id;
+            var name = task.taskName || task.task_name || 'Unnamed Task';
+            var assignee = task.assignedTo || task.assigned_to || 'Unassigned';
+            var due = task.dueDate || task.due_date;
+            var status = task.status || 'PENDING';
+            var isChecked = status === 'COMPLETED' ? 'checked' : '';
+            var badgeClass = status === 'COMPLETED' ? 'completed' : (status === 'IN_PROGRESS' || status === 'IN PROGRESS' ? 'pending' : 'open');
+            var badgeText = status === 'COMPLETED' ? 'COMPLETED' : (status === 'IN_PROGRESS' || status === 'IN PROGRESS' ? 'IN PROGRESS' : 'PENDING');
+            
+            return '<div class="list-row" data-id="' + id + '">' +
+              '<div style="display:flex;align-items:center;gap:12px;">' +
+                '<input type="checkbox" class="task-toggle" style="width:18px;height:18px;" ' + isChecked + '>' +
+                '<div>' +
+                  '<strong>' + name + '</strong>' +
+                  '<small>Assigned to: ' + assignee + ' • Due: ' + (due ? EventFlow.formatDate(due) : 'No due date') + '</small>' +
+                '</div>' +
+              '</div>' +
+              '<span class="badge ' + badgeClass + '">' + badgeText + '</span>' +
+            '</div>';
+          }).join('');
+          
+          wireCheckboxes();
+        }).catch(function(err) {
+          list.innerHTML = '<div class="ef-empty-state"><h3>Error</h3><p>' + err.message + '</p></div>';
+        });
+      }
+
+      loadTasks();
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var title = document.getElementById('t-title').value;
+        var assignee = document.getElementById('t-assignee').value;
+        var date = document.getElementById('t-date').value;
+
+        EventFlow.apiPost('/tasks', { 
+          booking_id: bookingId, 
+          task_name: title, 
+          assigned_to: assignee, 
+          due_date: date,
+          status: 'PENDING'
+        }).then(function() {
+          form.reset();
+          EventFlow.showToast('Task added to event checklist!', 'success');
+          loadTasks();
+        }).catch(function(err) {
+          EventFlow.showToast(err.message, 'error');
+        });
+      });
+
+      function wireCheckboxes() {
+        document.querySelectorAll('.task-toggle').forEach(function (cb) {
+          cb.onchange = function () {
+            var row = cb.closest('.list-row');
+            var taskId = row.getAttribute('data-id');
+            var badge = row.querySelector('.badge');
+            var newStatus = cb.checked ? 'COMPLETED' : 'PENDING';
+            
+            EventFlow.apiPut('/tasks/' + taskId + '/status', { status: newStatus }).then(function() {
+              if (cb.checked) {
+                badge.className = 'badge completed';
+                badge.innerText = 'COMPLETED';
+                EventFlow.showToast('Task marked as completed', 'success');
+              } else {
+                badge.className = 'badge open';
+                badge.innerText = 'PENDING';
+              }
+            }).catch(function(err) {
+              cb.checked = !cb.checked; // revert
+              EventFlow.showToast(err.message, 'error');
+            });
+          };
+        });
+      }
+    });
+  </script>
+</body>
+</html>

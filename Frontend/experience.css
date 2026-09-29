@@ -1,0 +1,602 @@
+/* ==========================================================================
+   EVENTFLOW ANIMATION SYSTEM — experience.css
+   Professional animation solution: scroll-triggered reveals, hero orchestration,
+   ambient canvas particles, magnetic buttons, 3D card tilt & micro-interactions.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .ef-scene, .ef-loader, .ef-cursor, .ef-transition, .hero-float {
+    display: none !important;
+    animation: none !important;
+  }
+  .event-card, .manager-card, .service-card, .req-item-card, .proposal-interactive-card, .booking-item-card, .kpi-tile, .admin-tile, .flow-card, .review-card, .hero-flagship-card {
+    animation: none !important;
+  }
+  .ef-reveal, .ef-reveal-left, .ef-reveal-right, .hero-entrance, .ef-stagger > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+  * {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001s !important;
+  }
+}
+
+/* Ambient 3D Scene & Readability Veil — Hardware-Accelerated & Persistent Layer */
+html {
+  background-color: var(--color-background, var(--bg, #0f0d14));
+}
+body:has(#ef-scene),
+body.has-ef-scene {
+  background-color: transparent !important;
+}
+
+.ef-scene {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  pointer-events: none !important;
+  display: block;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+.ef-scene-veil {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none !important;
+  transition: background 0.4s ease;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  background: radial-gradient(ellipse at 85% 15%, rgba(212, 167, 44, 0.12) 0%, transparent 55%),
+              radial-gradient(ellipse at 15% 85%, rgba(124, 58, 237, 0.08) 0%, transparent 50%),
+              linear-gradient(180deg, rgba(250, 249, 246, 0.25) 0%, rgba(250, 249, 246, 0.65) 50%, var(--color-background) 92%);
+}
+[data-theme="dark"] .ef-scene-veil,
+body[data-ef-theme="dark"] .ef-scene-veil {
+  background: radial-gradient(ellipse at 85% 15%, rgba(212, 167, 44, 0.18) 0%, transparent 60%),
+              radial-gradient(ellipse at 15% 85%, rgba(225, 29, 72, 0.12) 0%, transparent 55%),
+              radial-gradient(ellipse at 50% 50%, rgba(124, 58, 237, 0.1) 0%, transparent 65%),
+              linear-gradient(180deg, rgba(15, 13, 20, 0.2) 0%, rgba(15, 13, 20, 0.52) 45%, var(--color-background) 90%);
+}
+
+/* ==========================================================================
+   PERSISTENT HARDWARE-ACCELERATED BACKGROUND STATE
+   Prevents animation reset, jank, or pausing across tab/view switches.
+   ========================================================================== */
+.persistent-bg-anim,
+.continuous-atmosphere,
+.dash-persistent-bg,
+.production-persistent-bg,
+.dashboard-layout,
+.dash-content,
+.production-section {
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  backface-visibility: hidden;
+  animation-play-state: running !important;
+  animation-fill-mode: both;
+}
+
+/* Page Loader */
+.ef-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--dark);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+.ef-loader.ef-hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.ef-loader-mark {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+.ef-loader-mark span {
+  color: var(--color-primary);
+}
+.ef-loader-bar {
+  width: 140px;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+}
+.ef-loader-bar i {
+  display: block;
+  height: 100%;
+  width: 35%;
+  background: linear-gradient(90deg, var(--violet), var(--color-primary), var(--gold));
+  animation: efBar 1.2s ease-in-out infinite;
+}
+@keyframes efBar {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(350%); }
+}
+
+/* Page Transition Swipe */
+.ef-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: linear-gradient(135deg, var(--violet), var(--color-primary));
+  transform: translateY(100%);
+  pointer-events: none;
+}
+.ef-transition.ef-go {
+  transition: transform 0.45s cubic-bezier(0.7, 0, 0.3, 1);
+  transform: translateY(0);
+}
+
+/* ================= PAGE & HERO ENTRANCE ORCHESTRATION ================= */
+@keyframes heroEntranceFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero .badge,
+.section-head .eyebrow,
+.app-header .eyebrow {
+  animation: heroEntranceFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+}
+
+.hero h1,
+.section-head h1,
+.app-header h1,
+.app-top h1,
+.auth-box h1,
+.welcome h2 {
+  animation: heroEntranceFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+}
+
+.hero p,
+.section-head p,
+.app-header p,
+.app-top p,
+.welcome p,
+.auth-box > p,
+.auth-box div > p {
+  animation: heroEntranceFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+.hero-panel,
+.auth-box,
+.filter-bar,
+.dash-filters,
+.req-stats-row {
+  animation: heroEntranceFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.28s both;
+}
+
+.popular,
+.table-wrap,
+.manager-tabs,
+.dash-tabs-bar,
+.tab-row {
+  animation: heroEntranceFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.36s both;
+}
+
+.hero-flagship-card {
+  animation: heroEntranceFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.18s both;
+}
+
+.hero-float {
+  animation: heroEntranceFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both,
+             heroFloatIdle 5s ease-in-out 1.45s infinite alternate;
+}
+
+@keyframes heroFloatIdle {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(0.8deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+/* Gentle Ambient Float Animation for Cards */
+@keyframes cardSubtleFloat {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.event-card,
+.manager-card,
+.service-card,
+.flow-card,
+.review-card {
+  animation: cardSubtleFloat 5.5s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Stagger card float timing slightly across grid siblings for organic depth */
+.event-card:nth-child(2n),
+.manager-card:nth-child(2n),
+.service-card:nth-child(2n),
+.flow-card:nth-child(2n),
+.review-card:nth-child(2n) {
+  animation-duration: 6s;
+  animation-delay: -1.8s;
+}
+
+.event-card:nth-child(3n),
+.manager-card:nth-child(3n),
+.service-card:nth-child(3n),
+.flow-card:nth-child(3n),
+.review-card:nth-child(3n) {
+  animation-duration: 6.8s;
+  animation-delay: -3.2s;
+}
+
+.event-card:nth-child(4n),
+.manager-card:nth-child(4n),
+.flow-card:nth-child(4n),
+.review-card:nth-child(4n) {
+  animation-duration: 7.4s;
+  animation-delay: -4.5s;
+}
+
+/* Pause ambient float on hover so hover states and 3D tilts stay perfectly crisp */
+.event-card:hover,
+.manager-card:hover,
+.service-card:hover,
+.req-item-card:hover,
+.proposal-interactive-card:hover,
+.booking-item-card:hover,
+.kpi-tile:hover,
+.admin-tile:hover,
+.flow-card:hover,
+.review-card:hover {
+  animation-play-state: paused;
+}
+
+/* Page entrance glow and smooth lift */
+.panel,
+.event-card,
+.flow-card,
+.manager-card,
+.proposal-card,
+.booking-card,
+.req-item-card,
+.proposal-interactive-card,
+.booking-item-card,
+.kpi-tile,
+.hero-flagship-card,
+.auth-box {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease;
+}
+
+.panel:hover,
+.auth-box:hover,
+.hero-flagship-card:hover {
+  box-shadow: 0 16px 40px -12px rgba(124, 58, 237, 0.15), 0 0 0 1px rgba(212, 167, 44, 0.2);
+}
+
+/* ================= SCROLL-TRIGGERED REVEALS ================= */
+.ef-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.ef-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ef-reveal-left {
+  opacity: 0;
+  transform: translateX(-32px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.ef-reveal-left.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.ef-reveal-right {
+  opacity: 0;
+  transform: translateX(32px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.ef-reveal-right.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Staggered Children */
+.ef-stagger > * {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.ef-stagger.revealed > *:nth-child(1) { transition-delay: 0.04s; opacity: 1; transform: translateY(0); }
+.ef-stagger.revealed > *:nth-child(2) { transition-delay: 0.10s; opacity: 1; transform: translateY(0); }
+.ef-stagger.revealed > *:nth-child(3) { transition-delay: 0.16s; opacity: 1; transform: translateY(0); }
+.ef-stagger.revealed > *:nth-child(4) { transition-delay: 0.22s; opacity: 1; transform: translateY(0); }
+.ef-stagger.revealed > *:nth-child(5) { transition-delay: 0.28s; opacity: 1; transform: translateY(0); }
+.ef-stagger.revealed > *:nth-child(6) { transition-delay: 0.34s; opacity: 1; transform: translateY(0); }
+.ef-stagger.revealed > *:nth-child(7) { transition-delay: 0.40s; opacity: 1; transform: translateY(0); }
+.ef-stagger.revealed > *:nth-child(8) { transition-delay: 0.46s; opacity: 1; transform: translateY(0); }
+
+/* ================= MICRO-INTERACTIONS ================= */
+/* Magnetic CTAs */
+.ef-magnetic {
+  will-change: transform;
+  transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+/* Button Active Touch / Press Response */
+.btn:active,
+.theme-toggle-btn:active,
+.mobile-menu-toggle:active {
+  transform: scale(0.97) !important;
+  transition: transform 0.1s ease !important;
+}
+
+/* Interactive Card Tilt */
+.tilt {
+  will-change: transform;
+  transform-style: preserve-3d;
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+
+/* Subtle Shimmer for High-Priority Elements */
+@keyframes efShimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: translateX(-100%);
+  animation: efShimmer 3s infinite;
+  pointer-events: none;
+}
+
+/* Pulse indicator for live milestones and verified checkmarks */
+@keyframes pulseRing {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.15); opacity: 0.3; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+.live-pulse {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
+  animation: pulseRing 2s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   INTERACTIVE ANIMATED MOUSE CURSOR SYSTEM — Aurora Royale
+   High-precision inner focal dot, fluid lagging aura ring, magnetic hover,
+   click ripples, and subtle luxury champagne-gold particle sparks.
+   ========================================================================== */
+.ef-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none !important;
+  z-index: 999999;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity;
+}
+
+.ef-cursor.ef-cursor-visible {
+  opacity: 1;
+}
+
+/* Inner High-Precision Dot */
+.ef-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  margin-top: -4px;
+  margin-left: -4px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d4a72c 0%, #e11d48 50%, #7c3aed 100%);
+  box-shadow: 0 0 10px rgba(212, 167, 44, 0.7), 0 0 20px rgba(124, 58, 237, 0.45);
+  pointer-events: none !important;
+  will-change: transform;
+  transform: translate3d(-100px, -100px, 0);
+  transition: width 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+              margin 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.22s ease;
+  z-index: 1000002;
+}
+
+/* Fluid Lagging Aura Ring */
+.ef-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  margin-top: -18px;
+  margin-left: -18px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(212, 167, 44, 0.65);
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.09) 0%, rgba(212, 167, 44, 0.04) 65%, transparent 100%);
+  box-shadow: 0 0 16px rgba(212, 167, 44, 0.2), inset 0 0 10px rgba(124, 58, 237, 0.15);
+  pointer-events: none !important;
+  will-change: transform;
+  transform: translate3d(-100px, -100px, 0);
+  transition: width 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              margin 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease,
+              background 0.25s ease,
+              box-shadow 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000001;
+}
+
+/* Interactive Hover States */
+.ef-cursor.is-hovering .ef-cursor-ring {
+  width: 56px;
+  height: 56px;
+  margin-top: -28px;
+  margin-left: -28px;
+  border-color: rgba(212, 167, 44, 0.95);
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.18) 0%, rgba(212, 167, 44, 0.12) 60%, transparent 100%);
+  box-shadow: 0 0 25px rgba(212, 167, 44, 0.5), 0 0 38px rgba(124, 58, 237, 0.4);
+}
+
+.ef-cursor.is-hovering .ef-cursor-dot {
+  width: 4px;
+  height: 4px;
+  margin-top: -2px;
+  margin-left: -2px;
+  opacity: 0.8;
+}
+
+/* Click Active State */
+.ef-cursor.is-clicking .ef-cursor-ring {
+  width: 28px;
+  height: 28px;
+  margin-top: -14px;
+  margin-left: -14px;
+  border-color: #e11d48;
+  background: rgba(225, 29, 72, 0.22);
+  box-shadow: 0 0 20px rgba(225, 29, 72, 0.6);
+}
+
+.ef-cursor.is-clicking .ef-cursor-dot {
+  width: 10px;
+  height: 10px;
+  margin-top: -5px;
+  margin-left: -5px;
+  background: #ffffff;
+  box-shadow: 0 0 15px #e11d48, 0 0 25px #d4a72c;
+}
+
+/* Click Ripple Pulse */
+.ef-cursor-ripple {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none !important;
+  border: 1.5px solid rgba(212, 167, 44, 0.85);
+  background: radial-gradient(circle, rgba(225, 29, 72, 0.25) 0%, rgba(124, 58, 237, 0.1) 50%, transparent 75%);
+  animation: efCursorRippleAnim 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  z-index: 1000000;
+}
+
+@keyframes efCursorRippleAnim {
+  0% {
+    width: 16px;
+    height: 16px;
+    margin-top: -8px;
+    margin-left: -8px;
+    opacity: 1;
+    transform: scale(0.6);
+  }
+  100% {
+    width: 86px;
+    height: 86px;
+    margin-top: -43px;
+    margin-left: -43px;
+    opacity: 0;
+    transform: scale(1.45);
+  }
+}
+
+/* Luxury Champagne Gold Sparks on Motion */
+.ef-cursor-spark {
+  position: fixed;
+  width: 5px;
+  height: 5px;
+  margin-top: -2.5px;
+  margin-left: -2.5px;
+  border-radius: 50%;
+  pointer-events: none !important;
+  background: radial-gradient(circle, #fde047 0%, #d4a72c 60%, transparent 100%);
+  box-shadow: 0 0 8px rgba(212, 167, 44, 0.85);
+  animation: efSparkFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  z-index: 999998;
+}
+
+@keyframes efSparkFade {
+  0% {
+    opacity: 0.95;
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.2) translate3d(var(--drift-x, 0px), var(--drift-y, 8px), 0);
+  }
+}
+
+/* Touch & Reduced-Motion Safe Guard */
+@media (hover: none) and (pointer: coarse) {
+  .ef-cursor,
+  .ef-cursor-dot,
+  .ef-cursor-ring,
+  .ef-cursor-ripple,
+  .ef-cursor-spark {
+    display: none !important;
+  }
+}

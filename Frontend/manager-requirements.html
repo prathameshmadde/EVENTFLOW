@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Client Requirements Pool — EventFlow</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
+</head>
+<body>
+  <div class="ef-loader" id="ef-loader"><div class="ef-loader-mark">Event<span>Flow</span></div><div class="ef-loader-bar"><i></i></div></div>
+  <canvas class="ef-scene" id="ef-scene"></canvas>
+  <div class="ef-scene-veil"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar ef-manager-sidebar" id="manager-sidebar">
+      <a href="index.html" class="side-brand" id="brand-link">
+        <div class="brand-mark">✦</div>
+        <div>
+          <strong>Event<span>Flow</span></strong>
+          <span class="side-brand-tag">Manager Suite</span>
+        </div>
+      </a>
+
+      <div class="sidebar-nav-group">
+        <a href="manager-dashboard.html" class="side-link" id="side-nav-dashboard">
+          <span class="side-icon-box" data-ef-icon="layoutDashboard" data-size="18"></span>
+          <span class="side-label">Dashboard</span>
+        </a>
+        <a href="manager-requirements.html" class="side-link active" id="side-nav-requirements">
+          <span class="side-icon-box" data-ef-icon="clipboardList" data-size="18"></span>
+          <span class="side-label">Open Requirements</span>
+        </a>
+        <a href="manager-proposals.html" class="side-link" id="side-nav-proposals">
+          <span class="side-icon-box" data-ef-icon="arrowLeftRight" data-size="18"></span>
+          <span class="side-label">My Proposals</span>
+        </a>
+        <a href="services.html" class="side-link" id="side-nav-services">
+          <span class="side-icon-box" data-ef-icon="sparkles" data-size="18"></span>
+          <span class="side-label">Services</span>
+        </a>
+        <a href="bookings.html" class="side-link" id="side-nav-bookings">
+          <span class="side-icon-box" data-ef-icon="calendarCheck" data-size="18"></span>
+          <span class="side-label">Bookings</span>
+        </a>
+        <a href="tasks.html" class="side-link" id="side-nav-tasks">
+          <span class="side-icon-box" data-ef-icon="checkSquare" data-size="18"></span>
+          <span class="side-label">Tasks</span>
+        </a>
+        <a href="feedback.html" class="side-link" id="side-nav-feedback">
+          <span class="side-icon-box" data-ef-icon="star" data-size="18"></span>
+          <span class="side-label">Feedback</span>
+        </a>
+        <a href="#support" class="side-link" id="side-nav-support" onclick="EventFlow.openSupportModal(event)">
+          <span class="side-icon-box" data-ef-icon="helpCircle" data-size="18"></span>
+          <span class="side-label">Support</span>
+        </a>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-user-card" id="side-user-card">
+          <div class="sidebar-user-avatar">AM</div>
+          <div class="sidebar-user-info">
+            <strong class="sidebar-user-name">Arjun Mehta</strong>
+            <span class="sidebar-user-role">Event Producer</span>
+          </div>
+        </div>
+        <a href="login.html" class="side-link side-link-logout" id="side-nav-logout" onclick="EventFlow.handleLogout(event)">
+          <span class="side-icon-box" data-ef-icon="logout" data-size="18"></span>
+          <span class="side-label">Logout</span>
+        </a>
+      </div>
+    </aside>
+
+    <div class="app-main">
+      <header class="app-top">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <button class="sidebar-toggle btn btn-outline btn-sm" aria-label="Toggle Navigation">
+            <span data-ef-icon="menu" data-size="18"></span>
+          </button>
+          <h1>Client Briefs & Bidding Pool</h1>
+        </div>
+        <div class="top-tools">
+          <div class="eventflow-account"></div>
+        </div>
+      </header>
+
+      <main class="dash-content">
+        <div class="welcome">
+          <div>
+            <h2>Verified Client Event Requirements</h2>
+            <p>Every brief is screened for realistic budgets and verified host intent. Submit bespoke proposals directly to hosts.</p>
+          </div>
+        </div>
+
+        <div class="list" id="mgr-req-pool" style="margin-top:24px;"></div>
+      </main>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script src="experience.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var container = document.getElementById('mgr-req-pool');
+      if (!container) return;
+
+      function loadRequirements() {
+        EventFlow.apiGet('/manager/open-requirements').then(function(res) {
+          var list = Array.isArray(res) ? res : (res.requirements || []);
+          if (!list.length) {
+            container.innerHTML = '<div class="ef-empty-state"><h3>No Open Requirements</h3><p>There are currently no open client briefs.</p></div>';
+            return;
+          }
+
+          container.innerHTML = list.map(function(req) {
+            var reqId = req.id || req.requirement_id;
+            var reqTitle = req.title || req.requirementTitle || req.requirement_title || 'Event Requirement';
+            var reqCategory = req.category || req.eventName || req.event_name || 'Event';
+            var reqCity = req.city || req.location || 'India';
+            var reqDate = req.date || req.eventDate || req.event_date;
+            var reqGuests = req.guestCount || req.guest_count || 0;
+            var reqDescription = req.description || req.specialRequirements || req.special_requirements || 'Bespoke event production requirement.';
+            var host = req.customerName || req.customer_name || 'Anonymous Host';
+            
+            return '<div class="panel" style="margin-bottom:14px;padding:24px;border:1px solid var(--line);">' +
+              '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">' +
+                '<div>' +
+                  '<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">' +
+                    EventFlow.statusBadge(req.status || 'OPEN') +
+                    '<span style="font-size:12px;font-weight:700;color:var(--magenta);">' + reqCategory + '</span>' +
+                    '<span style="font-size:12px;color:var(--faint);">• ' + reqCity + '</span>' +
+                  '</div>' +
+                  '<h3 style="font-size:20px;">' + reqTitle + '</h3>' +
+                  '<p style="font-size:13.5px;color:var(--muted);margin:6px 0 12px;max-width:700px;">' + reqDescription + '</p>' +
+                  '<div style="display:flex;gap:20px;font-size:12.5px;color:var(--ink-soft);">' +
+                    '<span>📅 <strong>' + EventFlow.formatDate(reqDate) + '</strong></span>' +
+                    '<span>👥 <strong>' + reqGuests + ' Guests</strong></span>' +
+                    '<span>💰 Target: <strong>' + EventFlow.formatCurrency(req.budget || req.estimatedAmount || req.estimated_amount) + '</strong></span>' +
+                  '</div>' +
+                '</div>' +
+                '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px;">' +
+                  '<span style="font-size:12px;color:var(--faint);">Host: ' + host + '</span>' +
+                  '<a href="submit-proposal.html?reqId=' + reqId + '" class="btn btn-primary btn-sm">Submit Proposal →</a>' +
+                '</div>' +
+              '</div>' +
+            '</div>';
+          }).join('');
+        }).catch(function(err) {
+          container.innerHTML = '<div class="ef-empty-state"><h3>Unable to load requirements</h3><p>' + err.message + '</p></div>';
+        });
+      }
+
+      loadRequirements();
+    });
+  </script>
+</body>
+</html>

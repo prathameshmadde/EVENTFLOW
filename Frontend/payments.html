@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Billing & Escrow Payments — EventFlow</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
+</head>
+<body>
+  <div class="ef-loader" id="ef-loader"><div class="ef-loader-mark">Event<span>Flow</span></div><div class="ef-loader-bar"><i></i></div></div>
+  <canvas class="ef-scene" id="ef-scene"></canvas>
+  <div class="ef-scene-veil"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a href="index.html" class="side-brand">
+        <div class="brand-mark">✦</div>
+        <strong>Event<span>Flow</span></strong>
+      </a>
+      <span class="side-section">Financial Hub</span>
+      <a href="customer-dashboard.html" class="side-link">📊 Client Dashboard</a>
+      <a href="my-bookings.html" class="side-link">🗓 My Bookings</a>
+      <a href="payments.html" class="side-link active">💳 Escrow & Payments</a>
+      <a href="refunds.html" class="side-link">🛡️ Escrow Dispute / Refund</a>
+    </aside>
+
+    <div class="app-main">
+      <header class="app-top">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <button class="sidebar-toggle btn btn-outline btn-sm" aria-label="Toggle Navigation">
+            <span data-ef-icon="menu" data-size="18"></span>
+          </button>
+          <h1>Escrow Payments & Billing Hub</h1>
+        </div>
+        <div class="top-tools">
+          <div class="eventflow-account"></div>
+        </div>
+      </header>
+
+      <main class="dash-content">
+        <!-- 3 Financial Overview Metrics -->
+        <div class="payment-amount-grid">
+          <div>
+            <small style="font-size:11px;font-weight:700;color:var(--faint);text-transform:uppercase;">Total Contract Value</small>
+            <strong>₹ 24,50,000</strong>
+            <small style="font-size:12px;color:var(--muted);margin-top:4px;display:block;">Grand Royal Rajputana Wedding</small>
+          </div>
+          <div>
+            <small style="font-size:11px;font-weight:700;color:var(--faint);text-transform:uppercase;">Secured in Escrow</small>
+            <strong style="color:var(--green);">₹ 9,80,000</strong>
+            <small style="font-size:12px;color:var(--muted);margin-top:4px;display:block;">Milestone 1 Paid (40%)</small>
+          </div>
+          <div>
+            <small style="font-size:11px;font-weight:700;color:var(--faint);text-transform:uppercase;">Pending Due</small>
+            <strong style="color:var(--amber);">₹ 14,70,000</strong>
+            <small style="font-size:12px;color:var(--muted);margin-top:4px;display:block;">Milestone 2 & 3</small>
+          </div>
+        </div>
+
+        <!-- Escrow Roadmap -->
+        <div class="panel" style="margin-bottom:24px;">
+          <div class="panel-head">
+            <div>
+              <h2 style="font-size:20px;">Milestone Escrow Schedule</h2>
+              <p style="font-size:13px;color:var(--muted);margin-top:2px;">Funds remain in secure escrow until you validate stage deliverables.</p>
+            </div>
+            <span class="badge active">PROTECTED ESCROW ACTIVE</span>
+          </div>
+
+          <div style="display:grid;gap:14px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:18px;background:var(--green-bg);border-radius:14px;border:1px solid rgba(24,134,75,0.2);">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+                  <span class="badge completed">PAID</span>
+                  <strong>Milestone 1: Date Lock & Advance Deposit (40%)</strong>
+                </div>
+                <small style="color:var(--green);">Paid on 10 Sep 2026 • Reference: TXN-EF-89304</small>
+              </div>
+              <div style="text-align:right;">
+                <strong style="font-size:18px;color:var(--ink);">₹ 9,80,000</strong>
+                <button class="btn btn-outline btn-sm" style="display:block;margin-top:6px;" onclick="EventFlow.showToast('Receipt #REC-89304 downloaded', 'success');">📄 Receipt</button>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:18px;background:var(--color-surface);border-radius:14px;border:2px solid var(--gold);">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+                  <span class="badge pending">DUE NOW</span>
+                  <strong>Milestone 2: Venue Fabrication & Decor Advance (40%)</strong>
+                </div>
+                <small style="color:var(--muted);">Due by 25 Oct 2026 • Funds held in escrow until stage preview signoff</small>
+              </div>
+              <div style="text-align:right;">
+                <strong style="font-size:20px;color:var(--ink);" id="m2-amt">₹ 9,80,000</strong>
+                <button class="btn btn-primary btn-sm" id="btn-pay-m2" style="display:block;margin-top:6px;">Authorize Payment →</button>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:18px;background:var(--surface-2);border-radius:14px;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+                  <span class="badge open">UPCOMING</span>
+                  <strong>Milestone 3: Final Delivery & Event Signoff (20%)</strong>
+                </div>
+                <small style="color:var(--muted);">Due upon completion of all ceremonies on 15 Nov 2026</small>
+              </div>
+              <div style="text-align:right;">
+                <strong style="font-size:18px;color:var(--ink);">₹ 4,90,000</strong>
+                <button class="btn btn-ghost btn-sm" disabled style="display:block;margin-top:6px;">Locked</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ledger Table -->
+        <div class="panel">
+          <div class="panel-head">
+            <h3 style="font-size:18px;">Transaction Ledger</h3>
+          </div>
+
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Transaction ID</th>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th>Amount</th>
+                  <th>Method</th>
+                  <th>Status</th>
+                  <th>Receipt</th>
+                </tr>
+              </thead>
+              <tbody id="tx-tbody">
+                <tr>
+                  <td><code>TXN-EF-89304</code></td>
+                  <td>10 Sep 2026</td>
+                  <td>Milestone 1 Advance: Grand Royal Wedding</td>
+                  <td><strong>₹ 9,80,000</strong></td>
+                  <td>HDFC UPI / NetBanking</td>
+                  <td><span class="badge completed">COMPLETED</span></td>
+                  <td><button class="btn btn-ghost btn-sm" onclick="EventFlow.showToast('Downloaded PDF invoice', 'info');">Download</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script src="experience.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var urlParams = new URLSearchParams(window.location.search);
+      var bookingId = urlParams.get('id');
+      
+      var tbody = document.getElementById('tx-tbody');
+
+      if (!bookingId) {
+        tbody.innerHTML = '<tr><td colspan="7"><div class="ef-empty-state"><h3>No Booking ID Provided</h3><p>Please access this page from a booking.</p></div></td></tr>';
+        return;
+      }
+
+      function loadPayments() {
+        // Load booking details for financial overview
+        EventFlow.apiGet('/bookings/' + bookingId).then(function(bk) {
+          var title = bk.eventName || bk.event_name || bk.title || bk.requirementTitle || 'Event';
+          var totalAmt = bk.finalAmount || bk.final_amount || bk.price || bk.estimatedAmount || bk.estimated_amount || 0;
+          var paidAmt = bk.amountPaid || bk.amount_paid || 0;
+          var dueAmt = Math.max(0, totalAmt - paidAmt);
+          
+          var overview = document.querySelector('.payment-amount-grid');
+          if (overview) {
+            overview.innerHTML = 
+              '<div>' +
+                '<small style="font-size:11px;font-weight:700;color:var(--faint);text-transform:uppercase;">Total Contract Value</small>' +
+                '<strong>' + EventFlow.formatCurrency(totalAmt) + '</strong>' +
+                '<small style="font-size:12px;color:var(--muted);margin-top:4px;display:block;">' + title + '</small>' +
+              '</div>' +
+              '<div>' +
+                '<small style="font-size:11px;font-weight:700;color:var(--faint);text-transform:uppercase;">Secured in Escrow</small>' +
+                '<strong style="color:var(--green);">' + EventFlow.formatCurrency(paidAmt) + '</strong>' +
+                '<small style="font-size:12px;color:var(--muted);margin-top:4px;display:block;">Paid to date</small>' +
+              '</div>' +
+              '<div>' +
+                '<small style="font-size:11px;font-weight:700;color:var(--faint);text-transform:uppercase;">Pending Due</small>' +
+                '<strong style="color:var(--amber);">' + EventFlow.formatCurrency(dueAmt) + '</strong>' +
+                '<small style="font-size:12px;color:var(--muted);margin-top:4px;display:block;">Remaining Milestones</small>' +
+              '</div>';
+          }
+        }).catch(function(err) {});
+
+        EventFlow.apiGet('/bookings/' + bookingId + '/payments').then(function(res) {
+          var payments = Array.isArray(res) ? res : (res.payments || []);
+          if (!payments.length) {
+            tbody.innerHTML = '<tr><td colspan="7"><div class="ef-empty-state"><h3>No Transactions</h3><p>No payments have been recorded yet.</p></div></td></tr>';
+            return;
+          }
+          
+          tbody.innerHTML = payments.map(function(p) {
+             var txId = p.transactionId || p.transaction_id || ('TXN-' + p.id);
+             var date = p.paymentDate || p.payment_date || p.createdAt || p.created_at;
+             var desc = p.paymentType || p.payment_type || 'Milestone Payment';
+             var amt = p.amount || 0;
+             var method = p.paymentMethod || p.payment_method || 'Online';
+             var status = p.status || 'SUCCESS';
+             var badgeClass = (status === 'SUCCESS' || status === 'COMPLETED') ? 'completed' : (status === 'FAILED' ? 'rejected' : 'pending');
+             var statusText = (status === 'SUCCESS') ? 'COMPLETED' : status;
+             
+             return '<tr>' +
+               '<td><code>' + txId + '</code></td>' +
+               '<td>' + (date ? EventFlow.formatDate(date) : 'Today') + '</td>' +
+               '<td>' + desc + '</td>' +
+               '<td><strong>' + EventFlow.formatCurrency(amt) + '</strong></td>' +
+               '<td>' + method + '</td>' +
+               '<td><span class="badge ' + badgeClass + '">' + statusText + '</span></td>' +
+               '<td><button class="btn btn-ghost btn-sm">Download</button></td>' +
+             '</tr>';
+          }).join('');
+        }).catch(function(err) {
+          tbody.innerHTML = '<tr><td colspan="7"><div class="ef-empty-state"><h3>Error</h3><p>' + err.message + '</p></div></td></tr>';
+        });
+      }
+
+      loadPayments();
+
+      var payBtn = document.getElementById('btn-pay-m2');
+      if (payBtn) {
+        payBtn.addEventListener('click', function () {
+          EventFlow.triggerPaymentModal(980000, bookingId, 'Milestone Advance', function () {
+            EventFlow.apiPost('/payments', {
+               booking_id: bookingId,
+               amount: 980000,
+               payment_type: 'MILESTONE_2',
+               payment_method: 'UPI Escrow'
+            }).then(function() {
+              EventFlow.showToast('Milestone 2 locked in escrow!', 'success');
+              payBtn.innerText = '✔ In Escrow';
+              payBtn.disabled = true;
+              loadPayments();
+            }).catch(function(err) {
+              EventFlow.showToast(err.message, 'error');
+            });
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>

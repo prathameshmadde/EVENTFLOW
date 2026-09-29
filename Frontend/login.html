@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Sign In — EventFlow Luxury Marketplace</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
+</head>
+<body>
+  <div class="ef-loader" id="ef-loader"><div class="ef-loader-mark">Event<span>Flow</span></div><div class="ef-loader-bar"><i></i></div></div>
+  <canvas class="ef-scene" id="ef-scene"></canvas>
+  <div class="ef-scene-veil"></div>
+
+  <div class="auth-wrap">
+    <div class="panel auth-box">
+      <div style="text-align:center;margin-bottom:24px;">
+        <a href="index.html" class="brand" style="justify-content:center;margin-bottom:12px;">
+          <div class="brand-mark">✦</div>
+          <strong style="font-size:22px;">Event<span style="color:var(--gold);">Flow</span></strong>
+        </a>
+        <h1 style="font-size:24px;margin-bottom:6px;">Welcome to the Private Circle</h1>
+        <p style="font-size:13.5px;color:var(--muted);">Access your celebrations, bids, milestone payments, and vendor teams.</p>
+      </div>
+
+      <!-- Quick 1-Click Persona Pickers for Fast Evaluation -->
+      <div style="background:var(--surface-2);border-radius:14px;padding:12px;margin-bottom:20px;">
+        <span style="display:block;font-size:11px;font-weight:700;color:var(--faint);text-transform:uppercase;margin-bottom:8px;text-align:center;">Instant One-Click Demo Logins</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+          <button type="button" class="btn btn-outline btn-sm" id="btn-quick-customer" style="font-size:12px;">
+            👤 Host
+          </button>
+          <button type="button" class="btn btn-outline btn-sm" id="btn-quick-manager" style="font-size:12px;">
+            🏢 Manager
+          </button>
+          <button type="button" class="btn btn-outline btn-sm" id="btn-quick-admin" style="font-size:12px;">
+            🛡️ Admin
+          </button>
+        </div>
+      </div>
+
+      <form id="login-form" class="form-stack">
+        <label>
+          Email Address
+          <input type="email" id="l-email" placeholder="Enter your registered email" required>
+        </label>
+
+        <label>
+          Password
+          <input type="password" id="l-pass" placeholder="Enter your password" required>
+        </label>
+
+        <label>
+          Login As Role
+          <select id="l-role">
+            <option value="customer">Event Host / Client</option>
+            <option value="manager">Event Manager / Producer</option>
+            <option value="admin">System Admin</option>
+          </select>
+        </label>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px;">
+          <label style="flex-direction:row;align-items:center;gap:6px;">
+            <input type="checkbox" checked> Remember this device
+          </label>
+          <a href="#" class="text-link" onclick="EventFlow.showToast('Reset password link dispatched', 'info'); return false;">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" id="btn-login" style="margin-top:8px;">Sign In to EventFlow →</button>
+      </form>
+
+      <div style="text-align:center;margin-top:20px;font-size:13px;color:var(--muted);">
+        Don't have an account yet? <a href="register.html" class="text-link" style="font-weight:700;">Create One Free</a>
+      </div>
+    </div>
+  </div>
+
+<script src="main.js"></script>
+
+<script src="experience.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    /*
+     * Redirect the user according to the REAL role
+     * returned by the backend.
+     */
+    function redirectUser(user, fallbackRole) {
+
+        var role = '';
+
+        if (user && user.role) {
+            role = String(user.role).toUpperCase();
+        } else if (fallbackRole) {
+            role = String(fallbackRole).toUpperCase();
+        }
+
+        if (role === 'ADMIN') {
+
+            window.location.href = 'admin.html';
+
+        } else if (role.indexOf('MANAGER') !== -1) {
+
+            window.location.href = 'manager-dashboard.html';
+
+        } else {
+
+            window.location.href = 'customer-dashboard.html';
+        }
+    }
+
+
+    /*
+     * Get login form elements.
+     */
+    var emailInput = document.getElementById('l-email');
+    var passwordInput = document.getElementById('l-pass');
+    var roleInput = document.getElementById('l-role');
+    var loginButton = document.getElementById('btn-login');
+
+    var quickCustomerButton =
+        document.getElementById('btn-quick-customer');
+
+    var quickManagerButton =
+        document.getElementById('btn-quick-manager');
+
+    var quickAdminButton =
+        document.getElementById('btn-quick-admin');
+
+    var loginForm =
+        document.getElementById('login-form');
+
+
+    /*
+     * Quick Customer Login
+     *
+     * This only fills the form.
+     * It does NOT create a fake user.
+     */
+    if (quickCustomerButton) {
+
+        quickCustomerButton.addEventListener('click', function () {
+
+            emailInput.value = 'customer@eventflow.com';
+
+            passwordInput.value = 'customer123';
+
+            roleInput.value = 'customer';
+
+            EventFlow.showToast(
+                'Customer demo account selected.',
+                'info'
+            );
+        });
+    }
+
+
+    /*
+     * Quick Manager Login
+     *
+     * This only fills the form.
+     * It does NOT create a fake user.
+     */
+    if (quickManagerButton) {
+
+        quickManagerButton.addEventListener('click', function () {
+
+            emailInput.value = 'manager@eventflow.com';
+
+            passwordInput.value = 'manager123';
+
+            roleInput.value = 'manager';
+
+            EventFlow.showToast(
+                'Manager demo account selected.',
+                'info'
+            );
+        });
+    }
+
+    /*
+     * Quick Admin Login
+     */
+    if (quickAdminButton) {
+
+        quickAdminButton.addEventListener('click', function () {
+
+            emailInput.value = 'admin@eventflow.com';
+
+            passwordInput.value = 'admin123';
+
+            roleInput.value = 'admin';
+
+            EventFlow.showToast(
+                'Admin demo account selected.',
+                'info'
+            );
+        });
+    }
+
+
+    /*
+     * REAL LOGIN
+     */
+    if (loginForm) {
+
+        loginForm.addEventListener('submit', function (e) {
+
+            e.preventDefault();
+
+
+            var email =
+                emailInput.value.trim();
+
+            var password =
+                passwordInput.value;
+
+            var role =
+                roleInput.value;
+
+
+            /*
+             * Basic validation.
+             */
+            if (!email || !password) {
+
+                EventFlow.showToast(
+                    'Please enter your email and password.',
+                    'error'
+                );
+
+                return;
+            }
+
+
+            /*
+             * Disable button while API request is running.
+             */
+            loginButton.disabled = true;
+
+            loginButton.innerText =
+                'Signing In...';
+
+
+            /*
+             * Call the REAL backend.
+             *
+             * EventFlow.apiPost('/login')
+             * becomes:
+             *
+             * POST http://localhost:3000/api/login
+             */
+            EventFlow.apiPost('/login', {
+
+                email: email,
+
+                password: password,
+
+                role: role
+
+            })
+
+            .then(function (res) {
+
+                console.log(
+                    'Login response:',
+                    res
+                );
+
+
+                /*
+                 * Backend must return a real session token.
+                 */
+                if (!res || !res.session_token) {
+
+                    throw new Error(
+                        'Login response is missing the session token.'
+                    );
+                }
+
+
+                /*
+                 * Get the real user returned by server.
+                 */
+                var user = res.user || {
+
+                    user_id: res.user_id,
+
+                    name: res.name,
+
+                    email: res.email,
+
+                    phone: res.phone,
+
+                    role: res.role,
+
+                    status: res.status
+                };
+
+
+                /*
+                 * Save REAL backend session token.
+                 *
+                 * Remember-device checkbox:
+                 * checked  -> localStorage
+                 * unchecked -> sessionStorage
+                 */
+                var rememberCheckbox =
+                    document.querySelector(
+                        'input[type="checkbox"]'
+                    );
+
+
+                if (
+                    rememberCheckbox &&
+                    rememberCheckbox.checked
+                ) {
+
+                    localStorage.setItem(
+                        'ef_token',
+                        res.session_token
+                    );
+
+                    sessionStorage.removeItem(
+                        'ef_token'
+                    );
+
+                } else {
+
+                    sessionStorage.setItem(
+                        'ef_token',
+                        res.session_token
+                    );
+
+                    localStorage.removeItem(
+                        'ef_token'
+                    );
+                }
+
+
+                /*
+                 * Save the REAL user.
+                 */
+                EventFlow.setUser(user);
+
+
+                /*
+                 * Success message.
+                 */
+                EventFlow.showToast(
+                    'Welcome back, ' +
+                    (user.name || 'User') +
+                    '!',
+                    'success'
+                );
+
+
+                /*
+                 * Redirect after successful login.
+                 */
+                setTimeout(function () {
+
+                    redirectUser(user, role);
+
+                }, 450);
+
+            })
+
+            .catch(function (err) {
+
+                /*
+                 * IMPORTANT:
+                 * Never create a fake user here.
+                 */
+                console.error(
+                    'EventFlow login error:',
+                    err
+                );
+
+
+                EventFlow.showToast(
+                    err.message ||
+                    'Login failed. Please check your email and password.',
+                    'error'
+                );
+
+
+                /*
+                 * Enable button again.
+                 */
+                loginButton.disabled =
+                    false;
+
+                loginButton.innerText =
+                    'Sign In to EventFlow →';
+
+            });
+
+        });
+    }
+
+});
+</script>  
+
+</body>
+</html>

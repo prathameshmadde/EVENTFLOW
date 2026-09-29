@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventFlow - Event Management & Proposal Marketplace</title>
+  <meta name="description" content="Professional event planning marketplace connecting customers with verified event managers. Post requirements, compare tailored proposals, manage bookings, guests, tasks, and payments.">
+  <meta property="og:title" content="EventFlow - Event Management & Proposal Marketplace">
+  <meta property="og:description" content="Professional event planning marketplace connecting customers with verified event managers. Post requirements, compare tailored proposals, manage bookings, guests, tasks, and payments.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
+</head>
+<body>
+
+  <!-- Ambient canvas & Page Loader -->
+  <div class="ef-loader" id="ef-loader">
+    <div class="ef-loader-mark">Event<span>Flow</span></div>
+    <div class="ef-loader-bar"><i></i></div>
+  </div>
+  <canvas class="ef-scene" id="ef-scene"></canvas>
+  <div class="ef-scene-veil"></div>
+
+  <!-- Header & Navigation -->
+  <header class="site-header" id="site-header">
+    <div class="container nav">
+      <a href="index.html" class="brand" id="brand-logo">
+        <div class="brand-mark">✦</div>
+        <div>
+          <strong>Event<span>Flow</span></strong>
+          <small>Luxury Event Marketplace</small>
+        </div>
+      </a>
+
+      <nav class="desktop-nav" id="desktop-nav">
+        <a href="#hero" class="active">Home</a>
+        <a href="#categories-section">Events</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#services-section">Services</a>
+        <a href="customer-dashboard.html">Dashboard</a>
+        <a href="my-bookings.html">Bookings</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="eventflow-account"></div>
+        <a href="login.html" class="btn btn-primary btn-sm ef-magnetic" id="nav-login-btn">
+          <span data-ef-icon="logIn" data-size="16"></span>
+          <span>Login</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-mesh"></div>
+
+    <div class="container hotstar-showcase-container">
+      <div class="hotstar-showcase-header">
+        <h1 class="hero-headline">
+          <span class="hero-headline-primary">Har Occasion</span>
+          <span class="hero-headline-accent"><em>Kuch Khaas Hota Hai</em></span>
+        </h1>
+      </div>
+
+      <!-- Hotstar Widescreen Festival Showcase Slider -->
+      <div class="hotstar-showcase" id="hotstar-showcase" aria-roledescription="carousel" aria-label="Grand Festival Showcase">
+        <div class="hotstar-stage" id="hotstar-stage">
+
+          <!-- Slide 1: Shreemant Dagdusheth Ganpati Maha Utsav (4K) -->
+          <div class="hotstar-slide active" data-slide-index="0" data-festival="Shreemant Dagdusheth Ganpati Maha Utsav" data-city="Pune, Mumbai & Pan-India Society Arenas" data-guests="1,000 – 50,000+ Gatherings" data-budget="₹5,00,000 - ₹35,00,000" data-video="assets/ganpati-4k-web.jpg">
+            <div class="hotstar-media-wrap">
+              <img src="assets/ganpati-4k-web.jpg" alt="Shreemant Dagdusheth Halwai Ganpati 4K Maha Utsav" class="hotstar-media-img" loading="eager" referrerpolicy="no-referrer">
+              <div class="hotstar-scrim"></div>
+            </div>
+            <div class="hotstar-slide-content">
+              <div class="hotstar-badge-row">
+                <span class="hotstar-live-badge royal"><span class="live-dot"></span> SHREEMANT DAGDUSHETH GANPATI (4K)</span>
+                <span class="hotstar-meta-pill"><span data-ef-icon="award" data-size="13"></span> Grand Golden Pandal Architecture</span>
+                <span class="hotstar-meta-pill" style="background:rgba(230,0,35,0.22);border-color:rgba(230,0,35,0.45);color:#fecdd3;"><span data-ef-icon="sparkles" data-size="13"></span> Ultra HD 4K Darshan Master</span>
+              </div>
+              <h2 class="hotstar-title">Shreemant Dagdusheth Ganpati Maha Utsav</h2>
+              <div class="hotstar-meta-strip">
+                <span><span data-ef-icon="calendar" data-size="14"></span> August – September (Ganeshotsav)</span>
+                <span><span data-ef-icon="mapPin" data-size="14"></span> Pune, Mumbai & Pan-India Society Arenas</span>
+                <span><span data-ef-icon="users" data-size="14"></span> 1,000 to 50,000+ Devotees</span>
+              </div>
+              <div class="hotstar-actions">
+                <a href="create-requirement.html?category=Festivals&title=Shreemant%20Dagdusheth%20Ganpati%20Maha%20Utsav&budget=1500000&guests=5000" class="btn btn-primary btn-md ef-magnetic">
+                  <span class="btn-icon" data-ef-icon="sparkles" data-size="16"></span>
+                  <span>Post Requirement for This Event</span>
+                </a>
+                <button type="button" class="btn btn-hotstar-trailer btn-md ef-magnetic hotstar-trailer-btn" data-slide-index="0">
+                  <span class="btn-icon" data-ef-icon="play" data-size="16"></span>
+                  <span>Watch Event Showcase</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 2: Krishna Janmashtami & Dahi Handi -->
+          <div class="hotstar-slide" data-slide-index="1" data-festival="Krishna Janmashtami & Dahi Handi" data-city="Pan-India / All Locations" data-guests="5,000 – 25,000+ Crowd" data-budget="₹4,00,000 - ₹25,00,000" data-video="assets/janmashtami-dahi-handi-4k-web.jpg">
+            <div class="hotstar-media-wrap">
+              <img src="assets/janmashtami-dahi-handi-4k-web.jpg" alt="Krishna Janmashtami Dahi Handi Celebration" class="hotstar-media-img" loading="lazy">
+              <div class="hotstar-scrim"></div>
+            </div>
+            <div class="hotstar-slide-content">
+              <div class="hotstar-badge-row">
+                <span class="hotstar-live-badge"><span class="live-dot"></span> GOKULASHTAMI UTSAV</span>
+                <span class="hotstar-meta-pill"><span data-ef-icon="shieldCheck" data-size="13"></span> Safety Harness Rigging & Staging</span>
+              </div>
+              <h2 class="hotstar-title">Krishna Janmashtami & Dahi Handi</h2>
+              <div class="hotstar-meta-strip">
+                <span><span data-ef-icon="calendar" data-size="14"></span> August – September</span>
+                <span><span data-ef-icon="mapPin" data-size="14"></span> Community Arenas & Public Grounds</span>
+                <span><span data-ef-icon="users" data-size="14"></span> 5,000 to 25,000+ Gatherings</span>
+              </div>
+              <div class="hotstar-actions">
+                <a href="create-requirement.html?category=Festivals&title=Krishna%20Janmashtami%20%26%20Dahi%20Handi&budget=1200000&guests=5000" class="btn btn-primary btn-md ef-magnetic">
+                  <span class="btn-icon" data-ef-icon="sparkles" data-size="16"></span>
+                  <span>Post Requirement for This Event</span>
+                </a>
+                <button type="button" class="btn btn-hotstar-trailer btn-md ef-magnetic hotstar-trailer-btn" data-slide-index="1">
+                  <span class="btn-icon" data-ef-icon="play" data-size="16"></span>
+                  <span>Watch Event Showcase</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 3: Navratri Dandiya & Garba Raas -->
+          <div class="hotstar-slide" data-slide-index="2" data-festival="Navratri Dandiya & Garba Raas" data-city="Pan-India / All Locations" data-guests="2,000 – 15,000+ Dancers" data-budget="₹8,00,000 - ₹35,00,000" data-video="assets/navratri-garba-vadodara-4k-web.jpg">
+            <div class="hotstar-media-wrap">
+              <img src="assets/navratri-garba-vadodara-4k-web.jpg" alt="Navratri Dandiya Garba Arena" class="hotstar-media-img" loading="lazy">
+              <div class="hotstar-scrim"></div>
+            </div>
+            <div class="hotstar-slide-content">
+              <div class="hotstar-badge-row">
+                <span class="hotstar-live-badge royal"><span class="live-dot"></span> 9 NIGHTS OF DANCE</span>
+                <span class="hotstar-meta-pill"><span data-ef-icon="music" data-size="13"></span> Stadium Acoustics & Wooden Turfs</span>
+              </div>
+              <h2 class="hotstar-title">Navratri Dandiya & Garba Raas</h2>
+              <div class="hotstar-meta-strip">
+                <span><span data-ef-icon="calendar" data-size="14"></span> September – October (9 Nights)</span>
+                <span><span data-ef-icon="mapPin" data-size="14"></span> Stadiums, Club Turfs & Banquet Lawns</span>
+                <span><span data-ef-icon="users" data-size="14"></span> 2,000 to 15,000+ Dancers</span>
+              </div>
+              <div class="hotstar-actions">
+                <a href="create-requirement.html?category=Festivals&title=Navratri%20Dandiya%20%26%20Garba%20Raas&budget=1800000&guests=8000" class="btn btn-primary btn-md ef-magnetic">
+                  <span class="btn-icon" data-ef-icon="sparkles" data-size="16"></span>
+                  <span>Post Requirement for This Event</span>
+                </a>
+                <button type="button" class="btn btn-hotstar-trailer btn-md ef-magnetic hotstar-trailer-btn" data-slide-index="2">
+                  <span class="btn-icon" data-ef-icon="play" data-size="16"></span>
+                  <span>Watch Event Showcase</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 4: Durga Puja & Sharad Utsav -->
+          <div class="hotstar-slide" data-slide-index="3" data-festival="Durga Puja & Sharad Utsav" data-city="Pan-India / All Locations" data-guests="5,000 – 30,000+ Daily" data-budget="₹6,00,000 - ₹40,00,000" data-video="assets/durga-puja-pandal-kolkata-4k-web.jpg">
+            <div class="hotstar-media-wrap">
+              <img src="assets/durga-puja-pandal-kolkata-4k-web.jpg" alt="Durga Puja Sharad Utsav Grand Pandal" class="hotstar-media-img" loading="lazy">
+              <div class="hotstar-scrim"></div>
+            </div>
+            <div class="hotstar-slide-content">
+              <div class="hotstar-badge-row">
+                <span class="hotstar-live-badge upcoming"><span class="live-dot"></span> UNESCO HERITAGE UTSAV</span>
+                <span class="hotstar-meta-pill"><span data-ef-icon="award" data-size="13"></span> Replica Pandals & Dhaak Troupes</span>
+              </div>
+              <h2 class="hotstar-title">Durga Puja & Sharad Utsav</h2>
+              <div class="hotstar-meta-strip">
+                <span><span data-ef-icon="calendar" data-size="14"></span> October (5 Sacred Days)</span>
+                <span><span data-ef-icon="mapPin" data-size="14"></span> Cultural Grounds & Association Complexes</span>
+                <span><span data-ef-icon="users" data-size="14"></span> 5,000 to 30,000+ Footfall</span>
+              </div>
+              <div class="hotstar-actions">
+                <a href="create-requirement.html?category=Festivals&title=Durga%20Puja%20%26%20Sharad%20Utsav&budget=2000000&guests=10000" class="btn btn-primary btn-md ef-magnetic">
+                  <span class="btn-icon" data-ef-icon="sparkles" data-size="16"></span>
+                  <span>Post Requirement for This Event</span>
+                </a>
+                <button type="button" class="btn btn-hotstar-trailer btn-md ef-magnetic hotstar-trailer-btn" data-slide-index="3">
+                  <span class="btn-icon" data-ef-icon="play" data-size="16"></span>
+                  <span>Watch Event Showcase</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 5: Grand Diwali Gala & Deepotsav -->
+          <div class="hotstar-slide" data-slide-index="4" data-festival="Grand Diwali Gala & Deepotsav" data-city="Pan-India / All Locations" data-guests="Corporate & Private Grandeur" data-budget="₹5,00,000 - ₹45,00,000" data-video="assets/diwali-celebration-lights-4k-web.jpg">
+            <div class="hotstar-media-wrap">
+              <img src="assets/diwali-celebration-lights-4k-web.jpg" alt="Grand Diwali Gala and Deepotsav Illuminations" class="hotstar-media-img" loading="lazy">
+              <div class="hotstar-scrim"></div>
+            </div>
+            <div class="hotstar-slide-content">
+              <div class="hotstar-badge-row">
+                <span class="hotstar-live-badge upcoming"><span class="live-dot"></span> FESTIVAL OF LIGHTS</span>
+                <span class="hotstar-meta-pill"><span data-ef-icon="star" data-size="13"></span> 10,000+ Diyas & Cold Fireworks</span>
+              </div>
+              <h2 class="hotstar-title">Grand Diwali Gala & Deepotsav</h2>
+              <div class="hotstar-meta-strip">
+                <span><span data-ef-icon="calendar" data-size="14"></span> October – November</span>
+                <span><span data-ef-icon="mapPin" data-size="14"></span> Corporate Campuses, Resorts & Lawns</span>
+                <span><span data-ef-icon="users" data-size="14"></span> Bespoke Luxury & Community</span>
+              </div>
+              <div class="hotstar-actions">
+                <a href="create-requirement.html?category=Festivals&title=Grand%20Diwali%20Gala%20%26%20Deepotsav&budget=2000000&guests=2000" class="btn btn-primary btn-md ef-magnetic">
+                  <span class="btn-icon" data-ef-icon="sparkles" data-size="16"></span>
+                  <span>Post Requirement for This Event</span>
+                </a>
+                <button type="button" class="btn btn-hotstar-trailer btn-md ef-magnetic hotstar-trailer-btn" data-slide-index="4">
+                  <span class="btn-icon" data-ef-icon="play" data-size="16"></span>
+                  <span>Watch Event Showcase</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Previous & Next Navigation Chevrons -->
+        <button type="button" class="hotstar-nav-arrow hotstar-nav-prev" id="hotstar-prev-btn" aria-label="Previous Festival Slide">
+          <span data-ef-icon="chevronLeft" data-size="22"></span>
+        </button>
+        <button type="button" class="hotstar-nav-arrow hotstar-nav-next" id="hotstar-next-btn" aria-label="Next Festival Slide">
+          <span data-ef-icon="chevronRight" data-size="22"></span>
+        </button>
+
+        <!-- Hotstar Bottom Thumbnail Tray with Signature Animated Progress Bar -->
+        <div class="hotstar-thumb-tray" id="hotstar-thumb-tray" role="tablist" aria-label="Festival Slides Selector">
+          
+          <div class="hotstar-thumb-card active" data-thumb-index="0" role="tab" aria-selected="true" tabindex="0">
+            <img src="assets/ganpati-4k-thumb.jpg" alt="Shreemant Dagdusheth Ganpati 4K thumbnail" referrerpolicy="no-referrer">
+            <div class="hotstar-thumb-info">
+              <span class="hotstar-thumb-tag">Pune Pandal (4K)</span>
+              <span class="hotstar-thumb-title">Dagdusheth Ganpati</span>
+            </div>
+            <div class="hotstar-thumb-progress"></div>
+          </div>
+
+          <div class="hotstar-thumb-card" data-thumb-index="1" role="tab" aria-selected="false" tabindex="0">
+            <img src="assets/janmashtami-dahi-handi-4k-thumb.jpg" alt="Janmashtami Dahi Handi thumbnail">
+            <div class="hotstar-thumb-info">
+              <span class="hotstar-thumb-tag">Gokulashtami</span>
+              <span class="hotstar-thumb-title">Janmashtami</span>
+            </div>
+            <div class="hotstar-thumb-progress"></div>
+          </div>
+
+          <div class="hotstar-thumb-card" data-thumb-index="2" role="tab" aria-selected="false" tabindex="0">
+            <img src="assets/navratri-garba-vadodara-4k-thumb.jpg" alt="Navratri Dandiya thumbnail">
+            <div class="hotstar-thumb-info">
+              <span class="hotstar-thumb-tag">9 Nights</span>
+              <span class="hotstar-thumb-title">Navratri Garba</span>
+            </div>
+            <div class="hotstar-thumb-progress"></div>
+          </div>
+
+          <div class="hotstar-thumb-card" data-thumb-index="3" role="tab" aria-selected="false" tabindex="0">
+            <img src="assets/durga-puja-pandal-kolkata-4k-thumb.jpg" alt="Durga Puja thumbnail">
+            <div class="hotstar-thumb-info">
+              <span class="hotstar-thumb-tag">Sharad Utsav</span>
+              <span class="hotstar-thumb-title">Durga Puja</span>
+            </div>
+            <div class="hotstar-thumb-progress"></div>
+          </div>
+
+          <div class="hotstar-thumb-card" data-thumb-index="4" role="tab" aria-selected="false" tabindex="0">
+            <img src="assets/diwali-celebration-lights-4k-thumb.jpg" alt="Diwali Gala thumbnail">
+            <div class="hotstar-thumb-info">
+              <span class="hotstar-thumb-tag">Deepotsav</span>
+              <span class="hotstar-thumb-title">Diwali Gala</span>
+            </div>
+            <div class="hotstar-thumb-progress"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Customer Direct Requirement Action Bar (Shifted to downside of slideshow) -->
+      <div class="hero-downside-req-bar" id="hero-downside-req-bar">
+        <div class="hero-req-banner-inner">
+          <a href="create-requirement.html" class="btn btn-primary btn-lg ef-magnetic hero-direct-req-btn" id="hero-post-requirement-main">
+            <span class="btn-icon" data-ef-icon="plus" data-size="18"></span>
+            <span>+ Post Your Requirement</span>
+          </a>
+          
+          <div class="hero-instant-req-group">
+            <span class="instant-req-tag">Direct Category Requirements:</span>
+            <a href="create-requirement.html?category=Festivals&title=Shreemant%20Dagdusheth%20Ganpati%20%26%20Maha%20Pandal&budget=1500000&guests=5000" class="instant-req-chip" title="Directly post Shreemant Dagdusheth Ganpati requirement">
+              <span class="instant-dot" style="background:#f59e0b;"></span>
+              <span>🌺 Dagdusheth Ganpati</span>
+            </a>
+            <a href="create-requirement.html?category=Festivals&title=Krishna%20Janmashtami%20%26%20Dahi%20Handi&budget=1200000&guests=6000" class="instant-req-chip" title="Directly post Krishna Janmashtami requirement">
+              <span class="instant-dot" style="background:#06b6d4;"></span>
+              <span>🪈 Janmashtami & Dahi Handi</span>
+            </a>
+            <a href="create-requirement.html?category=Festivals&title=Grand%20Visarjan%20%26%20Processions&budget=800000&guests=5000" class="instant-req-chip" title="Directly post Visarjan & Processions requirement">
+              <span class="instant-dot" style="background:#ef4444;"></span>
+              <span>🥁 Visarjan & Processions</span>
+            </a>
+            <a href="create-requirement.html?category=Festivals&title=Navratri%20Dandiya%20%26%20Garba%20Raas&budget=1800000&guests=8000" class="instant-req-chip" title="Directly post Navratri Dandiya requirement">
+              <span class="instant-dot" style="background:#a855f7;"></span>
+              <span>✨ Navratri & Garba Raas</span>
+            </a>
+            <a href="create-requirement.html?category=Festivals&title=Durga%20Puja%20%26%20Sharad%20Utsav&budget=2500000&guests=12000" class="instant-req-chip" title="Directly post Durga Puja requirement">
+              <span class="instant-dot" style="background:#ec4899;"></span>
+              <span>🌺 Durga Puja Mahotsav</span>
+            </a>
+            <a href="create-requirement.html?category=Festivals&title=Grand%20Diwali%20Gala%20%26%20Deepotsav&budget=2000000&guests=2000" class="instant-req-chip" title="Directly post Grand Diwali requirement">
+              <span class="instant-dot" style="background:#eab308;"></span>
+              <span>🪔 Diwali & Deepotsav</span>
+            </a>
+            <a href="create-requirement.html?category=Wedding&title=Royal%20Wedding%20%26%20Sangeet&budget=3500000&guests=500" class="instant-req-chip" title="Directly post Royal Wedding requirement">
+              <span class="instant-dot" style="background:#ec4899;"></span>
+              <span>💍 Royal Wedding & Sangeet</span>
+            </a>
+            <a href="create-requirement.html?category=Corporate&title=Corporate%20Annual%20Gala%20%26%20Summit&budget=1800000&guests=800" class="instant-req-chip" title="Directly post Corporate Gala requirement">
+              <span class="instant-dot" style="background:#3b82f6;"></span>
+              <span>🏢 Corporate Gala & Summit</span>
+            </a>
+            <a href="create-requirement.html?category=Birthday&title=Luxury%20Theme%20Birthday&budget=500000&guests=150" class="instant-req-chip" title="Directly post Theme Birthday requirement">
+              <span class="instant-dot" style="background:#10b981;"></span>
+              <span>🎂 Milestone Birthday</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Trust Badges Strip -->
+        <div class="hero-trust-metrics" style="display:flex;flex-wrap:wrap;justify-content:center;gap:24px;margin-top:16px;padding:14px 20px;border-radius:16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(10px);">
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,0.9);">
+            <span style="color:var(--gold);" data-ef-icon="star" data-size="16"></span>
+            <span><strong>4.95 Rating</strong> across 1,200+ Celebrations</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,0.9);">
+            <span style="color:#4ade80;" data-ef-icon="shieldCheck" data-size="16"></span>
+            <span><strong>100% Escrow</strong> Milestone Protection</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,0.9);">
+            <span style="color:#60a5fa;" data-ef-icon="award" data-size="16"></span>
+            <span><strong>Government & Police</strong> Verified Event Producers</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Trust Stats Ribbon -->
+  <section class="trust-stats-ribbon" id="trust-stats-ribbon">
+    <div class="container trust-stats-grid">
+      <div class="trust-stat-item">
+        <div class="trust-stat-number">3,500+</div>
+        <div class="trust-stat-label">Events Successfully Executed</div>
+      </div>
+      <div class="trust-stat-item">
+        <div class="trust-stat-number">450+</div>
+        <div class="trust-stat-label">Verified Event Managers</div>
+      </div>
+      <div class="trust-stat-item">
+        <div class="trust-stat-number">₹12 Cr+</div>
+        <div class="trust-stat-label">Milestone Escrow Secured</div>
+      </div>
+      <div class="trust-stat-item">
+        <div class="trust-stat-number">4.9 / 5</div>
+        <div class="trust-stat-label">Average Host Satisfaction Rating</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Strip -->
+  <section class="trust-strip" id="trust-strip">
+    <div class="container trust-grid">
+      <div>
+        <span class="trust-icon-box" data-ef-icon="lock" data-size="20"></span>
+        <span>
+          <strong>Escrow Protection</strong>
+          <small>Milestone-based fund release</small>
+        </span>
+      </div>
+      <div>
+        <span class="trust-icon-box" data-ef-icon="award" data-size="20"></span>
+        <span>
+          <strong>Verified Planners</strong>
+          <small>Strict background & portfolio audits</small>
+        </span>
+      </div>
+      <div>
+        <span class="trust-icon-box" data-ef-icon="scale" data-size="20"></span>
+        <span>
+          <strong>Zero Price Markup</strong>
+          <small>Direct transparency with managers</small>
+        </span>
+      </div>
+      <div>
+        <span class="trust-icon-box" data-ef-icon="clock" data-size="20"></span>
+        <span>
+          <strong>Fast Turnaround</strong>
+          <small>Proposals delivered in under 4 hours</small>
+        </span>
+      </div>
+      <div>
+        <span class="trust-icon-box" data-ef-icon="messageCircle" data-size="20"></span>
+        <span>
+          <strong>24/7 Concierge</strong>
+          <small>Dedicated celebration lead</small>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Event Categories -->
+  <section class="section" id="categories-section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Curated Celebrations</span>
+          <h2>Explore Distinctive Event Categories</h2>
+          <p>Every milestone deserves flawless architecture. Explore signature production styles tailored to your occasion.</p>
+        </div>
+        <div class="category-head-actions">
+          <button type="button" class="btn-skeleton-toggle" id="btn-simulate-category-loading" title="Preview skeleton loading shimmer">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>
+            <span>Preview Skeleton</span>
+          </button>
+          <a href="events.html" class="text-link" id="view-all-categories">View All Categories →</a>
+        </div>
+      </div>
+
+      <div class="event-grid" id="home-category-grid">
+        <a href="events.html?cat=wedding" class="event-card tilt category-card-item is-skeleton" id="cat-wedding" data-asset="assets/category-wedding.jpg">
+          <div class="cover ev1 cat-img-wedding" role="img" aria-label="Grand Royal Weddings Palatial Mandap and Floral Decor">
+            <div class="cover-skeleton-shimmer" aria-hidden="true">
+              <div class="skeleton-shimmer-wave"></div>
+              <div class="skeleton-pill">
+                <span class="skeleton-pill-dot"></span>
+                <span class="skeleton-pill-text">Loading 4K Asset...</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-content-wrap">
+            <h3>Grand Royal Weddings</h3>
+            <p>Palatial mandaps, couture floral installations, bespoke banquets, and unforgettable sangeet productions.</p>
+            <div class="event-meta">
+              <span>Starting from ₹ 10 Lakhs</span>
+              <span>42 Verified Planners</span>
+            </div>
+          </div>
+          <div class="card-skeleton-body" aria-hidden="true">
+            <div class="skeleton-line skeleton-title"></div>
+            <div class="skeleton-line skeleton-desc-1"></div>
+            <div class="skeleton-line skeleton-desc-2"></div>
+            <div class="skeleton-meta-row">
+              <div class="skeleton-line skeleton-meta-1"></div>
+              <div class="skeleton-line skeleton-meta-2"></div>
+            </div>
+          </div>
+        </a>
+
+        <a href="events.html?cat=birthday" class="event-card tilt category-card-item is-skeleton" id="cat-birthday" data-asset="assets/category-birthday.jpg">
+          <div class="cover ev2 cat-img-birthday" role="img" aria-label="Milestone Birthday Gala Champagne, Tiered Cake and Lighting">
+            <div class="cover-skeleton-shimmer" aria-hidden="true">
+              <div class="skeleton-shimmer-wave"></div>
+              <div class="skeleton-pill">
+                <span class="skeleton-pill-dot"></span>
+                <span class="skeleton-pill-text">Loading 4K Asset...</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-content-wrap">
+            <h3>Milestone Birthday Galas</h3>
+            <p>Immersive thematic decor, custom artisanal cakes, celebrity entertainers, and ambient lighting.</p>
+            <div class="event-meta">
+              <span>Starting from ₹ 1.5 Lakhs</span>
+              <span>36 Verified Planners</span>
+            </div>
+          </div>
+          <div class="card-skeleton-body" aria-hidden="true">
+            <div class="skeleton-line skeleton-title"></div>
+            <div class="skeleton-line skeleton-desc-1"></div>
+            <div class="skeleton-line skeleton-desc-2"></div>
+            <div class="skeleton-meta-row">
+              <div class="skeleton-line skeleton-meta-1"></div>
+              <div class="skeleton-line skeleton-meta-2"></div>
+            </div>
+          </div>
+        </a>
+
+        <a href="events.html?cat=engagement" class="event-card tilt category-card-item is-skeleton" id="cat-engagement" data-asset="assets/category-engagement.jpg">
+          <div class="cover ev3 cat-img-engagement" role="img" aria-label="Intimate Engagement Fairy-Lit Floral Ring Ceremony">
+            <div class="cover-skeleton-shimmer" aria-hidden="true">
+              <div class="skeleton-shimmer-wave"></div>
+              <div class="skeleton-pill">
+                <span class="skeleton-pill-dot"></span>
+                <span class="skeleton-pill-text">Loading 4K Asset...</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-content-wrap">
+            <h3>Intimate Engagements</h3>
+            <p>Fairy-lit floral arches, acoustic musical ensembles, bespoke ring ceremonies, and champagne toasts.</p>
+            <div class="event-meta">
+              <span>Starting from ₹ 3.5 Lakhs</span>
+              <span>28 Verified Planners</span>
+            </div>
+          </div>
+          <div class="card-skeleton-body" aria-hidden="true">
+            <div class="skeleton-line skeleton-title"></div>
+            <div class="skeleton-line skeleton-desc-1"></div>
+            <div class="skeleton-line skeleton-desc-2"></div>
+            <div class="skeleton-meta-row">
+              <div class="skeleton-line skeleton-meta-1"></div>
+              <div class="skeleton-line skeleton-meta-2"></div>
+            </div>
+          </div>
+        </a>
+
+        <a href="events.html?cat=corporate" class="event-card tilt category-card-item is-skeleton" id="cat-corporate" data-asset="assets/category-corporate.jpg">
+          <div class="cover ev4 cat-img-corporate" role="img" aria-label="Corporate Summit Keynote Audiovisual Production Stage">
+            <div class="cover-skeleton-shimmer" aria-hidden="true">
+              <div class="skeleton-shimmer-wave"></div>
+              <div class="skeleton-pill">
+                <span class="skeleton-pill-dot"></span>
+                <span class="skeleton-pill-text">Loading 4K Asset...</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-content-wrap">
+            <h3>Corporate Summits & Galas</h3>
+            <p>Keynote audiovisual production, executive catering, seamless badge coordination, and product launches.</p>
+            <div class="event-meta">
+              <span>Starting from ₹ 5 Lakhs</span>
+              <span>25 Verified Planners</span>
+            </div>
+          </div>
+          <div class="card-skeleton-body" aria-hidden="true">
+            <div class="skeleton-line skeleton-title"></div>
+            <div class="skeleton-line skeleton-desc-1"></div>
+            <div class="skeleton-line skeleton-desc-2"></div>
+            <div class="skeleton-meta-row">
+              <div class="skeleton-line skeleton-meta-1"></div>
+              <div class="skeleton-line skeleton-meta-2"></div>
+            </div>
+          </div>
+        </a>
+
+        <a href="events.html?cat=anniversary" class="event-card tilt category-card-item is-skeleton" id="cat-anniversary" data-asset="assets/category-anniversary.jpg">
+          <div class="cover ev5 cat-img-anniversary" role="img" aria-label="Silver and Golden Anniversary Candlelight Banquet Setup">
+            <div class="cover-skeleton-shimmer" aria-hidden="true">
+              <div class="skeleton-shimmer-wave"></div>
+              <div class="skeleton-pill">
+                <span class="skeleton-pill-dot"></span>
+                <span class="skeleton-pill-text">Loading 4K Asset...</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-content-wrap">
+            <h3>Silver & Golden Anniversaries</h3>
+            <p>Nostalgic storytelling exhibits, classical live orchestra, candlelight banquets, and vow renewals.</p>
+            <div class="event-meta">
+              <span>Starting from ₹ 2.5 Lakhs</span>
+              <span>19 Verified Planners</span>
+            </div>
+          </div>
+          <div class="card-skeleton-body" aria-hidden="true">
+            <div class="skeleton-line skeleton-title"></div>
+            <div class="skeleton-line skeleton-desc-1"></div>
+            <div class="skeleton-line skeleton-desc-2"></div>
+            <div class="skeleton-meta-row">
+              <div class="skeleton-line skeleton-meta-1"></div>
+              <div class="skeleton-line skeleton-meta-2"></div>
+            </div>
+          </div>
+        </a>
+
+        <a href="events.html?cat=babyshower" class="event-card tilt category-card-item is-skeleton" id="cat-babyshower" data-asset="assets/category-babyshower.jpg">
+          <div class="cover ev6 cat-img-babyshower" role="img" aria-label="Bespoke Baby Shower Pastel Florals and Balloon Decor">
+            <div class="cover-skeleton-shimmer" aria-hidden="true">
+              <div class="skeleton-shimmer-wave"></div>
+              <div class="skeleton-pill">
+                <span class="skeleton-pill-dot"></span>
+                <span class="skeleton-pill-text">Loading 4K Asset...</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-content-wrap">
+            <h3>Bespoke Baby Showers</h3>
+            <p>Whimsical pastel florals, bespoke nursery-themed dessert bars, and curated family games.</p>
+            <div class="event-meta">
+              <span>Starting from ₹ 1 Lakh</span>
+              <span>22 Verified Planners</span>
+            </div>
+          </div>
+          <div class="card-skeleton-body" aria-hidden="true">
+            <div class="skeleton-line skeleton-title"></div>
+            <div class="skeleton-line skeleton-desc-1"></div>
+            <div class="skeleton-line skeleton-desc-2"></div>
+            <div class="skeleton-meta-row">
+              <div class="skeleton-line skeleton-meta-1"></div>
+              <div class="skeleton-line skeleton-meta-2"></div>
+            </div>
+          </div>
+        </a>
+
+        <a href="events.html?cat=reception" class="event-card tilt category-card-item is-skeleton" id="cat-reception" data-asset="assets/category-reception.jpg">
+          <div class="cover ev7 cat-img-reception" role="img" aria-label="Cocktail and Reception Soirée Lounge and Mixology Bar">
+            <div class="cover-skeleton-shimmer" aria-hidden="true">
+              <div class="skeleton-shimmer-wave"></div>
+              <div class="skeleton-pill">
+                <span class="skeleton-pill-dot"></span>
+                <span class="skeleton-pill-text">Loading 4K Asset...</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-content-wrap">
+            <h3>Cocktail & Reception Soirées</h3>
+            <p>Crystal chandeliers, modern lounge styling, molecular mixology, and high-energy live DJs.</p>
+            <div class="event-meta">
+              <span>Starting from ₹ 4 Lakhs</span>
+              <span>31 Verified Planners</span>
+            </div>
+          </div>
+          <div class="card-skeleton-body" aria-hidden="true">
+            <div class="skeleton-line skeleton-title"></div>
+            <div class="skeleton-line skeleton-desc-1"></div>
+            <div class="skeleton-line skeleton-desc-2"></div>
+            <div class="skeleton-meta-row">
+              <div class="skeleton-line skeleton-meta-1"></div>
+              <div class="skeleton-line skeleton-meta-2"></div>
+            </div>
+          </div>
+        </a>
+
+        <a href="events.html?cat=college" class="event-card tilt category-card-item is-skeleton" id="cat-college" data-asset="assets/category-concert.jpg">
+          <div class="cover ev8 cat-img-concert" role="img" aria-label="Concert and Cultural Fest Large Scale Stadium Truss Stage">
+            <div class="cover-skeleton-shimmer" aria-hidden="true">
+              <div class="skeleton-shimmer-wave"></div>
+              <div class="skeleton-pill">
+                <span class="skeleton-pill-dot"></span>
+                <span class="skeleton-pill-text">Loading 4K Asset...</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-content-wrap">
+            <h3>Concerts & Cultural Fests</h3>
+            <p>Large-scale stadium trusses, LED stage mapping, artist liaison, and precision crowd safety.</p>
+            <div class="event-meta">
+              <span>Starting from ₹ 8 Lakhs</span>
+              <span>16 Verified Planners</span>
+            </div>
+          </div>
+          <div class="card-skeleton-body" aria-hidden="true">
+            <div class="skeleton-line skeleton-title"></div>
+            <div class="skeleton-line skeleton-desc-1"></div>
+            <div class="skeleton-line skeleton-desc-2"></div>
+            <div class="skeleton-meta-row">
+              <div class="skeleton-line skeleton-meta-1"></div>
+              <div class="skeleton-line skeleton-meta-2"></div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works (Flow) -->
+  <section class="section flow-section" id="how-it-works">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Frictionless Process</span>
+          <h2>How EventFlow Guarantees Perfection</h2>
+          <p>Say goodbye to chaotic vendor calls. We streamlined event management into four transparent steps.</p>
+        </div>
+        <a href="create-requirement.html" class="btn btn-outline" id="flow-start-btn">Start an Event Brief</a>
+      </div>
+
+      <div class="flow-cards">
+        <div class="flow-card tilt" id="step-1-card">
+          <span class="flow-no">01</span>
+          <div class="flow-icon pink">📝</div>
+          <h3>Post Your Requirement</h3>
+          <p>Share your vision, date, estimated guest count, preferred aesthetic, and target budget in a 2-minute guided form.</p>
+        </div>
+
+        <div class="flow-card tilt" id="step-2-card">
+          <span class="flow-no">02</span>
+          <div class="flow-icon gold">📑</div>
+          <h3>Receive Bespoke Proposals</h3>
+          <p>Verified event managers review your brief and submit detailed proposals with itemized costs and portfolio proofs.</p>
+        </div>
+
+        <div class="flow-card tilt" id="step-3-card">
+          <span class="flow-no">03</span>
+          <div class="flow-icon pink">🤝</div>
+          <h3>Compare & Lock Manager</h3>
+          <p>Compare deliverables side-by-side. Confirm your choice and secure your booking via milestone escrow protection.</p>
+        </div>
+
+        <div class="flow-card tilt" id="step-4-card">
+          <span class="flow-no">04</span>
+          <div class="flow-icon gold">🥂</div>
+          <h3>Celebrate Stress-Free</h3>
+          <p>Track tasks, guest RSVPs, and payments on your dedicated dashboard while your event manager executes flawlessly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Event Managers -->
+  <section class="section" id="managers-section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Industry Leaders</span>
+          <h2>Top-Rated Verified Event Managers</h2>
+          <p>Meet the award-winning creative minds trusted with India's most prestigious celebrations.</p>
+        </div>
+        <a href="managers.html" class="text-link" id="view-all-managers">Meet All Managers →</a>
+      </div>
+
+      <div class="manager-grid" id="home-managers-grid">
+        <div class="manager-card tilt" id="mcard-arjun">
+          <div class="manager-photo m1"></div>
+          <div class="manager-body">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span class="badge active">Verified Producer</span>
+              <span style="font-size:12.5px;font-weight:700;color:var(--gold-deep);">⭐ 4.9 (128 reviews)</span>
+            </div>
+            <h3 style="margin-top:10px;">Arjun Mehta & Co.</h3>
+            <p>Specializes in Destination Weddings, Royal Mandaps, and Grand Celebrations across Udaipur and Mumbai.</p>
+            <div class="tags">
+              <span>Palace Weddings</span>
+              <span>Luxury Catering</span>
+              <span>Light Architecture</span>
+            </div>
+            <div class="actions">
+              <a href="manager-profile.html?id=mgr_1" class="btn btn-outline btn-sm">View Portfolio</a>
+              <a href="create-requirement.html?mgr=mgr_1" class="btn btn-primary btn-sm">Request Proposal</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="manager-card tilt" id="mcard-neha">
+          <div class="manager-photo m2"></div>
+          <div class="manager-body">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span class="badge active">Verified Producer</span>
+              <span style="font-size:12.5px;font-weight:700;color:var(--gold-deep);">⭐ 4.9 (94 reviews)</span>
+            </div>
+            <h3 style="margin-top:10px;">Neha Celebrations</h3>
+            <p>Master of chic floral engagements, luxury baby showers, and aesthetic milestone birthday parties.</p>
+            <div class="tags">
+              <span>Thematic Birthdays</span>
+              <span>Pastel Floral Decor</span>
+              <span>Live Acoustic</span>
+            </div>
+            <div class="actions">
+              <a href="manager-profile.html?id=mgr_2" class="btn btn-outline btn-sm">View Portfolio</a>
+              <a href="create-requirement.html?mgr=mgr_2" class="btn btn-primary btn-sm">Request Proposal</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="manager-card tilt" id="mcard-rahul">
+          <div class="manager-photo m3"></div>
+          <div class="manager-body">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span class="badge active">Verified Producer</span>
+              <span style="font-size:12.5px;font-weight:700;color:var(--gold-deep);">⭐ 4.8 (82 reviews)</span>
+            </div>
+            <h3 style="margin-top:10px;">Rahul Events Hub</h3>
+            <p>High-energy corporate summits, concert production, brand launches, and large-scale cultural fests.</p>
+            <div class="tags">
+              <span>Corporate Galas</span>
+              <span>LED Stage & Sound</span>
+              <span>Keynote Seminars</span>
+            </div>
+            <div class="actions">
+              <a href="manager-profile.html?id=mgr_3" class="btn btn-outline btn-sm">View Portfolio</a>
+              <a href="create-requirement.html?mgr=mgr_3" class="btn btn-primary btn-sm">Request Proposal</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Popular Event Services Section -->
+  <section class="services-section" id="services-section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Production Pillars</span>
+          <h2>Popular Event Capabilities & Services</h2>
+          <p>Book master craftsmen across couture decor, lighting, royal banquets, and artist liaison—all coordinated under single milestone escrow protection.</p>
+        </div>
+        <a href="services.html" class="text-link" id="explore-services-link">Explore Services Directory →</a>
+      </div>
+
+      <div class="services-grid">
+        <!-- Service 1 -->
+        <div class="service-card tilt" id="service-decor">
+          <div class="service-card-top">
+            <div class="service-icon-box" data-ef-icon="sparkles" data-size="24"></div>
+            <span class="service-pill">Couture Styling</span>
+          </div>
+          <h3>Mandap & Decor Architecture</h3>
+          <p>Floral canopies, traditional royal mandaps, entrance archways, crystal chandeliers, and bespoke stage backdrops.</p>
+          <ul class="service-features">
+            <li><span data-ef-icon="check" data-size="14"></span> Fresh botanical & foreign flower imports</li>
+            <li><span data-ef-icon="check" data-size="14"></span> 3D spatial layout & CAD staging proofs</li>
+            <li><span data-ef-icon="check" data-size="14"></span> On-site master florist and styling team</li>
+          </ul>
+          <div class="service-card-footer">
+            <div class="service-price">
+              <small>Packages from</small>
+              <strong>₹ 2.5 Lakhs</strong>
+            </div>
+            <a href="create-requirement.html?service=decor" class="btn btn-outline btn-sm">Include in Brief +</a>
+          </div>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="service-card tilt" id="service-catering">
+          <div class="service-card-top">
+            <div class="service-icon-box" data-ef-icon="utensils" data-size="24"></div>
+            <span class="service-pill">Culinary Arts</span>
+          </div>
+          <h3>Gourmet Catering & Banquets</h3>
+          <p>Multi-regional authentic Indian feasts, live cooking stations, artisanal dessert bars, and bespoke beverage mixology.</p>
+          <ul class="service-features">
+            <li><span data-ef-icon="check" data-size="14"></span> Multi-course bespoke degustation menus</li>
+            <li><span data-ef-icon="check" data-size="14"></span> Five-star hygienic food preparation audits</li>
+            <li><span data-ef-icon="check" data-size="14"></span> Professional uniformed silver service staff</li>
+          </ul>
+          <div class="service-card-footer">
+            <div class="service-price">
+              <small>Packages from</small>
+              <strong>₹ 1,200 / Plate</strong>
+            </div>
+            <a href="create-requirement.html?service=catering" class="btn btn-outline btn-sm">Include in Brief +</a>
+          </div>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="service-card tilt" id="service-av">
+          <div class="service-card-top">
+            <div class="service-icon-box" data-ef-icon="zap" data-size="24"></div>
+            <span class="service-pill">Concert Grade</span>
+          </div>
+          <h3>Sound, Lights & Stage AV</h3>
+          <p>Concert-grade line array acoustics, intelligent moving head beams, haze effects, and 4K curved LED walls.</p>
+          <ul class="service-features">
+            <li><span data-ef-icon="check" data-size="14"></span> Acoustic frequency simulation for venue</li>
+            <li><span data-ef-icon="check" data-size="14"></span> Synchronized DMX light shows for sangeets</li>
+            <li><span data-ef-icon="check" data-size="14"></span> Redundant backup power & silent generators</li>
+          </ul>
+          <div class="service-card-footer">
+            <div class="service-price">
+              <small>Packages from</small>
+              <strong>₹ 1.5 Lakhs</strong>
+            </div>
+            <a href="create-requirement.html?service=av" class="btn btn-outline btn-sm">Include in Brief +</a>
+          </div>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="service-card tilt" id="service-artists">
+          <div class="service-card-top">
+            <div class="service-icon-box" data-ef-icon="music" data-size="24"></div>
+            <span class="service-pill">Entertainment</span>
+          </div>
+          <h3>Artist & Celebrity Liaison</h3>
+          <p>Live fusion bands, Sufi vocalists, Bollywood DJs, celebrity emcees, and traditional folk dance troupes.</p>
+          <ul class="service-features">
+            <li><span data-ef-icon="check" data-size="14"></span> Direct celebrity management & technical riders</li>
+            <li><span data-ef-icon="check" data-size="14"></span> Custom choreography for sangeets & galas</li>
+            <li><span data-ef-icon="check" data-size="14"></span> Green room hospitality & VIP security</li>
+          </ul>
+          <div class="service-card-footer">
+            <div class="service-price">
+              <small>Packages from</small>
+              <strong>₹ 75,000</strong>
+            </div>
+            <a href="create-requirement.html?service=artist" class="btn btn-outline btn-sm">Include in Brief +</a>
+          </div>
+        </div>
+
+        <!-- Service 5 -->
+        <div class="service-card tilt" id="service-photo">
+          <div class="service-card-top">
+            <div class="service-icon-box" data-ef-icon="camera" data-size="24"></div>
+            <span class="service-pill">Visual Story</span>
+          </div>
+          <h3>4K Cinematic Films & Photo</h3>
+          <p>Ultra HD cinematic films, licensed drone aerial captures, same-day highlight reels, and heirloom albums.</p>
+          <ul class="service-features">
+            <li><span data-ef-icon="check" data-size="14"></span> Multi-camera 4K cine-grade sensor gear</li>
+            <li><span data-ef-icon="check" data-size="14"></span> Same-day edit reels for social media</li>
+            <li><span data-ef-icon="check" data-size="14"></span> Archival handcrafted leather photo albums</li>
+          </ul>
+          <div class="service-card-footer">
+            <div class="service-price">
+              <small>Packages from</small>
+              <strong>₹ 1.8 Lakhs</strong>
+            </div>
+            <a href="create-requirement.html?service=photo" class="btn btn-outline btn-sm">Include in Brief +</a>
+          </div>
+        </div>
+
+        <!-- Service 6 -->
+        <div class="service-card tilt" id="service-hospitality">
+          <div class="service-card-top">
+            <div class="service-icon-box" data-ef-icon="truck" data-size="24"></div>
+            <span class="service-pill">Guest Care</span>
+          </div>
+          <h3>VIP Hospitality & Logistics</h3>
+          <p>Airport welcome concierge desks, luxury fleet transfers, personalized room hamper delivery, and RSVP tracking.</p>
+          <ul class="service-features">
+            <li><span data-ef-icon="check" data-size="14"></span> Chauffeur-driven luxury sedans & coaches</li>
+            <li><span data-ef-icon="check" data-size="14"></span> 24/7 hospitality desk at hotel lobbies</li>
+            <li><span data-ef-icon="check" data-size="14"></span> Digital RSVP tracking & luggage tagging</li>
+          </ul>
+          <div class="service-card-footer">
+            <div class="service-price">
+              <small>Packages from</small>
+              <strong>₹ 90,000</strong>
+            </div>
+            <a href="create-requirement.html?service=logistics" class="btn btn-outline btn-sm">Include in Brief +</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dark Architectural Brand Section -->
+  <section class="section dark-section" id="dark-brand-section">
+    <div class="container dark-grid">
+      <div>
+        <span class="eyebrow light">The EventFlow Standard</span>
+        <h2>Uncompromising Quality. <span>Complete Financial Trust.</span></h2>
+        <p>Planning a milestone shouldn't feel like a gamble. EventFlow operates under rigorous operational protocols so that you can simply be present on your special day.</p>
+        <a href="create-requirement.html" class="btn btn-primary btn-lg" id="dark-cta">Curate My Event Now</a>
+      </div>
+
+      <div class="dark-points">
+        <div class="dark-point">
+          <b>01</b>
+          <span>
+            <strong>Bank-Grade Milestone Escrow</strong>
+            <small>Your funds remain securely protected in escrow and are released only when agreed milestones are validated.</small>
+          </span>
+        </div>
+        <div class="dark-point">
+          <b>02</b>
+          <span>
+            <strong>Transparent Itemized Bids</strong>
+            <small>Never encounter hidden surcharges. Compare itemized breakdowns for decor, catering, sound, and coordination.</small>
+          </span>
+        </div>
+        <div class="dark-point">
+          <b>03</b>
+          <span>
+            <strong>Dedicated Emergency Replacement Plan</strong>
+            <small>In the rare event of vendor logistical issues, our backup manager network ensures your celebration never stops.</small>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Verified Client Experiences -->
+  <section class="section" id="testimonials">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Real Stories</span>
+          <h2>Loved by Hosts Across the Country</h2>
+          <p>Hear how families and corporate teams celebrated their landmark moments with EventFlow.</p>
+        </div>
+      </div>
+
+      <div class="review-grid">
+        <div class="review-card tilt">
+          <div class="quote">“</div>
+          <p>We received three competitive proposals within 3 hours for our daughter's destination wedding in Udaipur. Arjun Events delivered beyond our highest expectations. The mandap was breathtaking!</p>
+          <strong>Sanjay & Radhika Singhania</strong>
+          <small>Wedding Host, Udaipur</small>
+          <div class="stars">★★★★★</div>
+        </div>
+
+        <div class="review-card tilt">
+          <div class="quote">“</div>
+          <p>The milestone payment structure gave me total peace of mind. Every single item in Neha's proposal was executed down to the last detail for my 30th birthday gala. Truly flawless.</p>
+          <strong>Kavita Deshmukh</strong>
+          <small>Private Birthday Soirée, Mumbai</small>
+          <div class="stars">★★★★★</div>
+        </div>
+
+        <div class="review-card tilt">
+          <div class="quote">“</div>
+          <p>Organizing our annual corporate tech summit with 600 delegates was effortless. Rahul Events Hub handled audiovisuals, stage fabrication, and catering with military precision.</p>
+          <strong>Vikram Malhotra</strong>
+          <small>VP Operations, FinEdge Global</small>
+          <div class="stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final Call to Action -->
+  <section class="final-cta" id="final-cta">
+    <div class="container">
+      <div>
+        <span class="eyebrow light">Ready to Celebrate?</span>
+        <h2>Your Dream Event Begins with a Single Brief</h2>
+        <p>Join over 3,500 satisfied hosts. Post your event requirement today and receive verified bids for free.</p>
+      </div>
+      <div>
+        <a href="create-requirement.html" class="btn btn-primary btn-lg ef-magnetic" id="final-cta-btn">Post Event Requirement Free →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Site Footer -->
+  <footer class="footer" id="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a href="index.html" class="brand" style="margin-bottom:14px;display:inline-flex;">
+          <div class="brand-mark">✦</div>
+          <div>
+            <strong>Event<span>Flow</span></strong>
+            <small>Luxury Event Marketplace</small>
+          </div>
+        </a>
+        <p>Connecting visionary hosts with India's most verified event directors, decor stylists, and banquet producers.</p>
+      </div>
+
+      <div>
+        <h4>Event Types</h4>
+        <a href="events.html?cat=wedding">Royal Weddings</a>
+        <a href="events.html?cat=birthday">Birthday Celebrations</a>
+        <a href="events.html?cat=corporate">Corporate Galas</a>
+        <a href="events.html?cat=engagement">Engagements</a>
+        <a href="events.html?cat=anniversary">Anniversaries</a>
+      </div>
+
+      <div>
+        <h4>Platform</h4>
+        <a href="managers.html">Browse Event Managers</a>
+        <a href="services.html">Event Services Directory</a>
+        <a href="proposals.html">Proposal Comparison</a>
+        <a href="customer-dashboard.html">Customer Dashboard</a>
+        <a href="manager-dashboard.html">Manager Dashboard</a>
+      </div>
+
+      <div>
+        <h4>Company & Trust</h4>
+        <a href="feedback.html">Verified Feedback</a>
+        <a href="refunds.html">Payment & Refund Policy</a>
+        <a href="guests.html">Guest Ticketing</a>
+        <a href="admin.html">System Administration</a>
+      </div>
+
+      <div>
+        <h4>Stay Inspired</h4>
+        <p>Receive exclusive venue inspirations and wedding production trends monthly.</p>
+        <div class="newsletter">
+          <input type="email" placeholder="Enter your email..." aria-label="Email address">
+          <button type="button">Subscribe</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <span>© 2026 EventFlow Technologies Ltd. All rights reserved.</span>
+      <span>Designed with uncompromising craft for unforgettable celebrations.</span>
+    </div>
+  </footer>
+
+  <!-- Hotstar Cinematic Festival Reel & Trailer Modal -->
+  <div class="hotstar-trailer-modal-backdrop" id="hotstar-trailer-modal" role="dialog" aria-modal="true" aria-labelledby="hotstar-modal-title">
+    <div class="hotstar-trailer-modal-dialog" id="hotstar-modal-dialog">
+      <!-- Intelligent Shrinking & Pinning Header -->
+      <header class="hotstar-modal-smart-header" id="hotstar-modal-smart-header">
+        <div class="hotstar-smart-header-left">
+          <span class="hotstar-smart-badge royal" id="hotstar-header-badge">
+            <span class="live-dot"></span> 4K PREVIEW
+          </span>
+          <h4 class="hotstar-smart-title" id="hotstar-header-title">Shreemant Dagdusheth Ganpati & Maha Pandals</h4>
+        </div>
+
+        <div class="hotstar-smart-header-actions">
+          <button type="button" class="btn btn-sm btn-primary hotstar-smart-plan-btn" id="hotstar-header-plan-btn">
+            <span data-ef-icon="sparkles" data-size="14"></span>
+            <span>Plan Event</span>
+          </button>
+          <button type="button" class="hotstar-modal-close" id="hotstar-modal-close-btn" aria-label="Close Trailer">
+            <span data-ef-icon="x" data-size="18"></span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Video / Motion Preview Player -->
+      <div class="hotstar-video-player-box">
+        <img src="assets/ganpati-4k-web.jpg" alt="Shreemant Dagdusheth Halwai Ganpati Production Reel Preview (4K)" class="hotstar-video-visual" id="hotstar-modal-img" referrerpolicy="no-referrer">
+        <div class="hotstar-video-overlay-fx"></div>
+
+        <div class="hotstar-player-controls">
+          <div class="hotstar-player-btn-row">
+            <button type="button" class="hotstar-ctrl-btn" id="hotstar-play-toggle">
+              <span data-ef-icon="play" data-size="14" id="hotstar-play-icon"></span>
+              <span id="hotstar-play-text">Celebration Preview Active</span>
+            </button>
+            <button type="button" class="hotstar-ctrl-btn" id="hotstar-audio-toggle">
+              <span data-ef-icon="volume2" data-size="14" id="hotstar-volume-icon"></span>
+              <span id="hotstar-audio-text">Festive Sound: ON</span>
+            </button>
+          </div>
+          <span class="hotstar-meta-pill" style="background:rgba(0,0,0,0.6);border-color:rgba(255,255,255,0.2);">
+            <span class="live-dot" style="background:#4ade80;box-shadow:0 0 8px #4ade80;"></span> 4K Ultra HD Reel
+          </span>
+        </div>
+      </div>
+
+      <!-- Modal Info & Specs -->
+      <div class="hotstar-modal-body">
+        <div class="hotstar-modal-header-info">
+          <div>
+            <span class="hotstar-live-badge royal" id="hotstar-modal-badge"><span class="live-dot"></span> SHREEMANT DAGDUSHETH UTSAV</span>
+            <h3 class="hotstar-modal-title" id="hotstar-modal-title" style="margin-top:10px;">Shreemant Dagdusheth Ganpati & Maha Pandals</h3>
+            <p style="color:rgba(255,255,255,0.8);font-size:14px;line-height:1.6;margin:0;" id="hotstar-modal-desc">
+              End-to-end Shreemant Dagdusheth Halwai Ganpati darshan pavilions and Sarvajanik Ganeshotsav production. Opulent golden temple replica pandal fabrication, authentic gold adornment styling, 100-member live Puneri Dhol-Tasha pathaks, 4K multi-cam live darshan streaming, and VIP queue management.
+            </p>
+          </div>
+          <button type="button" class="btn btn-primary btn-md ef-magnetic" id="hotstar-modal-plan-btn" style="flex-shrink:0;">
+            <span class="btn-icon" data-ef-icon="sparkles" data-size="16"></span>
+            <span>Plan This Event</span>
+          </button>
+        </div>
+
+        <!-- Festival Specs -->
+        <div class="hotstar-specs-grid">
+          <div class="hotstar-spec-col">
+            <small>Production Window</small>
+            <strong id="hotstar-modal-dates">August – September</strong>
+          </div>
+          <div class="hotstar-spec-col">
+            <small>Venue Coverage</small>
+            <strong id="hotstar-modal-location">Pan-India / Multi-City</strong>
+          </div>
+          <div class="hotstar-spec-col">
+            <small>Estimated Package</small>
+            <strong id="hotstar-modal-cost" style="color:var(--gold-light);">₹5,00,000 - ₹35,00,000</strong>
+          </div>
+        </div>
+
+        <!-- Included Producer Capabilities -->
+        <h4 style="font-size:14px;color:rgba(255,255,255,0.9);margin:0 0 12px;font-weight:700;">Included Master Producer Services</h4>
+        <div class="hotstar-services-checklist">
+          <div class="hotstar-service-item">
+            <span data-ef-icon="check" data-size="16"></span>
+            <span>Thematic structural fabrication with fire-safety NOC certification</span>
+          </div>
+          <div class="hotstar-service-item">
+            <span data-ef-icon="check" data-size="16"></span>
+            <span>Live acoustic sound & dynamic beam lighting design</span>
+          </div>
+          <div class="hotstar-service-item">
+            <span data-ef-icon="check" data-size="16"></span>
+            <span>Drone videography & multi-camera 4K YouTube/TV streaming</span>
+          </div>
+          <div class="hotstar-service-item">
+            <span data-ef-icon="check" data-size="16"></span>
+            <span>100% Escrow Milestone Vault protection through EventFlow</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/ef-3d-scene.js"></script>
+  <script src="main.js"></script>
+  <script src="experience.js"></script>
+</body>
+</html>

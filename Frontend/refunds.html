@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escrow Protection & Refund Mediation — EventFlow</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
+</head>
+<body>
+  <div class="ef-loader" id="ef-loader"><div class="ef-loader-mark">Event<span>Flow</span></div><div class="ef-loader-bar"><i></i></div></div>
+  <canvas class="ef-scene" id="ef-scene"></canvas>
+  <div class="ef-scene-veil"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a href="index.html" class="side-brand">
+        <div class="brand-mark">✦</div>
+        <strong>Event<span>Flow</span></strong>
+      </a>
+      <span class="side-section">Navigation</span>
+      <a href="customer-dashboard.html" class="side-link">📊 Client Dashboard</a>
+      <a href="booking.html" class="side-link">🗓 Active Booking</a>
+      <a href="payments.html" class="side-link">💳 Payments & Escrow</a>
+      <a href="refunds.html" class="side-link active">🛡️ Escrow Dispute & Refunds</a>
+    </aside>
+
+    <div class="app-main">
+      <header class="app-top">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <a href="payments.html" class="text-link">← Payments</a>
+          <h1>Escrow Protection & Dispute Resolution</h1>
+        </div>
+        <div class="top-tools">
+          <div class="eventflow-account"></div>
+        </div>
+      </header>
+
+      <main class="dash-content" style="max-width:860px;">
+        <div class="panel" style="margin-bottom:24px;">
+          <span class="badge active" style="margin-bottom:12px;">Bank-Grade Escrow Guarantee</span>
+          <h2 style="font-size:24px;margin-bottom:6px;">How Your Event Funds Are Protected</h2>
+          <p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:20px;">
+            Unlike informal vendor deposits where money is difficult to recover, EventFlow retains milestone funds in an authorized escrow account. If an event manager fails to deliver contractually agreed deliverables, your funds are refunded according to the mediation protocol.
+          </p>
+
+          <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:14px;">
+            <div style="padding:16px;background:var(--surface-2);border-radius:14px;">
+              <strong style="display:block;font-size:14px;color:var(--ink);">> 30 Days Notice</strong>
+              <span style="font-size:12.5px;color:var(--green);font-weight:700;">90% Full Refund</span>
+              <small style="display:block;font-size:11px;color:var(--faint);margin-top:4px;">Excludes non-recoverable custom design fee.</small>
+            </div>
+            <div style="padding:16px;background:var(--surface-2);border-radius:14px;">
+              <strong style="display:block;font-size:14px;color:var(--ink);">15 - 30 Days Notice</strong>
+              <span style="font-size:12.5px;color:var(--amber);font-weight:700;">60% Escrow Return</span>
+              <small style="display:block;font-size:11px;color:var(--faint);margin-top:4px;">Vendor raw material deposits deducted.</small>
+            </div>
+            <div style="padding:16px;background:var(--surface-2);border-radius:14px;">
+              <strong style="display:block;font-size:14px;color:var(--ink);">< 15 Days Notice</strong>
+              <span style="font-size:12.5px;color:var(--rose);font-weight:700;">Mediation Audit</span>
+              <small style="display:block;font-size:11px;color:var(--faint);margin-top:4px;">Assessed based on fabrication proof.</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Request Dispute Mediation Form -->
+        <div class="panel">
+          <h3 style="font-size:20px;margin-bottom:12px;">File Dispute or Request Milestone Hold</h3>
+          <form id="refund-form" class="form-stack">
+            <label>
+              Associated Booking
+              <select id="rf-booking">
+                <option value="bk_1">Grand Royal Rajputana Wedding (BK-2026-089) • ₹ 9,80,000 in Escrow</option>
+                <option value="bk_2">Ananya's 30th Birthday Soirée (BK-2026-092)</option>
+              </select>
+            </label>
+
+            <label>
+              Reason for Hold / Cancellation *
+              <select id="rf-reason">
+                <option value="Event Postponement">Event Date Postponement</option>
+                <option value="Vendor Non-responsiveness">Manager / Vendor Communication Delay</option>
+                <option value="Design Discrepancy">Decor / Creative Direction Discrepancy</option>
+                <option value="Family Emergency">Personal / Family Emergency Cancellation</option>
+              </select>
+            </label>
+
+            <label>
+              Detailed Explanation & Supporting Context *
+              <textarea id="rf-notes" rows="4" placeholder="Describe the circumstance in detail. Our neutral arbitration lead will contact both parties within 4 hours..." required></textarea>
+            </label>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" id="btn-submit-rf">Submit for Mediation Review →</button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script src="experience.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var bookingSelect = document.getElementById('rf-booking');
+      
+      if (bookingSelect) {
+        EventFlow.apiGet('/bookings').then(function(res) {
+          var list = Array.isArray(res) ? res : (res.bookings || []);
+          if (!list.length) {
+            bookingSelect.innerHTML = '<option value="">No active bookings found</option>';
+            return;
+          }
+          bookingSelect.innerHTML = list.map(function(bk) {
+            var bkId = bk.id || bk.booking_id;
+            var bkDisplayId = 'BK-2026-' + String(bkId).padStart(3, '0');
+            var title = bk.eventName || bk.event_name || bk.title || bk.requirementTitle || 'Event';
+            var amt = bk.amountPaid || bk.amount_paid || 0;
+            return '<option value="' + bkId + '">' + title + ' (' + bkDisplayId + ') • ' + EventFlow.formatCurrency(amt) + ' in Escrow</option>';
+          }).join('');
+        }).catch(function(err) {
+          bookingSelect.innerHTML = '<option value="">Error loading bookings</option>';
+        });
+      }
+
+      var form = document.getElementById('refund-form');
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var bkId = document.getElementById('rf-booking').value;
+          var reason = document.getElementById('rf-reason').value;
+          var notes = document.getElementById('rf-notes').value;
+          
+          if (!bkId) {
+            EventFlow.showToast('Please select a booking', 'error');
+            return;
+          }
+          
+          var fullReason = reason + ': ' + notes;
+          var btn = document.getElementById('btn-submit-rf');
+          
+          EventFlow.apiPost('/refunds', {
+            booking_id: bkId,
+            reason: fullReason,
+            amount: 0, // Fallback if required
+            payment_id: 1 // Fallback if required
+          }).then(function() {
+            EventFlow.showToast('Mediation request submitted. Case opened.', 'success');
+            if (btn) {
+              btn.innerText = '✔ Case In Review';
+              btn.disabled = true;
+            }
+          }).catch(function(err) {
+            EventFlow.showToast(err.message, 'error');
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verified Event Managers & Planners — EventFlow</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
+</head>
+<body>
+  <div class="ef-loader" id="ef-loader"><div class="ef-loader-mark">Event<span>Flow</span></div><div class="ef-loader-bar"><i></i></div></div>
+  <canvas class="ef-scene" id="ef-scene"></canvas>
+  <div class="ef-scene-veil"></div>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="brand">
+        <div class="brand-mark">✦</div>
+        <div><strong>Event<span>Flow</span></strong><small>Luxury Event Marketplace</small></div>
+      </a>
+      <nav class="desktop-nav">
+        <a href="index.html">Home</a>
+        <a href="customer-dashboard.html">Dashboard</a>
+        <a href="events.html">Events</a>
+        <a href="proposals.html">Proposals</a>
+        <a href="my-bookings.html">Bookings</a>
+        <a href="services.html">Services</a>
+      </nav>
+      <div class="nav-actions">
+        <div class="eventflow-account"></div>
+        <a href="create-requirement.html" class="btn btn-primary btn-sm">Post Requirement</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Verified Directory</span>
+          <h1>India's Top-Rated Event Producers</h1>
+          <p>Every event manager undergoes a stringent 14-point audit of previous events, vendor contracts, safety compliance, and client feedback.</p>
+        </div>
+        <a href="create-requirement.html" class="btn btn-primary">Receive Bids from All Managers +</a>
+      </div>
+
+      <!-- Filter Controls -->
+      <div class="filter-bar">
+        <input type="text" id="mgr-search" placeholder="Search by manager name, specialty, or city...">
+        <select id="mgr-city-select">
+          <option value="">All Locations</option>
+          <option value="Mumbai">Mumbai</option>
+          <option value="Delhi">Delhi NCR</option>
+          <option value="Goa">Goa</option>
+          <option value="Bengaluru">Bengaluru</option>
+          <option value="Udaipur">Udaipur / Rajasthan</option>
+        </select>
+        <select id="mgr-spec-select">
+          <option value="">All Specialties</option>
+          <option value="Weddings">Destination Weddings</option>
+          <option value="Birthdays">Themed Birthdays</option>
+          <option value="Corporate">Corporate Summits</option>
+        </select>
+      </div>
+
+      <div class="manager-grid" id="managers-container" style="margin-top:24px;">
+        <!-- Filled dynamically -->
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <span>© 2026 EventFlow Technologies Ltd. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+  <script src="experience.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var container = document.getElementById('managers-container');
+      var searchInput = document.getElementById('mgr-search');
+      var citySelect = document.getElementById('mgr-city-select');
+
+      var defaultManagers = [
+        { id: 'mgr_1', name: 'Arjun Mehta & Co.', agency: 'Swarajya Mahotsav Productions', city: 'Pune', rating: 4.98, reviews: 142, experience: '14+ Years', photo: 'assets/ganpati-4k-web.jpg', bio: 'Specialist in grand Sarvajanik Ganeshotsav pandal replicas, 100-member Puneri Dhol-Tasha pathaks, and temple darshan management.', tags: ['Ganeshotsav Pandals', 'Dhol-Tasha Pathaks', 'VIP Queue Control'] },
+        { id: 'mgr_2', name: 'Riddhi & Paras Events', agency: 'Raas Garba Productions', city: 'Vadodara', rating: 4.95, reviews: 118, experience: '10+ Years', photo: 'assets/navratri-garba-vadodara-4k-web.jpg', bio: '9-night turnkey Navratri Dandiya & Garba Raas arena installations, stadium line-array acoustics, and celebrity Gujarati folk artists.', tags: ['Navratri Garba', 'Stadium Acoustics', 'Dance Turfs'] },
+        { id: 'mgr_3', name: 'Subhashish Roy & Studio', agency: 'Sharad Utsav Craftsmen', city: 'Kolkata', rating: 4.93, reviews: 98, experience: '15+ Years', photo: 'assets/durga-puja-pandal-kolkata-4k-web.jpg', bio: 'UNESCO Heritage Durga Puja pandal architecture, heritage idol sanctums, synchronized Dhaak drumming troupes, and 4K livestreaming.', tags: ['Durga Puja Pandals', 'Dhaak Ensembles', 'Artisan Idols'] },
+        { id: 'mgr_4', name: 'Devika Sharma Royal Curations', agency: 'Deepotsav Festival Group', city: 'Delhi', rating: 4.96, reviews: 88, experience: '11+ Years', photo: 'assets/diwali-celebration-lights-4k-web.jpg', bio: 'Grand Ayodhya Deepotsav, 10,000+ clay diya illumination, cold pyro laser fireworks shows, and bespoke corporate Diwali galas.', tags: ['Grand Diwali Gala', 'Deepotsav Illumination', 'Laser Pyros'] },
+        { id: 'mgr_5', name: 'Vikram Jadhav Rigging', agency: 'Govinda Utsav Rigging', city: 'Mumbai', rating: 4.91, reviews: 76, experience: '9+ Years', photo: 'assets/janmashtami-dahi-handi-4k-web.jpg', bio: 'Gokulashtami Dahi Handi high-altitude hanging rigs, 9-tier safety harnesses, crash mats, mobile sound stages, and prize ceremony setups.', tags: ['Dahi Handi Rigging', 'Safety Harnesses', 'Live Sound Turfs'] },
+        { id: 'mgr_6', name: 'Kailash Patil & Sons', agency: 'Shobha Yatra Production Hub', city: 'Mumbai', rating: 4.90, reviews: 84, experience: '13+ Years', photo: 'assets/ganpati-4k-web.jpg', bio: 'Turnkey Lalbaugcha Raja Visarjan Shobha Yatra floats, hydraulic flower cannons, police coordination, and sea-front immersion logistics.', tags: ['Visarjan Floats', 'Flower Cannons', 'Crowd Management'] }
+      ];
+
+      function render(list) {
+        if (!container) return;
+        if (!list.length) {
+          container.innerHTML = '<div class="ef-empty-state" style="grid-column:1/-1;"><h3>No managers found</h3><p>Try searching for a different city or category.</p></div>';
+          return;
+        }
+        container.innerHTML = list.map(function (m) {
+          return '<div class="manager-card tilt">' +
+            '<div class="manager-photo" style="background-image:url(\'' + m.photo + '\');"></div>' +
+            '<div class="manager-body">' +
+              '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+                '<span class="badge active">Verified Producer</span>' +
+                '<span style="font-size:12px;font-weight:700;color:var(--gold-deep);">⭐ ' + m.rating + ' (' + m.reviews + ')</span>' +
+              '</div>' +
+              '<h3 style="margin-top:10px;">' + m.name + '</h3>' +
+              '<p style="color:var(--faint);font-size:11.5px;margin-bottom:6px;">' + m.agency + ' • ' + m.city + ' • ' + m.experience + '</p>' +
+              '<p>' + m.bio + '</p>' +
+              '<div class="tags">' +
+                m.tags.map(function (t) { return '<span>' + t + '</span>'; }).join('') +
+              '</div>' +
+              '<div class="actions">' +
+                '<a href="manager-profile.html?id=' + m.id + '" class="btn btn-outline btn-sm">Profile & Portfolio</a>' +
+                '<a href="create-requirement.html?mgr=' + m.id + '" class="btn btn-primary btn-sm">Direct Proposal</a>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+      }
+
+      function filter() {
+        var q = (searchInput.value || '').toLowerCase();
+        var city = (citySelect.value || '').toLowerCase();
+        var filtered = defaultManagers.filter(function (m) {
+          var matchQ = !q || m.name.toLowerCase().indexOf(q) !== -1 || m.bio.toLowerCase().indexOf(q) !== -1 || m.city.toLowerCase().indexOf(q) !== -1;
+          var matchCity = !city || m.city.toLowerCase() === city;
+          return matchQ && matchCity;
+        });
+        render(filtered);
+      }
+
+      if (searchInput) searchInput.addEventListener('input', filter);
+      if (citySelect) citySelect.addEventListener('change', filter);
+
+      render(defaultManagers);
+    });
+  </script>
+</body>
+</html>

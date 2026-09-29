@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operations & Escrow Governance — EventFlow Admin</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
+</head>
+<body>
+  <div class="ef-loader" id="ef-loader"><div class="ef-loader-mark">Event<span>Flow</span></div><div class="ef-loader-bar"><i></i></div></div>
+  <canvas class="ef-scene" id="ef-scene"></canvas>
+  <div class="ef-scene-veil"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a href="index.html" class="side-brand">
+        <div class="brand-mark">✦</div>
+        <strong>Event<span>Flow</span> <small style="font-size:11px;color:var(--gold);margin-left:4px;">Ops</small></strong>
+      </a>
+      <span class="side-section">Governance</span>
+      <a href="admin.html" class="side-link active">⚙️ Ops Command Center</a>
+      <a href="customer-dashboard.html" class="side-link">📊 Host Workspace</a>
+      <a href="manager-dashboard.html" class="side-link">🏢 Manager Suite</a>
+      <a href="payments.html" class="side-link">💳 Escrow Ledgers</a>
+      <a href="refunds.html" class="side-link">🛡️ Dispute Arbitration</a>
+    </aside>
+
+    <div class="app-main">
+      <header class="app-top">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <button class="sidebar-toggle btn btn-outline btn-sm" aria-label="Toggle Navigation">
+            <span data-ef-icon="menu" data-size="18"></span>
+          </button>
+          <h1>Platform Governance & Escrow Audit</h1>
+        </div>
+        <div class="top-tools">
+          <div class="eventflow-account"></div>
+        </div>
+      </header>
+
+      <main class="dash-content">
+        <div class="stats">
+          <div class="stat gold">
+            <small>Total Platform GMV</small>
+            <strong>₹ 1.84 Cr</strong>
+            <small>Across 140+ Celebrations</small>
+          </div>
+          <div class="stat purple">
+            <small>Active Escrow Reserve</small>
+            <strong>₹ 38.4L</strong>
+            <small>Held in Yes Bank / HDFC Escrow</small>
+          </div>
+          <div class="stat">
+            <small>Accredited Producers</small>
+            <strong>48</strong>
+            <small>100% Background Screened</small>
+          </div>
+          <div class="stat pink">
+            <small>Active Dispute Rate</small>
+            <strong>0.02%</strong>
+            <small>Lowest in Indian Events Industry</small>
+          </div>
+        </div>
+
+        <div class="dash-grid">
+          <div>
+            <!-- Manager Accreditation Queue -->
+            <div class="panel" style="margin-bottom:24px;">
+              <div class="panel-head">
+                <div>
+                  <h3 style="font-size:18px;">Producer Accreditation Queue</h3>
+                  <p style="font-size:12.5px;color:var(--muted);margin-top:2px;">Audit GST, PAN, and portfolio proof before conferring verified status.</p>
+                </div>
+              </div>
+
+              <div class="list">
+                <div class="list-row">
+                  <div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+                      <span class="badge pending">KYC AUDIT</span>
+                      <strong>Zest Creative Productions</strong>
+                    </div>
+                    <small>Jaipur • GST Verified • Portfolio: 18 Royal Weddings</small>
+                  </div>
+                  <div style="display:flex;gap:8px;">
+                    <button class="btn btn-outline btn-sm" onclick="EventFlow.showToast('Inspecting portfolio documents', 'info');">Review</button>
+                    <button class="btn btn-primary btn-sm" onclick="EventFlow.showToast('Accreditation approved! Producer verified.', 'success'); this.innerText='✓ Approved'; this.disabled=true;">Approve</button>
+                  </div>
+                </div>
+
+                <div class="list-row">
+                  <div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+                      <span class="badge pending">KYC AUDIT</span>
+                      <strong>Mirage Sound & Trusses</strong>
+                    </div>
+                    <small>Bengaluru • Audio-Visual Vendor • ISO Safety Certified</small>
+                  </div>
+                  <div style="display:flex;gap:8px;">
+                    <button class="btn btn-outline btn-sm">Review</button>
+                    <button class="btn btn-primary btn-sm" onclick="EventFlow.showToast('Vendor approved!', 'success'); this.innerText='✓ Approved'; this.disabled=true;">Approve</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Escrow Release Queue -->
+            <div class="panel">
+              <div class="panel-head">
+                <h3 style="font-size:18px;">Escrow Milestone Release Authorizations</h3>
+              </div>
+
+              <div class="list">
+                <div class="list-row">
+                  <div>
+                    <strong>BK-2026-089 (Grand Royal Rajputana Wedding)</strong>
+                    <small>Milestone 1 Advance (40%): ₹ 9,80,000 to Arjun Mehta & Co.</small>
+                  </div>
+                  <span class="badge completed">RELEASED</span>
+                </div>
+                <div class="list-row">
+                  <div>
+                    <strong>BK-2026-092 (Ananya's 30th Birthday Soirée)</strong>
+                    <small>Final Stage 3 Handover (20%): ₹ 70,000 to Neha Celebrations</small>
+                  </div>
+                  <button class="btn btn-primary btn-sm" onclick="EventFlow.showToast('Disbursal executed to Neha Celebrations via RTGS', 'success'); this.innerText='✓ Disbursed'; this.disabled=true;">Authorize Disbursal</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Side: Platform System Health -->
+          <div>
+            <div class="panel" style="margin-bottom:24px;">
+              <h3 style="font-size:18px;margin-bottom:12px;">Infrastructure Integrity</h3>
+              <div style="display:grid;gap:12px;font-size:13px;">
+                <div style="display:flex;justify-content:space-between;"><span>Core API Node</span><strong style="color:var(--green);">99.98% Uptime</strong></div>
+                <div style="display:flex;justify-content:space-between;"><span>Escrow Bank Webhook</span><strong style="color:var(--green);">Connected (HDFC Bank)</strong></div>
+                <div style="display:flex;justify-content:space-between;"><span>SMS & WhatsApp Gateway</span><strong style="color:var(--green);">Operational</strong></div>
+                <div style="display:flex;justify-content:space-between;"><span>Audit Trail Logging</span><strong>Enabled (Immutable)</strong></div>
+              </div>
+            </div>
+
+            <div class="panel accent">
+              <span class="eyebrow light">Ops Hotline</span>
+              <h2>Senior Dispute Team</h2>
+              <p>Escalate contract violations, venue lockouts, or emergency vendor cancellations directly to high-priority triage.</p>
+              <button class="btn btn-light" style="width:100%;" onclick="EventFlow.showToast('Priority triage team alerted', 'info');">Dispatch Emergency Team</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script src="experience.js"></script>
+</body>
+</html>

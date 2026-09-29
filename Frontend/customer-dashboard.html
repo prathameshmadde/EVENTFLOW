@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Host Celebration Workspace — EventFlow</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
+
+    <style>
+    @keyframes borderGlow {
+      0% { box-shadow: 0 0 5px rgba(212,175,55,0.2); border-color: rgba(212,175,55,0.5); }
+      50% { box-shadow: 0 0 15px rgba(212,175,55,0.8); border-color: rgba(212,175,55,1); }
+      100% { box-shadow: 0 0 5px rgba(212,175,55,0.2); border-color: rgba(212,175,55,0.5); }
+    }
+    .milestone-step-box {
+      transition: all 0.3s ease;
+      border: 1px solid var(--color-border);
+    }
+    .milestone-step-box:hover {
+      animation: borderGlow 1.5s infinite;
+      transform: translateY(-2px);
+    }
+    </style>
+
+</head>
+<body>
+  <!-- Ambient Page Loader -->
+  <div class="ef-loader" id="ef-loader">
+    <div class="ef-loader-mark">Event<span>Flow</span></div>
+    <div class="ef-loader-bar"><i></i></div>
+  </div>
+
+  <!-- Ambient 3D Scene Background & Veil -->
+  <canvas class="ef-scene" id="ef-scene"></canvas>
+  <div class="ef-scene-veil"></div>
+
+  <div class="app-shell">
+    <!-- Left Navigation Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <a href="index.html" class="side-brand">
+        <div class="brand-mark">✦</div>
+        <div>
+          <strong>Event<span>Flow</span></strong>
+          <span class="side-brand-tag">Private Host Circle</span>
+        </div>
+      </a>
+
+      <div class="sidebar-nav-group">
+        <span class="side-section">Host Workspace</span>
+        <a href="#overview" class="side-link active" data-tab="overview">
+          <span class="side-icon-box" data-ef-icon="layoutDashboard"></span>
+          <span class="side-label">Workspace Overview</span>
+        </a>
+        <a href="#events" class="side-link" data-tab="events">
+          <span class="side-icon-box" data-ef-icon="clipboardList"></span>
+          <span class="side-label">My Events & Briefs</span>
+        </a>
+        <a href="#proposals" class="side-link" data-tab="proposals">
+          <span class="side-icon-box" data-ef-icon="scale"></span>
+          <span class="side-label">Compare Proposals</span>
+        </a>
+        <a href="#bookings" class="side-link" data-tab="bookings">
+          <span class="side-icon-box" data-ef-icon="calendarCheck"></span>
+          <span class="side-label">Bookings & Production</span>
+        </a>
+        <a href="#payments" class="side-link" data-tab="payments">
+          <span class="side-icon-box" data-ef-icon="creditCard"></span>
+          <span class="side-label">Escrow & Payments</span>
+        </a>
+        <a href="tasks.html" class="side-link">
+          <span class="side-icon-box" data-ef-icon="checkSquare"></span>
+          <span class="side-label">Production Checklist</span>
+        </a>
+        <a href="guests.html" class="side-link">
+          <span class="side-icon-box" data-ef-icon="users"></span>
+          <span class="side-label">Guest List & RSVPs</span>
+        </a>
+        <a href="#support" class="side-link" data-tab="support">
+          <span class="side-icon-box" data-ef-icon="helpCircle"></span>
+          <span class="side-label">Concierge & Support</span>
+        </a>
+
+        <span class="side-section" style="margin-top:20px;">Feedback & Support</span>
+        <a href="feedback.html" class="side-link">
+          <span class="side-icon-box" data-ef-icon="star"></span>
+          <span class="side-label">Give Feedback</span>
+        </a>
+      </div>
+
+      <!-- Sidebar Footer User Profile -->
+      <div class="sidebar-footer">
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-user-card" id="side-user-card">
+          <div class="sidebar-user-avatar" id="side-user-avatar">PS</div>
+          <div class="sidebar-user-info">
+            <strong class="sidebar-user-name" id="side-user-name">Priyanshu Sharma</strong>
+            <span class="sidebar-user-role" id="side-user-role">Host & Client</span>
+          </div>
+        </div>
+        <a href="login.html" class="side-link side-link-logout" id="side-logout" onclick="EventFlow.handleLogout(event)">
+          <span class="side-icon-box" data-ef-icon="logout" data-size="18"></span>
+          <span class="side-label">Sign Out</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main App Content -->
+    <div class="app-main">
+      <!-- Top Navigation Bar -->
+      <header class="app-top">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <button class="sidebar-toggle btn btn-outline btn-sm" id="sidebar-toggle-btn" aria-label="Toggle Navigation">
+            <span data-ef-icon="menu" data-size="18"></span>
+          </button>
+          <div>
+            <h1 style="font-size:20px;font-weight:700;margin:0;" id="page-heading">Client Celebration Workspace</h1>
+            <span style="font-size:12px;color:var(--color-text-secondary);" id="top-current-date">Monday, 14 September 2026</span>
+          </div>
+        </div>
+
+        <div class="top-tools" style="display:flex;align-items:center;gap:12px;">
+          <!-- User Account Pill & Notifications Menu (includes theme toggle & avatar) -->
+          <div class="eventflow-account"></div>
+
+          <!-- Plan New Event CTA -->
+          <a href="create-requirement.html" class="btn btn-primary btn-sm" style="font-weight:600;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;">
+            <span data-ef-icon="plus" data-size="16"></span>
+            <span>Plan New Event</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- Dashboard Content Body -->
+      <main class="dash-content">
+        <!-- Tab Navigation Bar -->
+        <nav class="dash-tabs-bar" role="tablist">
+          <button type="button" class="dash-tab-btn active" data-tab-target="overview" role="tab">
+            <span data-ef-icon="layoutDashboard" data-size="16"></span>
+            <span>Overview</span>
+          </button>
+          <button type="button" class="dash-tab-btn" data-tab-target="events" role="tab">
+            <span data-ef-icon="clipboardList" data-size="16"></span>
+            <span>My Events & Briefs</span>
+            <span class="tab-count" id="badge-count-events">3</span>
+          </button>
+          <button type="button" class="dash-tab-btn" data-tab-target="proposals" role="tab">
+            <span data-ef-icon="scale" data-size="16"></span>
+            <span>Proposals Received</span>
+            <span class="tab-count" id="badge-count-proposals">3</span>
+          </button>
+          <button type="button" class="dash-tab-btn" data-tab-target="bookings" role="tab">
+            <span data-ef-icon="calendarCheck" data-size="16"></span>
+            <span>Bookings & Production</span>
+            <span class="tab-count" id="badge-count-bookings">1</span>
+          </button>
+          <button type="button" class="dash-tab-btn" data-tab-target="payments" role="tab">
+            <span data-ef-icon="creditCard" data-size="16"></span>
+            <span>Escrow & Payments</span>
+            <span class="tab-count" id="badge-count-payments">2</span>
+          </button>
+          <button type="button" class="dash-tab-btn" data-tab-target="support" role="tab">
+            <span data-ef-icon="helpCircle" data-size="16"></span>
+            <span>Concierge & Support</span>
+          </button>
+        </nav>
+
+        <!-- =======================================================
+             TAB 1: WORKSPACE OVERVIEW
+             ======================================================= -->
+        <section id="tab-overview" class="dash-tab-pane">
+          <!-- Flagship Celebration Hero Showcase -->
+          <div class="hero-flagship-card" id="overview-flagship-card">
+            <div class="flagship-header">
+              <div class="flagship-title-wrap">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <span class="badge confirmed" style="font-size:11px;letter-spacing:0.06em;">IN ACTIVE PRODUCTION</span>
+                  <span class="badge open" style="font-size:11px;">ESCROW PROTECTED</span>
+                  <span style="font-size:12px;font-weight:700;color:var(--color-primary);" id="flagship-days-left">⏳ 75 Days Remaining</span>
+                </div>
+                <h2 id="flagship-event-title">Grand Royal Rajputana Wedding</h2>
+                <div class="flagship-meta">
+                  <span><span data-ef-icon="mapPin" data-size="15"></span> <span id="flagship-location">Jagmandir Island Palace, Udaipur, Rajasthan</span></span>
+                  <span><span data-ef-icon="calendar" data-size="15"></span> <span id="flagship-date">28 Nov 2026 – 29 Nov 2026</span></span>
+                  <span><span data-ef-icon="users" data-size="15"></span> <span id="flagship-guests">450 Royal Guests</span></span>
+                  <span><span data-ef-icon="award" data-size="15"></span> Producer: <strong id="flagship-manager">Arjun Events</strong> (★ 4.8)</span>
+                </div>
+              </div>
+
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <button type="button" class="btn btn-outline btn-sm" id="btn-flagship-contact" style="border-color: #25D366; color: #25D366; background: rgba(37, 211, 102, 0.05);">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+                  </svg>
+                  <span>Message on WhatsApp</span>
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" id="btn-flagship-pay">
+                  <span data-ef-icon="creditCard" data-size="15"></span>
+                  <span>Pay Next Milestone</span>
+                </button>
+                <a href="booking.html?id=1" class="btn btn-outline btn-sm">
+                  <span>Full Workspace →</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Milestone Progress Stepper -->
+            <div style="margin-top:20px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:8px;">
+                <span style="font-weight:700;color:var(--color-text-primary);">Milestone Schedule & Escrow Releases</span>
+                <span style="font-weight:600;color:var(--color-primary);" id="flagship-escrow-pct">60% Protected in Escrow (₹ 11,70,000 / ₹ 19,50,000)</span>
+              </div>
+              <div class="progress-track" style="height:8px;margin-bottom:16px;">
+                <i style="width:60%;background:linear-gradient(90deg, #10b981, #7c3aed);"></i>
+              </div>
+
+              <div class="milestone-stepper">
+                <div class="milestone-step-box" id="flagship-stage-1" style="cursor:pointer;">
+                  <div class="milestone-step-num">
+                    <span>Stage 1 (60%)</span>
+                    <span id="flagship-stage-1-status">✓ PAID</span>
+                  </div>
+                  <div class="milestone-step-name">Advance Booking Deposit</div>
+                  <div class="milestone-step-amt" id="flagship-stage-1-amt">₹ 0</div>
+                </div>
+
+                <div class="milestone-step-box" id="flagship-stage-2" style="cursor:pointer;">
+                  <div class="milestone-step-num">
+                    <span>Stage 2 (40%)</span>
+                    <span id="flagship-stage-2-status">PENDING</span>
+                  </div>
+                  <div class="milestone-step-name">Grand Event Delivery</div>
+                  <div class="milestone-step-amt" id="flagship-stage-2-amt">₹ 0</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6-Metric Highlights Ribbon -->
+          <div class="kpi-metric-grid">
+            <div class="kpi-tile">
+              <div class="kpi-tile-top">
+                <span>Active Bookings</span>
+                <span data-ef-icon="calendarCheck" data-size="16" style="color:#10b981;"></span>
+              </div>
+              <div class="kpi-tile-val" id="kpi-bookings-count">1</div>
+              <div class="kpi-tile-desc">Confirmed in production</div>
+            </div>
+
+            <div class="kpi-tile">
+              <div class="kpi-tile-top">
+                <span>Celebration Briefs</span>
+                <span data-ef-icon="clipboardList" data-size="16" style="color:var(--color-primary);"></span>
+              </div>
+              <div class="kpi-tile-val" id="kpi-reqs-count">3</div>
+              <div class="kpi-tile-desc">2 active receiving proposals</div>
+            </div>
+
+            <div class="kpi-tile">
+              <div class="kpi-tile-top">
+                <span>Proposals Received</span>
+                <span data-ef-icon="scale" data-size="16" style="color:#ec4899;"></span>
+              </div>
+              <div class="kpi-tile-val" id="kpi-proposals-count">3</div>
+              <div class="kpi-tile-desc">Bespoke bids to compare</div>
+            </div>
+
+            <div class="kpi-tile">
+              <div class="kpi-tile-top">
+                <span>Protected in Escrow</span>
+                <span data-ef-icon="shieldCheck" data-size="16" style="color:#d4a72c;"></span>
+              </div>
+              <div class="kpi-tile-val" id="kpi-escrow-amt">₹ 11.7L</div>
+              <div class="kpi-tile-desc">100% bank-grade guarantee</div>
+            </div>
+
+            <div class="kpi-tile">
+              <div class="kpi-tile-top">
+                <span>Next Milestone Due</span>
+                <span data-ef-icon="creditCard" data-size="16" style="color:#6366f1;"></span>
+              </div>
+              <div class="kpi-tile-val" id="kpi-next-due">₹ 3.9L</div>
+              <div class="kpi-tile-desc">Due in 18 days (Stage 3)</div>
+            </div>
+
+            <div class="kpi-tile">
+              <div class="kpi-tile-top">
+                <span>Tasks Completed</span>
+                <span data-ef-icon="checkSquare" data-size="16" style="color:#14b8a6;"></span>
+              </div>
+              <div class="kpi-tile-val" id="kpi-tasks-ratio">1 / 3</div>
+              <div class="kpi-tile-desc">Next due 25 Sep</div>
+            </div>
+          </div>
+
+          <!-- Two-Column Master Grid -->
+          <div class="dash-grid">
+            <!-- Left Column: Proposals & Active Requirements -->
+            <div>
+              <!-- Proposals Awaiting Decision Section -->
+              <div class="panel" style="margin-bottom:24px;">
+                <div class="panel-head">
+                  <div>
+                    <h3 style="font-size:18px;">Recent Proposals Awaiting Decision</h3>
+                    <p style="font-size:12.5px;color:var(--color-text-secondary);margin-top:2px;">Compare bespoke proposals from certified event managers before locking escrow.</p>
+                  </div>
+                  <button type="button" class="text-link" onclick="EventFlowDashboard.switchTab('proposals')">View All (3) →</button>
+                </div>
+
+                <div class="list" id="overview-proposals-list">
+                  <!-- Dynamically populated -->
+                </div>
+              </div>
+
+              <!-- Active Event Briefs Snapshot -->
+              <div class="panel">
+                <div class="panel-head">
+                  <div>
+                    <h3 style="font-size:18px;">Active Celebration Briefs</h3>
+                    <p style="font-size:12.5px;color:var(--color-text-secondary);margin-top:2px;">Your published event specifications open for manager quotations.</p>
+                  </div>
+                  <a href="create-requirement.html" class="btn btn-outline btn-sm">+ Post Brief</a>
+                </div>
+
+                <div class="list" id="overview-briefs-list">
+                  <!-- Dynamically populated -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Operational Tasks, Escrow Guarantee & Concierge -->
+            <div>
+              <!-- Production Checklist Card -->
+              <div class="panel" style="margin-bottom:24px;">
+                <div class="panel-head">
+                  <div>
+                    <h3 style="font-size:18px;">Production Checklist</h3>
+                    <p style="font-size:12.5px;color:var(--color-text-secondary);margin-top:2px;">Live tasks synchronized with your event management team.</p>
+                  </div>
+                  <a href="tasks.html" class="text-link">Full List →</a>
+                </div>
+
+                <div class="list" id="overview-tasks-list">
+                  <!-- Dynamically populated -->
+                </div>
+              </div>
+
+              <!-- Bank-Grade Escrow Guarantee Badge Card -->
+              <div class="panel accent" style="margin-bottom:24px;background:linear-gradient(135deg, rgba(124, 58, 237, 0.08) 0%, rgba(212, 167, 44, 0.08) 100%);border:1px solid rgba(212, 167, 44, 0.3);">
+                <div style="display:flex;align-items:flex-start;gap:14px;">
+                  <div style="width:42px;height:42px;border-radius:12px;background:rgba(212, 167, 44, 0.15);color:#d4a72c;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <span data-ef-icon="shieldCheck" data-size="22"></span>
+                  </div>
+                  <div>
+                    <h4 style="font-size:16px;margin:0 0 4px;color:var(--color-text-primary);">EventFlow Escrow Protection</h4>
+                    <p style="font-size:13px;color:var(--color-text-secondary);line-height:1.5;margin:0;">
+                      Your milestone funds are safely held in an RBI-compliant escrow account. Funds are released strictly upon your verification of delivered milestones.
+                    </p>
+                    <div style="display:flex;gap:12px;margin-top:12px;font-size:12px;font-weight:600;color:var(--color-primary);">
+                      <span>✓ 100% Refund Guarantee</span>
+                      <span>✓ Milestone Signoff</span>
+                      <span>✓ Fraud Protection</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Private Concierge Support -->
+              <div class="panel" style="background:var(--color-surface);">
+                <span class="side-section" style="padding:0 0 8px;display:block;">Bespoke Advisory</span>
+                <h3 style="font-size:18px;margin-bottom:6px;">Dedicated Event Concierge</h3>
+                <p style="font-size:13px;color:var(--color-text-secondary);line-height:1.5;margin-bottom:16px;">
+                  Have questions about contracts, menu curations, or sound permits? Your private EventFlow advisor is on standby.
+                </p>
+                <div style="display:flex;gap:10px;">
+                  <button type="button" class="btn btn-outline btn-sm" style="flex:1;" id="btn-raise-ticket">
+                    <span data-ef-icon="helpCircle" data-size="15"></span>
+                    <span>Submit Ticket</span>
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" style="flex:1; background: #25D366; border-color: #25D366;" id="btn-call-concierge">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+                      </svg>
+                      <span>WhatsApp Call</span>
+                    </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =======================================================
+             TAB 2: MY EVENTS & BRIEFS
+             ======================================================= -->
+        <section id="tab-events" class="dash-tab-pane" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:20px;">
+            <div>
+              <h2 style="font-size:22px;margin:0;">My Event Requirements & Briefs</h2>
+              <p style="font-size:13.5px;color:var(--color-text-secondary);margin-top:4px;">
+                Manage your posted event specifications, track manager interest, and view submitted quotes.
+              </p>
+            </div>
+            <a href="create-requirement.html" class="btn btn-primary">
+              <span data-ef-icon="plus" data-size="16"></span>
+              <span>Post New Event Brief</span>
+            </a>
+          </div>
+
+          <!-- Filter & Search Toolbar -->
+          <div class="filter-bar">
+            <input type="text" id="filter-events-search" placeholder="Search by title, location or city..." style="flex:1;min-width:240px;">
+            <select id="filter-events-status">
+              <option value="">All Statuses</option>
+              <option value="OPEN">Open for Proposals</option>
+              <option value="PROPOSALS_RECEIVED">Proposals Received</option>
+              <option value="MANAGER_SELECTED">Manager Selected</option>
+              <option value="COMPLETED">Completed</option>
+            </select>
+          </div>
+
+          <!-- Dynamic Events Container -->
+          <div id="events-container">
+            <!-- Dynamically populated -->
+          </div>
+        </section>
+
+        <!-- =======================================================
+             TAB 3: PROPOSALS RECEIVED
+             ======================================================= -->
+        <section id="tab-proposals" class="dash-tab-pane" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:20px;">
+            <div>
+              <h2 style="font-size:22px;margin:0;">Proposals & Manager Quotations</h2>
+              <p style="font-size:13.5px;color:var(--color-text-secondary);margin-top:4px;">
+                Review bespoke bids from verified event producers. Compare line-item inclusions, pricing, and ratings.
+              </p>
+            </div>
+            <div style="display:flex;gap:10px;">
+              <button type="button" class="btn btn-outline btn-sm" id="btn-compare-all">
+                <span data-ef-icon="scale" data-size="15"></span>
+                <span>Compare Side-by-Side</span>
+              </button>
+              <a href="create-requirement.html" class="btn btn-primary btn-sm">+ Post Another Brief</a>
+            </div>
+          </div>
+
+          <!-- Proposal Filters -->
+          <div class="filter-bar">
+            <select id="filter-proposals-event" style="flex:1;min-width:220px;">
+              <option value="">All Events & Requirements</option>
+            </select>
+            <select id="filter-proposals-status">
+              <option value="">All Proposal Statuses</option>
+              <option value="SUBMITTED">Under Review (Submitted)</option>
+              <option value="ACCEPTED">Accepted / Locked</option>
+              <option value="REJECTED">Rejected</option>
+            </select>
+          </div>
+
+          <!-- Dynamic Proposals Container -->
+          <div id="proposals-container">
+            <!-- Dynamically populated -->
+          </div>
+        </section>
+
+        <!-- =======================================================
+             TAB 4: BOOKINGS & PRODUCTION
+             ======================================================= -->
+        <section id="tab-bookings" class="dash-tab-pane" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:20px;">
+            <div>
+              <h2 style="font-size:22px;margin:0;">Active Bookings & Productions</h2>
+              <p style="font-size:13.5px;color:var(--color-text-secondary);margin-top:4px;">
+                Confirmed events under active coordination with assigned event managers.
+              </p>
+            </div>
+            <a href="create-requirement.html" class="btn btn-primary btn-sm">+ Plan New Event</a>
+          </div>
+
+          <!-- Dynamic Bookings Container -->
+          <div id="bookings-container">
+            <!-- Dynamically populated -->
+          </div>
+        </section>
+
+        <!-- =======================================================
+             TAB 5: ESCROW & PAYMENTS
+             ======================================================= -->
+        <section id="tab-payments" class="dash-tab-pane" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:20px;">
+            <div>
+              <h2 style="font-size:22px;margin:0;">Escrow Financial Ledger & Payments</h2>
+              <p style="font-size:13.5px;color:var(--color-text-secondary);margin-top:4px;">
+                Manage milestone deposits, view transaction receipts, and release funds securely.
+              </p>
+            </div>
+            <button type="button" class="btn btn-primary" id="btn-trigger-payment-tab">
+              <span data-ef-icon="creditCard" data-size="16"></span>
+              <span>Deposit Milestone Payment</span>
+            </button>
+          </div>
+
+          <!-- Escrow Summary Cards -->
+          <div class="kpi-metric-grid four-cols" style="margin-bottom:24px;">
+            <div class="kpi-tile">
+              <div class="kpi-tile-top"><span>Total Contract Value</span></div>
+              <div class="kpi-tile-val" id="pay-total-contract">₹ 19,50,000</div>
+              <div class="kpi-tile-desc">Across all confirmed bookings</div>
+            </div>
+            <div class="kpi-tile">
+              <div class="kpi-tile-top"><span>Secured in Escrow</span></div>
+              <div class="kpi-tile-val" style="color:#10b981;" id="pay-total-escrow">₹ 11,70,000</div>
+              <div class="kpi-tile-desc">60% of total committed</div>
+            </div>
+            <div class="kpi-tile">
+              <div class="kpi-tile-top"><span>Remaining Due</span></div>
+              <div class="kpi-tile-val" style="color:var(--color-primary);" id="pay-total-due">₹ 7,80,000</div>
+              <div class="kpi-tile-desc">Stages 3 & 4 milestone balance</div>
+            </div>
+            <div class="kpi-tile">
+              <div class="kpi-tile-top"><span>Escrow Account Status</span></div>
+              <div class="kpi-tile-val" style="color:#d4a72c;font-size:20px;">VERIFIED ACTIVE</div>
+              <div class="kpi-tile-desc">Yes Bank Trustee Custody</div>
+            </div>
+          </div>
+
+          <!-- Transaction History Table Card -->
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <h3 style="font-size:18px;">Milestone Transaction Ledger</h3>
+                <p style="font-size:12.5px;color:var(--color-text-secondary);margin-top:2px;">
+                  All payments are cryptographically receipted and held in regulated escrow.
+                </p>
+              </div>
+              <button type="button" class="btn btn-outline btn-sm" id="btn-download-all-receipts">
+                <span data-ef-icon="fileText" data-size="15"></span>
+                <span>Download Statement</span>
+              </button>
+            </div>
+
+            <div style="overflow-x:auto;">
+              <table class="table" style="width:100%;margin-top:10px;" id="payments-table">
+                <thead>
+                  <tr>
+                    <th>Txn ID</th>
+                    <th>Date</th>
+                    <th>Event & Milestone Phase</th>
+                    <th>Payment Method</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="payments-tbody">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =======================================================
+             TAB 6: CONCIERGE & SUPPORT
+             ======================================================= -->
+        <section id="tab-support" class="dash-tab-pane" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:20px;">
+            <div>
+              <h2 style="font-size:22px;margin:0;">Concierge Support & Quick Actions</h2>
+              <p style="font-size:13.5px;color:var(--color-text-secondary);margin-top:4px;">
+                Direct access to celebration advisors, support tickets, and essential shortcuts.
+              </p>
+            </div>
+            <button type="button" class="btn btn-primary" id="btn-new-ticket">
+              <span data-ef-icon="plus" data-size="16"></span>
+              <span>Raise Support Request</span>
+            </button>
+          </div>
+
+          <!-- Quick Shortcuts Grid -->
+          <div class="quick-shortcuts-grid">
+            <a href="create-requirement.html" class="quick-action-tile">
+              <div class="quick-action-icon">✦</div>
+              <h4>Post New Brief</h4>
+              <p>Specify venue, guest count, and date to get proposals within 24 hours.</p>
+            </a>
+            <a href="index.html#managers" class="quick-action-tile">
+              <div class="quick-action-icon">🏢</div>
+              <h4>Browse Top Planners</h4>
+              <p>Explore 450+ verified luxury event managers in Mumbai, Delhi, Udaipur & Pune.</p>
+            </a>
+            <a href="tasks.html" class="quick-action-tile">
+              <div class="quick-action-icon">📋</div>
+              <h4>Production Checklist</h4>
+              <p>Track tasting dates, audio alignments, floral stages, and couple entry cues.</p>
+            </a>
+            <a href="guests.html" class="quick-action-tile">
+              <div class="quick-action-icon">👥</div>
+              <h4>Guest RSVP Manager</h4>
+              <p>Send WhatsApp invites, record room allotments, and manage dietary requests.</p>
+            </a>
+          </div>
+
+          <!-- Active Support Tickets Table -->
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <h3 style="font-size:18px;">Your Support & Concierge Tickets</h3>
+                <p style="font-size:12.5px;color:var(--color-text-secondary);margin-top:2px;">Track advisory inquiries and resolution updates.</p>
+              </div>
+            </div>
+
+            <div style="overflow-x:auto;">
+              <table class="table" style="width:100%;" id="tickets-table">
+                <thead>
+                  <tr>
+                    <th>Ticket ID</th>
+                    <th>Date</th>
+                    <th>Subject</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Assigned Specialist</th>
+                  </tr>
+                </thead>
+                <tbody id="tickets-tbody">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- =======================================================
+       MODAL 1: PROPOSAL DETAILS MODAL
+       ======================================================= -->
+  <div class="ef-modal-backdrop" id="modal-proposal-details">
+    <div class="ef-modal-sheet">
+      <div class="ef-modal-head">
+        <h3 id="mp-title">Proposal Details</h3>
+        <button type="button" class="ef-modal-close" data-close-modal="modal-proposal-details">&times;</button>
+      </div>
+      <div id="mp-content">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- =======================================================
+       MODAL 2: COMPARE PROPOSALS SIDE-BY-SIDE MODAL
+       ======================================================= -->
+  <div class="ef-modal-backdrop" id="modal-compare-proposals">
+    <div class="ef-modal-sheet wide">
+      <div class="ef-modal-head">
+        <h3>Side-by-Side Proposal Comparison</h3>
+        <button type="button" class="ef-modal-close" data-close-modal="modal-compare-proposals">&times;</button>
+      </div>
+      <p style="font-size:13.5px;color:var(--color-text-secondary);margin-bottom:20px;">
+        Review competing packages for your event requirement to choose the best partner.
+      </p>
+      <div id="compare-matrix-content" style="overflow-x:auto;">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- =======================================================
+       MODAL 3: ESCROW MILESTONE PAYMENT MODAL
+       ======================================================= -->
+  <div class="ef-modal-backdrop" id="modal-payment">
+    <div class="ef-modal-sheet">
+      <div class="ef-modal-head">
+        <h3>Deposit Milestone Payment to Escrow</h3>
+        <button type="button" class="ef-modal-close" data-close-modal="modal-payment">&times;</button>
+      </div>
+      <form id="escrow-pay-form" class="form-stack">
+        <div style="background:var(--color-surface-2, rgba(124,58,237,0.06));border:1px solid rgba(124,58,237,0.2);padding:16px;border-radius:12px;margin-bottom:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span style="font-size:12px;font-weight:700;color:var(--color-text-secondary);text-transform:uppercase;">Milestone Phase</span>
+            <span class="badge pending" id="pay-modal-badge">STAGE 3 (VENDOR ALIGNMENT)</span>
+          </div>
+          <strong style="font-size:16px;color:var(--color-text-primary);" id="pay-modal-event-name">Grand Royal Rajputana Wedding</strong>
+          <div style="font-size:13px;color:var(--color-text-secondary);margin-top:4px;">
+            Beneficiary Escrow: <strong>EventFlow Trustee Account (Arjun Events)</strong>
+          </div>
+        </div>
+
+        <label>
+          Payment Amount (₹)
+          <input type="number" id="pay-input-amount" value="390000" min="1000" step="500" required>
+        </label>
+
+        <label>
+          Payment Method
+          <select id="pay-input-method" required>
+            <option value="UPI">UPI (Google Pay, PhonePe, Paytm, BHIM)</option>
+            <option value="NET_BANKING">Net Banking (HDFC, ICICI, SBI, Axis)</option>
+            <option value="ESCROW_RTGS">Direct Bank Transfer / RTGS / NEFT</option>
+            <option value="CARD">Credit / Debit Card (Visa, Mastercard, RuPay)</option>
+          </select>
+        </label>
+
+        <label>
+          Host Reference Note (Optional)
+          <input type="text" id="pay-input-note" placeholder="e.g. Stage 3 vendor release authorization">
+        </label>
+
+        <div style="font-size:12px;color:var(--color-text-secondary);margin:10px 0;line-height:1.5;">
+          🔒 <em>100% Escrow Security Guarantee:</em> Your payment remains protected in our RBI-monitored escrow account until you formally approve stage delivery.
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" id="btn-submit-payment" style="width:100%;margin-top:10px;">
+          Confirm & Secure ₹ <span id="pay-modal-btn-amt">3,90,000</span> in Escrow →
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- =======================================================
+       MODAL 4: RAISE SUPPORT TICKET MODAL
+       ======================================================= -->
+  <div class="ef-modal-backdrop" id="modal-ticket">
+    <div class="ef-modal-sheet">
+      <div class="ef-modal-head">
+        <h3>Contact Private Event Concierge</h3>
+        <button type="button" class="ef-modal-close" data-close-modal="modal-ticket">&times;</button>
+      </div>
+      <form id="ticket-form" class="form-stack">
+        <label>
+          Celebration / Booking
+          <select id="ticket-input-booking">
+            <option value="1">Grand Royal Rajputana Wedding (Nov 2026)</option>
+            <option value="none">General Platform / Manager Inquiry</option>
+          </select>
+        </label>
+
+        <label>
+          Priority
+          <select id="ticket-input-priority">
+            <option value="MEDIUM">Medium — Standard Inquiry</option>
+            <option value="HIGH">High — Milestone or Contract Question</option>
+            <option value="URGENT">Urgent — Event within 7 days</option>
+          </select>
+        </label>
+
+        <label>
+          Subject
+          <input type="text" id="ticket-input-subject" placeholder="e.g. Inquire about stage 3 inspection date" required>
+        </label>
+
+        <label>
+          Message Details
+          <textarea id="ticket-input-desc" rows="4" placeholder="Describe what assistance you require from your event concierge..." required></textarea>
+        </label>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;margin-top:10px;">
+          Send Request to Concierge Team →
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="main.js"></script>
+  <script src="experience.js"></script>
+  <script>
+    // =========================================================================
+    // EVENTFLOW HOST CELEBRATION WORKSPACE CONTROLLER
+    // =========================================================================
+    var EventFlowDashboard = (function () {
+      'use strict';
+
+      var state = {
+        user: null,
+        requirements: [],
+        proposals: [],
+        bookings: [],
+        payments: [],
+        tasks: [],
+        tickets: [],
+        activeTab: 'overview'
+      };
+
+      // Helper function to format Indian currency
+      function fmtCur(n) {
+        return EventFlow.formatCurrency(n);
+      }
+      function fmtDate(d) {
+        return EventFlow.formatDate(d);
+      }
+
+      // Initialize workspace
+      function init() {
+        state.user = EventFlow.getUser();
+        updateTopGreeting();
+        updateSidebarUser();
+        setupTabSwitching();
+        setupModalTriggers();
+        loadAllDashboardData();
+        setupPaymentForm();
+        setupTicketForm();
+        setupFilterListeners();
+      }
+
+      function updateSidebarUser() {
+        if (!state.user) return;
+        var nameEl = document.getElementById('side-user-name');
+        var roleEl = document.getElementById('side-user-role');
+        var avatarEl = document.getElementById('side-user-avatar');
+        if (nameEl && state.user.name) nameEl.textContent = state.user.name;
+        if (roleEl) {
+          roleEl.textContent = (state.user.role === 'EVENT_MANAGER') ? 'Event Producer' : ((state.user.role === 'ADMIN') ? 'System Admin' : 'Host & Client');
+        }
+        if (avatarEl && state.user.name) {
+          var initials = state.user.name.split(' ').map(function (n) { return n[0]; }).join('').toUpperCase().substring(0, 2);
+          avatarEl.textContent = initials || 'PS';
+        }
+      }
+
+      function updateTopGreeting() {
+        var dateEl = document.getElementById('top-current-date');
+        if (dateEl) {
+          var today = new Date();
+          var opts = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+          dateEl.textContent = today.toLocaleDateString('en-IN', opts);
+        }
+      }
+
+      // TAB NAVIGATION
+      function setupTabSwitching() {
+        var tabButtons = document.querySelectorAll('.dash-tab-btn');
+        tabButtons.forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var target = btn.getAttribute('data-tab-target');
+            switchTab(target);
+          });
+        });
+
+        // Also handle sidebar links that point to hash tabs
+        var sideLinks = document.querySelectorAll('.sidebar .side-link[data-tab]');
+        sideLinks.forEach(function (link) {
+          link.addEventListener('click', function (e) {
+            e.preventDefault();
+            var tab = link.getAttribute('data-tab');
+            switchTab(tab);
+          });
+        });
+
+        // Check if hash matches a tab
+        var hash = window.location.hash.replace('#', '');
+        if (['overview', 'events', 'proposals', 'bookings', 'payments', 'support'].indexOf(hash) !== -1) {
+          switchTab(hash);
+        }
+      }
+
+      function switchTab(tabId) {
+        state.activeTab = tabId;
+
+        // Update tab buttons
+        document.querySelectorAll('.dash-tab-btn').forEach(function (b) {
+          if (b.getAttribute('data-tab-target') === tabId) {
+            b.classList.add('active');
+          } else {
+            b.classList.remove('active');
+          }
+        });
+
+        // Update tab panes
+        document.querySelectorAll('.dash-tab-pane').forEach(function (pane) {
+          if (pane.id === 'tab-' + tabId) {
+            pane.style.display = 'block';
+          } else {
+            pane.style.display = 'none';
+          }
+        });
+
+        // Update sidebar links
+        document.querySelectorAll('.sidebar .side-link').forEach(function (l) {
+          if (l.getAttribute('data-tab') === tabId) {
+            l.classList.add('active');
+          } else if (l.hasAttribute('data-tab')) {
+            l.classList.remove('active');
+          }
+        });
+
+        // Update URL hash without reload
+        if (history.replaceState) {
+          history.replaceState(null, null, '#' + tabId);
+        }
+
+        // Scroll top of dash-content smoothly
+        var content = document.querySelector('.dash-content');
+        if (content) content.scrollTop = 0;
+
+        // Re-evaluate scroll reveals, card tilt, and physics for newly revealed tab elements
+        if (window.EventFlowExperience) {
+          setTimeout(function () {
+            window.EventFlowExperience.refresh();
+          }, 30);
+        }
+      }
+
+      // MODAL CONTROLS
+      function setupModalTriggers() {
+        // Modal close buttons
+        document.querySelectorAll('[data-close-modal]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var targetId = btn.getAttribute('data-close-modal');
+            closeModal(targetId);
+          });
+        });
+
+        // Click outside modal sheet to close
+        document.querySelectorAll('.ef-modal-backdrop').forEach(function (backdrop) {
+          backdrop.addEventListener('click', function (e) {
+            if (e.target === backdrop) {
+              closeModal(backdrop.id);
+            }
+          });
+        });
+
+        // Escape key closes modals
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') {
+            document.querySelectorAll('.ef-modal-backdrop.open').forEach(function (m) {
+              closeModal(m.id);
+            });
+          }
+        });
+
+        // Flagship pay button
+        var btnPay = document.getElementById('btn-flagship-pay');
+        if (btnPay) {
+          btnPay.addEventListener('click', function () {
+            window.location.href = 'my-bookings.html';
+          });
+        }
+
+        var btnTriggerPayTab = document.getElementById('btn-trigger-payment-tab');
+        if (btnTriggerPayTab) {
+          btnTriggerPayTab.addEventListener('click', function () {
+            openPaymentModal(1, 'Grand Royal Rajputana Wedding', 390000, 'STAGE 3 (VENDOR ALIGNMENT)');
+          });
+        }
+
+        // Concierge Ticket Button
+        var btnRaiseTicket = document.getElementById('btn-raise-ticket');
+        if (btnRaiseTicket) {
+          btnRaiseTicket.addEventListener('click', function () {
+            openModal('modal-ticket');
+          });
+        }
+
+        var btnNewTicket = document.getElementById('btn-new-ticket');
+        if (btnNewTicket) {
+          btnNewTicket.addEventListener('click', function () {
+            openModal('modal-ticket');
+          });
+        }
+
+        // Compare all button
+        var btnCompare = document.getElementById('btn-compare-all');
+        if (btnCompare) {
+          btnCompare.addEventListener('click', function () {
+            openCompareModal();
+          });
+        }
+
+        // Direct Call Concierge
+        var btnCall = document.getElementById('btn-call-concierge');
+        if (btnCall) {
+          btnCall.addEventListener('click', function () {
+            var activeBooking = null;
+            if (state.bookings && state.bookings.length > 0) {
+              activeBooking = state.bookings.slice().sort(function(a, b) { return new Date(b.created_at || b.event_date) - new Date(a.created_at || a.event_date); })[0];
+            }
+            var phoneStr = (activeBooking && activeBooking.manager_phone) ? activeBooking.manager_phone : '9876543210';
+            
+            var ph = phoneStr.replace(/\D/g, '');
+            if (ph.length === 10) ph = '91' + ph;
+            
+            // WhatsApp does not have a native URL scheme exclusively for starting calls, 
+            // so we open the manager's WhatsApp directly where the user can press the Call icon.
+            window.open('https://wa.me/' + ph, '_blank');
+          });
+        }
+        
+      }
+
+      function openModal(id) {
+        var m = document.getElementById(id);
+        if (m) m.classList.add('open');
+      }
+
+      function closeModal(id) {
+        var m = document.getElementById(id);
+        if (m) m.classList.remove('open');
+      }
+
+      // LOAD DATA FROM API
+      function loadAllDashboardData() {
+        var cid = state.user ? (state.user.user_id || state.user.id || 3) : 3;
+
+        // Fetch requirements
+        var pReqs = EventFlow.apiGet('/requirements').then(function (res) {
+          state.requirements = Array.isArray(res) ? res : (res.requirements || []);
+        }).catch(function (err) {
+          console.warn('Fallback requirements loading', err);
+          state.requirements = [];
+        });
+
+        // Fetch proposals for customer
+        var pProps = EventFlow.apiGet('/customers/' + cid + '/proposals').then(function (res) {
+          state.proposals = Array.isArray(res) ? res : (res.proposals || []);
+        }).catch(function (err) {
+          console.warn('Fallback proposals loading', err);
+          state.proposals = [];
+        });
+
+        // Fetch bookings for customer
+        var pBookings = EventFlow.apiGet('/customers/' + cid + '/bookings').then(function (res) {
+          state.bookings = Array.isArray(res) ? res : (res.bookings || []);
+        }).catch(function (err) {
+          console.warn('Fallback bookings loading', err);
+          state.bookings = [];
+        });
+
+        // Fetch payments for customer
+        var pPayments = EventFlow.apiGet('/customers/' + cid + '/payments').then(function (res) {
+          state.payments = Array.isArray(res) ? res : (res.payments || []);
+        }).catch(function (err) {
+          console.warn('Fallback payments loading', err);
+          state.payments = [];
+        });
+
+        // Fetch tasks
+        var pTasks = EventFlow.apiGet('/bookings/1/tasks').then(function (res) {
+          state.tasks = Array.isArray(res) ? res : (res.tasks || []);
+        }).catch(function (err) {
+          state.tasks = [];
+        });
+
+        // Fetch support tickets
+        var pTickets = EventFlow.apiGet('/tickets').then(function (res) {
+          state.tickets = Array.isArray(res) ? res : (res.tickets || []);
+        }).catch(function (err) {
+          state.tickets = [];
+        });
+
+        Promise.all([pReqs, pProps, pBookings, pPayments, pTasks, pTickets]).finally(function () {
+          renderAll();
+        });
+      }
+
+      function renderAll() {
+        renderBadgeCounters();
+        renderKPIs();
+        renderOverviewLists();
+        renderEventsTab();
+        renderProposalsTab();
+        renderBookingsTab();
+        renderPaymentsTab();
+        renderTicketsTab();
+        EventFlow.hydrateIcons();
+        if (window.EventFlowExperience) {
+          setTimeout(function () {
+            window.EventFlowExperience.refresh();
+          }, 30);
+        }
+      }
+
+      function renderBadgeCounters() {
+        document.getElementById('badge-count-events').textContent = state.requirements.length;
+        document.getElementById('badge-count-proposals').textContent = state.proposals.length;
+        document.getElementById('badge-count-bookings').textContent = state.bookings.length;
+        document.getElementById('badge-count-payments').textContent = state.payments.length;
+      }
+
+      function renderKPIs() {
+        document.getElementById('kpi-bookings-count').textContent = state.bookings.length;
+        document.getElementById('kpi-reqs-count').textContent = state.requirements.length;
+        document.getElementById('kpi-proposals-count').textContent = state.proposals.length;
+
+        var totalPaid = state.payments.reduce(function (acc, p) { return acc + (Number(p.amount) || 0); }, 0);
+        document.getElementById('kpi-escrow-amt').textContent = totalPaid >= 100000 ? '₹ ' + (totalPaid / 100000).toFixed(1) + 'L' : fmtCur(totalPaid);
+
+        var totalContract = state.bookings.reduce(function (acc, b) { return acc + (Number(b.final_amount) || Number(b.estimated_amount) || 0); }, 0);
+        var totalDue = Math.max(totalContract - totalPaid, 0);
+
+        var elContract = document.getElementById('pay-total-contract');
+        var elEscrow = document.getElementById('pay-total-escrow');
+        var elDue = document.getElementById('pay-total-due');
+        if (elContract) elContract.textContent = fmtCur(totalContract);
+        if (elEscrow) elEscrow.textContent = fmtCur(totalPaid);
+        if (elDue) elDue.textContent = fmtCur(totalDue);
+
+        // Tasks KPI
+        var doneTasks = state.tasks.filter(function (t) { return t.status === 'COMPLETED'; }).length;
+        document.getElementById('kpi-tasks-ratio').textContent = doneTasks + ' / ' + (state.tasks.length || 0);
+      }
+
+      // RENDER OVERVIEW TAB LISTS
+      function renderOverviewLists() {
+        // Populate flagship event if bookings exist
+        var flagshipCard = document.getElementById('overview-flagship-card');
+        if (flagshipCard && state.bookings && state.bookings.length > 0) {
+            // Sort by latest created booking
+            var sortedBookings = state.bookings.slice().sort(function(a, b) {
+                return new Date(b.created_at || b.event_date) - new Date(a.created_at || a.event_date);
+            });
+            var upcoming = sortedBookings[0];
+            
+            document.getElementById('flagship-event-title').textContent = upcoming.requirement_title || upcoming.event_name || 'Grand Celebration';
+            document.getElementById('flagship-location').textContent = upcoming.location || 'Pan-India';
+            document.getElementById('flagship-date').textContent = fmtDate(upcoming.event_date);
+            document.getElementById('flagship-manager').textContent = upcoming.manager_name || 'Event Manager';
+            
+            // Set 60/40 milestones logic
+            var stage1Amt = upcoming.final_amount * 0.60;
+            var stage2Amt = upcoming.final_amount * 0.40;
+            
+            var totalPaid = 0;
+            state.payments.forEach(function(p) {
+                if(p.booking_id === upcoming.booking_id && (p.status === 'COMPLETED' || p.status === 'SUCCESS')) totalPaid += Number(p.amount);
+            });
+            
+            var s1Paid = totalPaid >= stage1Amt;
+            var s2Paid = totalPaid >= upcoming.final_amount;
+            
+            document.getElementById('flagship-stage-1-amt').textContent = fmtCur(stage1Amt);
+            document.getElementById('flagship-stage-2-amt').textContent = fmtCur(stage2Amt);
+            
+            var s1Status = document.getElementById('flagship-stage-1-status');
+            var s2Status = document.getElementById('flagship-stage-2-status');
+            
+            if(s1Paid) {
+                s1Status.textContent = '✓ PAID';
+                s1Status.style.color = '#10b981';
+            } else {
+                s1Status.textContent = 'PENDING';
+                s1Status.style.color = '#ef4444';
+            }
+            
+            if(s2Paid) {
+                s2Status.textContent = '✓ PAID';
+                s2Status.style.color = '#10b981';
+            } else {
+                s2Status.textContent = 'PENDING';
+                s2Status.style.color = s1Paid ? '#f59e0b' : '#ef4444';
+            }
+            
+            document.getElementById('flagship-stage-1').onclick = function() {
+                  if(!s1Paid) EventFlowDashboard.openPaymentModal(upcoming.booking_id, upcoming.event_name || 'Event', stage1Amt, 'STAGE 1 (ADVANCE)');
+                  else window.location.href = 'my-bookings.html';
+              };
+            document.getElementById('flagship-stage-2').onclick = function() {
+                  if(s1Paid && !s2Paid) EventFlowDashboard.openPaymentModal(upcoming.booking_id, upcoming.event_name || 'Event', stage2Amt, 'STAGE 2 (FINAL)');
+                  else if(s2Paid) window.location.href = 'my-bookings.html';
+              };
+            
+            var msgBtn = document.getElementById('btn-flagship-contact');
+            if (msgBtn) {
+                  msgBtn.onclick = function() {
+                      let phoneString = upcoming.manager_phone || '9876543210';
+                      let ph = phoneString.replace(/\D/g, ''); 
+                      if (ph.length === 10) ph = '91' + ph; 
+                      window.open('https://wa.me/' + ph, '_blank');
+                  };
+              }
+            
+            var payBtn = document.getElementById('btn-flagship-pay');
+              if (payBtn) {
+                  payBtn.onclick = function() {
+                      window.location.href = 'my-bookings.html';
+                  };
+              }
+        } else if (flagshipCard) {
+            flagshipCard.style.display = 'none';
+        }
+        // 1. Proposals List in Overview
+        var propListEl = document.getElementById('overview-proposals-list');
+        if (propListEl) {
+          if (!state.proposals.length) {
+            propListEl.innerHTML = '<div class="ef-empty-state" style="padding:28px 16px;"><h4>No Proposals Received Yet</h4><p>Event managers will submit bespoke quotations once they review your brief.</p></div>';
+          } else {
+            var sortedProps = state.proposals.slice().sort(function(a,b) { return new Date(b.created_at) - new Date(a.created_at); });
+              propListEl.innerHTML = sortedProps.slice(0, 3).map(function (p) {
+              return '<div class="list-row" style="align-items:center;padding:14px 16px;">' +
+                '<div>' +
+                  '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">' +
+                    EventFlow.statusBadge(p.status) +
+                    '<strong style="font-size:15px;">' + (p.business_name || p.manager_name || 'Event Manager') + '</strong>' +
+                    '<span style="font-size:12px;color:#d4a72c;font-weight:700;">★ ' + (p.rating || '4.8') + '</span>' +
+                  '</div>' +
+                  '<div style="font-size:12.5px;color:var(--color-text-secondary);">' +
+                    '<span>Package: <strong>' + (p.package_name || 'Bespoke Package') + '</strong></span> • ' +
+                    '<span>Quote: <strong style="color:var(--color-text-primary);">' + fmtCur(p.price) + '</strong></span>' +
+                  '</div>' +
+                '</div>' +
+                '<div style="display:flex;gap:8px;">' +
+                  '<button type="button" class="btn btn-outline btn-sm" onclick="EventFlowDashboard.openProposalDetails(' + p.proposal_id + ')">Review</button>' +
+                  (p.status === 'SUBMITTED' ? '<button type="button" class="btn btn-primary btn-sm" onclick="EventFlowDashboard.selectProposal(' + p.proposal_id + ')">Select & Lock</button>' : '') +
+                '</div>' +
+              '</div>';
+            }).join('');
+          }
+        }
+
+        // 2. Active Briefs List in Overview
+        var briefsListEl = document.getElementById('overview-briefs-list');
+        if (briefsListEl) {
+          if (!state.requirements.length) {
+            briefsListEl.innerHTML = '<div class="ef-empty-state" style="padding:28px 16px;"><h4>No Active Briefs</h4><p>Post a celebration brief to start receiving bespoke proposals.</p></div>';
+          } else {
+            briefsListEl.innerHTML = state.requirements.slice(0, 3).map(function (r) {
+              return '<div class="list-row" style="align-items:center;padding:14px 16px;">' +
+                '<div>' +
+                  '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">' +
+                    EventFlow.statusBadge(r.status) +
+                    '<strong style="font-size:14.5px;">' + (r.requirement_title || r.title || 'Event Brief') + '</strong>' +
+                  '</div>' +
+                  '<div style="font-size:12.5px;color:var(--color-text-secondary);">' +
+                    '<span>📅 ' + fmtDate(r.event_date || r.date) + '</span> • ' +
+                    '<span>📍 ' + (r.location || 'Pan-India') + '</span> • ' +
+                    '<span>Budget: <strong>' + fmtCur(r.budget) + '</strong></span>' +
+                  '</div>' +
+                '</div>' +
+                '<div>' +
+                  '<button type="button" class="btn btn-outline btn-sm" onclick="EventFlowDashboard.switchTab(\'proposals\')">Proposals (' + (r.proposal_count || 0) + ')</button>' +
+                '</div>' +
+              '</div>';
+            }).join('');
+          }
+        }
+
+        // 3. Tasks List in Overview
+        var tasksListEl = document.getElementById('overview-tasks-list');
+        if (tasksListEl) {
+          tasksListEl.innerHTML = state.tasks.map(function (t) {
+            var isDone = t.status === 'COMPLETED';
+            return '<div class="list-row" style="align-items:center;padding:12px 14px;">' +
+              '<div style="display:flex;align-items:center;gap:12px;">' +
+                '<input type="checkbox" ' + (isDone ? 'checked' : '') + ' style="width:16px;height:16px;cursor:pointer;" onchange="EventFlowDashboard.toggleTask(' + t.task_id + ', this.checked)">' +
+                '<div>' +
+                  '<strong style="font-size:13.5px;' + (isDone ? 'text-decoration:line-through;opacity:0.6;' : '') + '">' + t.task_name + '</strong>' +
+                  '<div style="font-size:11.5px;color:var(--color-text-secondary);margin-top:2px;">Due: ' + fmtDate(t.due_date) + ' • Priority: ' + (t.priority || 'NORMAL') + '</div>' +
+                '</div>' +
+              '</div>' +
+              EventFlow.statusBadge(t.status) +
+            '</div>';
+          }).join('');
+        }
+      }
+
+      // RENDER TAB 2: MY EVENTS
+      function renderEventsTab() {
+        var container = document.getElementById('events-container');
+        if (!container) return;
+
+        var search = (document.getElementById('filter-events-search').value || '').toLowerCase();
+        var statusFilter = document.getElementById('filter-events-status').value;
+
+        var filtered = state.requirements.filter(function (r) {
+          var title = (r.requirement_title || r.title || '').toLowerCase();
+          var loc = (r.location || '').toLowerCase();
+          var matchSearch = !search || title.indexOf(search) !== -1 || loc.indexOf(search) !== -1;
+          var matchStatus = !statusFilter || r.status === statusFilter;
+          return matchSearch && matchStatus;
+        });
+
+        if (!filtered.length) {
+          container.innerHTML =
+            '<div class="ef-empty-state">' +
+              '<div style="font-size:36px;margin-bottom:12px;">📋</div>' +
+              '<h3>No Event Briefs Found</h3>' +
+              '<p>You haven\'t posted any briefs matching this filter. Submit a new brief in 2 minutes.</p>' +
+              '<a href="create-requirement.html" class="btn btn-primary" style="margin-top:16px;">Post Your First Event Brief →</a>' +
+            '</div>';
+          return;
+        }
+
+        container.innerHTML = filtered.map(function (req) {
+          var pCount = req.proposal_count || 0;
+          return '<div class="req-item-card">' +
+            '<div class="req-card-header">' +
+              '<div class="req-pills">' +
+                EventFlow.statusBadge(req.status) +
+                '<span class="badge" style="background:rgba(124,58,237,0.1);color:var(--color-primary);font-weight:700;">' + (req.event_name || 'Celebration') + '</span>' +
+                '<span style="font-size:12px;color:var(--color-text-secondary);"><span data-ef-icon="mapPin" data-size="14"></span> ' + (req.location || 'India') + '</span>' +
+              '</div>' +
+              '<div style="display:flex;gap:8px;">' +
+                '<button type="button" class="btn btn-outline btn-sm" onclick="EventFlowDashboard.filterProposalsByReq(' + req.requirement_id + ')">Review Proposals (' + pCount + ')</button>' +
+                '<a href="create-requirement.html?edit=' + req.requirement_id + '" class="btn btn-outline btn-sm">Edit Brief</a>' +
+                '<button type="button" class="btn btn-outline btn-sm" onclick="EventFlowDashboard.deleteRequirement(' + req.requirement_id + ')" style="color:#ef4444;border-color:#ef4444;">Delete</button>' +
+              '</div>' +
+            '</div>' +
+            '<h3 class="req-title">' + (req.requirement_title || 'Celebration Brief') + '</h3>' +
+            '<p class="req-desc">' + (req.description || 'Custom event requirement with full production oversight.') + '</p>' +
+            '<div class="req-stats-row">' +
+              '<span>📅 Event Date: <strong>' + fmtDate(req.event_date) + '</strong></span>' +
+              '<span>👥 Guests: <strong>' + (req.guest_count || 100) + ' Pax</strong></span>' +
+              '<span>💰 Host Target Budget: <strong>' + fmtCur(req.budget) + '</strong></span>' +
+              '<span>📑 Proposals Received: <strong style="color:var(--color-primary);">' + pCount + ' Bids</strong></span>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+      }
+
+      // RENDER TAB 3: PROPOSALS
+      function renderProposalsTab() {
+        var container = document.getElementById('proposals-container');
+        if (!container) return;
+
+        // Populate dropdown filter
+        var selEvent = document.getElementById('filter-proposals-event');
+        if (selEvent && selEvent.options.length <= 1) {
+          state.requirements.forEach(function (r) {
+            var opt = document.createElement('option');
+            opt.value = r.requirement_id;
+            opt.textContent = r.requirement_title || ('Event #' + r.requirement_id);
+            selEvent.appendChild(opt);
+          });
+        }
+
+        var filterReqId = selEvent ? selEvent.value : '';
+        var statusFilter = document.getElementById('filter-proposals-status').value;
+
+        var filtered = state.proposals.filter(function (p) {
+          var matchReq = !filterReqId || String(p.requirement_id) === String(filterReqId);
+          var matchStatus = !statusFilter || p.status === statusFilter;
+          return matchReq && matchStatus;
+        });
+
+        if (!filtered.length) {
+          container.innerHTML =
+            '<div class="ef-empty-state">' +
+              '<div style="font-size:36px;margin-bottom:12px;">📑</div>' +
+              '<h3>No Proposals to Display</h3>' +
+              '<p>There are no quotations matching this filter. You will receive notifications as managers bid.</p>' +
+              '<button type="button" class="btn btn-outline" style="margin-top:16px;" onclick="EventFlowDashboard.resetFilters()">Reset Filters</button>' +
+            '</div>';
+          return;
+        }
+
+        container.innerHTML = filtered.map(function (p) {
+          var isAccepted = p.status === 'ACCEPTED';
+          return '<div class="proposal-interactive-card ' + (isAccepted ? 'selected-locked' : '') + '">' +
+            '<div>' +
+              '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">' +
+                EventFlow.statusBadge(p.status) +
+                '<span style="font-size:12px;font-weight:700;color:var(--color-primary);">FOR: ' + (p.requirement_title || 'Wedding Requirement') + '</span>' +
+                '<span style="font-size:12px;color:#d4a72c;font-weight:700;">★ ' + (p.rating || '4.8') + ' (Verified Agency)</span>' +
+              '</div>' +
+              '<h3 style="font-size:20px;font-family:var(--font-display);color:var(--color-text-primary);margin-bottom:4px;">' +
+                (p.business_name || p.manager_name || 'Event Manager') + ' — ' + (p.package_name || 'Bespoke Package') +
+              '</h3>' +
+              '<p style="font-size:13.5px;color:var(--color-text-secondary);line-height:1.5;margin-bottom:12px;max-width:760px;">' +
+                (p.description || 'Comprehensive 2-day coordination, royal mandap decor, cinematography and hospitality.') +
+              '</p>' +
+              '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+                '<span class="badge" style="background:rgba(0,0,0,0.05);color:var(--color-text-secondary);font-size:11px;">✓ Floral Setup</span>' +
+                '<span class="badge" style="background:rgba(0,0,0,0.05);color:var(--color-text-secondary);font-size:11px;">✓ 4K Cinematography</span>' +
+                '<span class="badge" style="background:rgba(0,0,0,0.05);color:var(--color-text-secondary);font-size:11px;">✓ Escrow Milestone Protection</span>' +
+                '<span class="badge" style="background:rgba(0,0,0,0.05);color:var(--color-text-secondary);font-size:11px;">✓ On-Site Event Director</span>' +
+              '</div>' +
+            '</div>' +
+
+            '<div class="proposal-price-box">' +
+              '<span style="font-size:11px;font-weight:700;color:var(--color-text-secondary);text-transform:uppercase;">Quoted Amount</span>' +
+              '<div class="proposal-price-num">' + fmtCur(p.price) + '</div>' +
+              '<div style="font-size:11.5px;color:var(--color-text-secondary);margin-bottom:6px;">Includes GST & Milestone releases</div>' +
+              '<div style="display:flex;flex-direction:column;gap:8px;">' +
+                '<button type="button" class="btn btn-outline btn-sm" onclick="EventFlowDashboard.openProposalDetails(' + p.proposal_id + ')">View Details</button>' +
+                (p.status === 'SUBMITTED' ?
+                  '<button type="button" class="btn btn-primary btn-sm" onclick="EventFlowDashboard.selectProposal(' + p.proposal_id + ')">Select & Lock Manager →</button>' :
+                  '<button type="button" class="btn btn-outline btn-sm" disabled style="color:#10b981;border-color:#10b981;">✓ Selected & Booked</button>'
+                ) +
+              '</div>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+      }
+
+      // RENDER TAB 4: BOOKINGS
+      function renderBookingsTab() {
+        var container = document.getElementById('bookings-container');
+        if (!container) return;
+
+        if (!state.bookings.length) {
+          container.innerHTML =
+            '<div class="ef-empty-state">' +
+              '<div style="font-size:36px;margin-bottom:12px;">🗓</div>' +
+              '<h3>No Active Bookings Yet</h3>' +
+              '<p>Once you accept a manager\'s proposal, your event transitions into an active production booking.</p>' +
+              '<button type="button" class="btn btn-primary" style="margin-top:16px;" onclick="EventFlowDashboard.switchTab(\'proposals\')">Review Open Proposals →</button>' +
+            '</div>';
+          return;
+        }
+
+        container.innerHTML = state.bookings.map(function (b) {
+          var stage1Amt = b.final_amount * 0.60;
+          var stage2Amt = b.final_amount * 0.40;
+          
+          var totalPaid = 0;
+          state.payments.forEach(function(p) {
+              if(p.booking_id === b.booking_id && (p.status === 'COMPLETED' || p.status === 'SUCCESS')) totalPaid += Number(p.amount);
+          });
+          
+          var s1Paid = totalPaid >= stage1Amt;
+          var s2Paid = totalPaid >= b.final_amount;
+          
+          var btnHtml = '';
+          var nextStage = '';
+          if (!s1Paid) {
+              nextStage = 'Stage 1 (Advance)';
+              btnHtml = '<button type="button" class="btn btn-primary btn-sm" onclick="EventFlowDashboard.openPaymentModal(' + b.booking_id + ', \'' + (b.requirement_title || b.event_name || 'Celebration') + '\', ' + stage1Amt + ', \'STAGE 1 (ADVANCE)\')">Pay Stage 1 (' + fmtCur(stage1Amt) + ')</button>';
+          } else if (!s2Paid) {
+              nextStage = 'Stage 2 (Final)';
+              btnHtml = '<button type="button" class="btn btn-primary btn-sm" onclick="EventFlowDashboard.openPaymentModal(' + b.booking_id + ', \'' + (b.requirement_title || b.event_name || 'Celebration') + '\', ' + stage2Amt + ', \'STAGE 2 (FINAL)\')">Pay Stage 2 (' + fmtCur(stage2Amt) + ')</button>';
+          } else {
+              nextStage = 'Fully Paid';
+              btnHtml = '<button type="button" class="btn btn-outline btn-sm" disabled>All Milestones Paid</button>';
+          }
+
+          var escrowPct = s1Paid ? (s2Paid ? '100% Funded' : '60% Funded') : '0% Funded';
+          var escrowColor = s1Paid ? '#10b981' : '#ef4444';
+
+          return '<div class="booking-item-card">' +
+            '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;margin-bottom:16px;">' +
+              '<div>' +
+                '<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">' +
+                  EventFlow.statusBadge(b.status) +
+                  '<span style="font-size:12px;font-weight:700;color:var(--color-primary);"><span data-ef-icon="calendar" data-size="14"></span> ' + fmtDate(b.event_date) + '</span>' +
+                '</div>' +
+                '<h3 style="font-size:22px;font-family:var(--font-display);color:var(--color-text-primary);margin-bottom:4px;">' +
+                  (b.requirement_title || b.event_name || 'Celebration Booking') +
+                '</h3>' +
+                '<p style="font-size:13.5px;color:var(--color-text-secondary);">' +
+                  'Producer: <strong>' + (b.business_name || b.manager_name || 'Event Manager') + '</strong> • Venue: ' + (b.location || 'India') + ' • ' + (b.guest_count || 100) + ' Guests' +
+                '</p>' +
+              '</div>' +
+              '<div style="text-align:right;">' +
+                '<span style="font-size:11px;font-weight:700;color:var(--color-text-secondary);text-transform:uppercase;">Contract Value</span>' +
+                '<div style="font-size:22px;font-weight:700;color:var(--color-text-primary);margin-top:2px;">' + fmtCur(b.final_amount) + '</div>' +
+              '</div>' +
+            '</div>' +
+
+            '<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:16px;border-top:1px solid var(--color-border);flex-wrap:wrap;">' +
+              '<div style="display:flex;gap:14px;font-size:13px;color:var(--color-text-secondary);">' +
+                '<span>Escrow Protection: <strong style="color:' + escrowColor + ';">' + escrowPct + '</strong></span>' +
+                '<span>Next Stage: <strong style="color:var(--color-primary);">' + nextStage + '</strong></span>' +
+              '</div>' +
+              '<div style="display:flex;gap:8px;">' +
+                btnHtml +
+                '<a href="booking.html?id=' + b.booking_id + '" class="btn btn-outline btn-sm">Open Workspace →</a>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+      }
+
+      // RENDER TAB 5: PAYMENTS
+      function renderPaymentsTab() {
+        var tbody = document.getElementById('payments-tbody');
+        if (!tbody) return;
+
+        var totalPaid = state.payments.reduce(function (acc, p) { return acc + (Number(p.amount) || 0); }, 0);
+        var totalContract = state.bookings.reduce(function (acc, b) { return acc + (Number(b.final_amount) || 0); }, 0);
+        var totalDue = Math.max(0, totalContract - totalPaid);
+
+        document.getElementById('pay-total-contract').textContent = fmtCur(totalContract);
+        document.getElementById('pay-total-escrow').textContent = fmtCur(totalPaid);
+        document.getElementById('pay-total-due').textContent = fmtCur(totalDue);
+
+        if (!state.payments.length) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--color-text-secondary);">No payments recorded yet.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = state.payments.map(function (p) {
+          return '<tr>' +
+            '<td><strong style="font-family:monospace;font-size:12.5px;">' + (p.transaction_id || 'TXN-' + p.payment_id) + '</strong></td>' +
+            '<td style="font-size:13px;">' + fmtDate(p.payment_date) + '</td>' +
+            '<td>' +
+              '<strong style="display:block;font-size:13.5px;">' + (p.event_name || 'Grand Royal Rajputana Wedding') + '</strong>' +
+              '<span style="font-size:11.5px;color:var(--color-text-secondary);">' + (p.payment_type || 'Milestone Deposit').replace(/_/g, ' ') + '</span>' +
+            '</td>' +
+            '<td><span class="badge" style="background:rgba(0,0,0,0.06);font-size:11px;">' + (p.payment_method || 'ESCROW_UPI') + '</span></td>' +
+            '<td><strong style="font-size:14px;color:var(--color-text-primary);">' + fmtCur(p.amount) + '</strong></td>' +
+            '<td>' + EventFlow.statusBadge(p.status) + '</td>' +
+            '<td>' +
+              '<button type="button" class="btn btn-outline btn-sm" onclick="EventFlowDashboard.downloadReceipt(\'' + (p.transaction_id || p.payment_id) + '\', ' + p.amount + ')">Receipt</button>' +
+            '</td>' +
+          '</tr>';
+        }).join('');
+      }
+
+      // RENDER TAB 6: TICKETS
+      function renderTicketsTab() {
+        var tbody = document.getElementById('tickets-tbody');
+        if (!tbody) return;
+
+        if (!state.tickets.length) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--color-text-secondary);">No support tickets opened. Your dedicated concierge is ready to assist.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = state.tickets.map(function (tk) {
+          return '<tr>' +
+            '<td><strong style="font-family:monospace;">TCK-' + tk.ticket_id + '</strong></td>' +
+            '<td>' + fmtDate(tk.created_at) + '</td>' +
+            '<td><strong>' + tk.subject + '</strong></td>' +
+            '<td><span class="badge ' + (tk.priority === 'URGENT' ? 'rejected' : 'pending') + '">' + tk.priority + '</span></td>' +
+            '<td>' + EventFlow.statusBadge(tk.status) + '</td>' +
+            '<td>Pooja Deshmukh (Concierge)</td>' +
+          '</tr>';
+        }).join('');
+      }
+
+      // INTERACTIVE ACTIONS
+      function selectProposal(proposalId) {
+        if (!confirm('Are you sure you want to select this proposal and initiate production escrow?')) return;
+
+        EventFlow.apiPut('/proposals/' + proposalId + '/select', {})
+          .then(function (res) {
+            EventFlow.showToast('Proposal accepted! Production booking confirmed with escrow initialized.', 'success');
+            loadAllDashboardData();
+            switchTab('bookings');
+          })
+          .catch(function (err) {
+            EventFlow.showToast('Could not select proposal: ' + err.message, 'error');
+          });
+      }
+
+      function openProposalDetails(proposalId) {
+        var p = state.proposals.find(function (x) { return x.proposal_id === proposalId; });
+        if (!p) return;
+
+        var content = document.getElementById('mp-content');
+        content.innerHTML =
+          '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">' +
+            '<div>' +
+              '<span class="badge open" style="margin-bottom:6px;">★ ' + (p.rating || '4.8') + ' RATED PRODUCER</span>' +
+              '<h2 style="font-size:22px;font-family:var(--font-display);">' + (p.business_name || p.manager_name) + '</h2>' +
+              '<p style="font-size:13.5px;color:var(--color-text-secondary);margin-top:2px;">Location: ' + (p.manager_location || 'Mumbai & Pan-India') + ' • Experience: ' + (p.experience || 5) + ' Years</p>' +
+            '</div>' +
+            '<div style="text-align:right;">' +
+              '<div style="font-size:24px;font-weight:700;color:var(--color-primary);">' + fmtCur(p.price) + '</div>' +
+              '<span style="font-size:11.5px;color:var(--color-text-secondary);">All Taxes & Permits Included</span>' +
+            '</div>' +
+          '</div>' +
+
+          '<div style="background:var(--color-surface-2, rgba(0,0,0,0.03));padding:18px;border-radius:14px;margin-bottom:18px;">' +
+            '<h4 style="font-size:15px;margin:0 0 6px;">' + (p.package_name || 'Bespoke Package') + '</h4>' +
+            '<p style="font-size:13.5px;color:var(--color-text-secondary);line-height:1.6;margin:0;">' +
+              (p.description || 'Comprehensive coordination, 4K multi-camera cinematography, stage styling, floral setups, sound engineering, and guest coordinators.') +
+            '</p>' +
+          '</div>' +
+
+          '<div style="margin-bottom:20px;">' +
+            '<h4 style="font-size:14px;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-text-secondary);margin-bottom:10px;">Escrow Disbursement Milestones</h4>' +
+            '<div style="display:flex;flex-direction:column;gap:8px;font-size:13px;">' +
+              '<div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;">' +
+                '<span>Stage 1: Advance Booking Deposit (30%)</span>' +
+                '<strong>' + fmtCur(p.price * 0.3) + '</strong>' +
+              '</div>' +
+              '<div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;">' +
+                '<span>Stage 2: Mandap Fabrication & Material Sourcing (30%)</span>' +
+                '<strong>' + fmtCur(p.price * 0.3) + '</strong>' +
+              '</div>' +
+              '<div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;">' +
+                '<span>Stage 3: Vendor Alignment & Technical Dry Run (20%)</span>' +
+                '<strong>' + fmtCur(p.price * 0.2) + '</strong>' +
+              '</div>' +
+              '<div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;">' +
+                '<span>Stage 4: On-site Execution & Handover (20%)</span>' +
+                '<strong>' + fmtCur(p.price * 0.2) + '</strong>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div style="display:flex;gap:12px;">' +
+            (p.status === 'SUBMITTED' ?
+              '<button type="button" class="btn btn-primary" style="flex:1;" onclick="EventFlowDashboard.selectProposal(' + p.proposal_id + '); EventFlowDashboard.closeModal(\'modal-proposal-details\');">Accept & Lock Proposal →</button>' :
+              '<button type="button" class="btn btn-outline" style="flex:1;" disabled>✓ Already Accepted</button>'
+            ) +
+            '<button type="button" class="btn btn-outline" onclick="EventFlowDashboard.closeModal(\'modal-proposal-details\')">Close</button>' +
+          '</div>';
+
+        openModal('modal-proposal-details');
+      }
+
+      function openCompareModal() {
+        var matrix = document.getElementById('compare-matrix-content');
+        if (!matrix) return;
+
+        if (!state.proposals.length) {
+          matrix.innerHTML = '<p>No proposals available to compare.</p>';
+          openModal('modal-compare-proposals');
+          return;
+        }
+
+        var html = '<table class="table" style="width:100%;min-width:600px;">' +
+          '<thead><tr><th>Feature</th>';
+        state.proposals.forEach(function (p) {
+          html += '<th>' + (p.business_name || p.manager_name) + '</th>';
+        });
+        html += '</tr></thead><tbody>';
+
+        // Row: Price
+        html += '<tr><td><strong>Quoted Price</strong></td>';
+        state.proposals.forEach(function (p) {
+          html += '<td><strong style="color:var(--color-primary);font-size:16px;">' + fmtCur(p.price) + '</strong></td>';
+        });
+        html += '</tr>';
+
+        // Row: Rating
+        html += '<tr><td><strong>Rating & Reviews</strong></td>';
+        state.proposals.forEach(function (p) {
+          html += '<td><span style="color:#d4a72c;font-weight:700;">★ ' + (p.rating || '4.8') + ' / 5.0</span></td>';
+        });
+        html += '</tr>';
+
+        // Row: Package Name
+        html += '<tr><td><strong>Package Name</strong></td>';
+        state.proposals.forEach(function (p) {
+          html += '<td>' + (p.package_name || 'Bespoke') + '</td>';
+        });
+        html += '</tr>';
+
+        // Row: Location
+        html += '<tr><td><strong>Base Location</strong></td>';
+        state.proposals.forEach(function (p) {
+          html += '<td>' + (p.manager_location || 'Mumbai') + '</td>';
+        });
+        html += '</tr>';
+
+        // Row: Actions
+        html += '<tr><td><strong>Action</strong></td>';
+        state.proposals.forEach(function (p) {
+          html += '<td>' +
+            (p.status === 'SUBMITTED' ?
+              '<button type="button" class="btn btn-primary btn-sm" onclick="EventFlowDashboard.selectProposal(' + p.proposal_id + '); EventFlowDashboard.closeModal(\'modal-compare-proposals\');">Select</button>' :
+              '<span class="badge open">LOCKED</span>') +
+            '</td>';
+        });
+        html += '</tr>';
+
+        html += '</tbody></table>';
+        matrix.innerHTML = html;
+        openModal('modal-compare-proposals');
+      }
+
+      function openPaymentModal(bookingId, eventName, defaultAmt, phase) {
+        document.getElementById('pay-modal-event-name').textContent = eventName;
+        document.getElementById('pay-modal-badge').textContent = phase || 'STAGE 3 (VENDOR ALIGNMENT)';
+        document.getElementById('pay-input-amount').value = defaultAmt || 390000;
+        document.getElementById('pay-modal-btn-amt').textContent = Number(defaultAmt || 390000).toLocaleString('en-IN');
+        openModal('modal-payment');
+      }
+
+      function setupPaymentForm() {
+        var amtInput = document.getElementById('pay-input-amount');
+        if (amtInput) {
+          amtInput.addEventListener('input', function () {
+            var val = Number(amtInput.value) || 0;
+            document.getElementById('pay-modal-btn-amt').textContent = val.toLocaleString('en-IN');
+          });
+        }
+
+        var form = document.getElementById('escrow-pay-form');
+        if (form) {
+          form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var amt = Number(document.getElementById('pay-input-amount').value);
+            var method = document.getElementById('pay-input-method').value;
+
+            var payload = {
+              booking_id: 1,
+              amount: amt,
+              payment_type: 'STAGE_3_VENDOR_ALIGNMENT',
+              payment_method: method,
+              transaction_id: 'EF-TXN-' + Math.floor(10000 + Math.random() * 90000)
+            };
+
+            EventFlow.apiPost('/payments', payload)
+              .then(function (res) {
+                closeModal('modal-payment');
+                EventFlow.showToast('Escrow deposit confirmed! Transaction ID: ' + payload.transaction_id, 'success');
+                loadAllDashboardData();
+                window.location.href = 'my-bookings.html';
+              })
+              .catch(function (err) {
+                // Client-side fallback if server fails
+                state.payments.unshift({
+                  payment_id: Date.now(),
+                  booking_id: 1,
+                  amount: amt,
+                  payment_type: 'STAGE_3_VENDOR_ALIGNMENT',
+                  payment_method: method,
+                  transaction_id: payload.transaction_id,
+                  status: 'SUCCESS',
+                  payment_date: new Date().toISOString()
+                });
+                closeModal('modal-payment');
+                EventFlow.showToast('Escrow deposit recorded successfully!', 'success');
+                renderAll();
+                window.location.href = 'my-bookings.html';
+              });
+          });
+        }
+      }
+
+      function setupTicketForm() {
+        var form = document.getElementById('ticket-form');
+        if (form) {
+          form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var subject = document.getElementById('ticket-input-subject').value;
+            var desc = document.getElementById('ticket-input-desc').value;
+            var priority = document.getElementById('ticket-input-priority').value;
+
+            var payload = {
+              subject: subject,
+              description: desc,
+              priority: priority,
+              booking_id: 1
+            };
+
+            EventFlow.apiPost('/tickets', payload)
+              .then(function () {
+                closeModal('modal-ticket');
+                EventFlow.showToast('Support ticket dispatched to your senior concierge.', 'success');
+                loadAllDashboardData();
+              })
+              .catch(function () {
+                state.tickets.unshift({
+                  ticket_id: state.tickets.length + 1,
+                  subject: subject,
+                  priority: priority,
+                  status: 'OPEN',
+                  created_at: new Date().toISOString()
+                });
+                closeModal('modal-ticket');
+                EventFlow.showToast('Support ticket created. Advisor assigned.', 'success');
+                renderTicketsTab();
+              });
+          });
+        }
+      }
+
+      function setupFilterListeners() {
+        var searchEl = document.getElementById('filter-events-search');
+        if (searchEl) searchEl.addEventListener('input', renderEventsTab);
+
+        var statusEl = document.getElementById('filter-events-status');
+        if (statusEl) statusEl.addEventListener('change', renderEventsTab);
+
+        var pReqEl = document.getElementById('filter-proposals-event');
+        if (pReqEl) pReqEl.addEventListener('change', renderProposalsTab);
+
+        var pStatEl = document.getElementById('filter-proposals-status');
+        if (pStatEl) pStatEl.addEventListener('change', renderProposalsTab);
+      }
+
+      function filterProposalsByReq(reqId) {
+        switchTab('proposals');
+        var sel = document.getElementById('filter-proposals-event');
+        if (sel) {
+          sel.value = reqId;
+          renderProposalsTab();
+        }
+      }
+
+      function resetFilters() {
+        var sel1 = document.getElementById('filter-proposals-event');
+        var sel2 = document.getElementById('filter-proposals-status');
+        if (sel1) sel1.value = '';
+        if (sel2) sel2.value = '';
+        renderProposalsTab();
+      }
+
+      function toggleTask(taskId, checked) {
+        var t = state.tasks.find(function (x) { return x.task_id === taskId; });
+        if (t) {
+          t.status = checked ? 'COMPLETED' : 'IN_PROGRESS';
+          EventFlow.showToast('Task updated: ' + t.task_name, 'info');
+          renderAll();
+        }
+      }
+
+      function downloadReceipt(txnId, amount) {
+        EventFlow.showToast('Downloading verified tax receipt for ' + txnId + ' (' + fmtCur(amount) + ')...', 'success');
+        var token = localStorage.getItem('ef_token') || sessionStorage.getItem('ef_token');
+        var url = API_BASE + '/payments/' + txnId + '/receipt?token=' + encodeURIComponent(token);
+        
+        // Use fetch with Auth header to download since we use bearer tokens
+        fetch(API_BASE + '/payments/' + txnId + '/receipt', {
+            headers: { 'Authorization': 'Bearer ' + token }
+        })
+        .then(res => res.blob())
+        .then(blob => {
+            var a = document.createElement('a');
+            a.href = window.URL.createObjectURL(blob);
+            a.download = 'EventFlow_Receipt_' + txnId + '.pdf';
+            a.click();
+        })
+        .catch(err => EventFlow.showToast('Failed to download receipt', 'error'));
+      }
+
+      function deleteRequirement(reqId) {
+        
+        EventFlow.apiDelete('/requirements/' + reqId)
+          .then(function() {
+            EventFlow.showToast('Requirement deleted successfully.', 'success');
+            // Remove from state
+            state.requirements = state.requirements.filter(function(r) { return r.requirement_id !== reqId; });
+            renderEventsTab();
+            renderBadgeCounters();
+            renderOverviewLists();
+          })
+          .catch(function(err) {
+            EventFlow.showToast(err.message || 'Failed to delete requirement.', 'error');
+          });
+      }
+
+      // Public API
+      return {
+        init: init,
+        switchTab: switchTab,
+        openModal: openModal,
+        closeModal: closeModal,
+        selectProposal: selectProposal,
+        openProposalDetails: openProposalDetails,
+        openCompareModal: openCompareModal,
+        openPaymentModal: openPaymentModal,
+        filterProposalsByReq: filterProposalsByReq,
+        resetFilters: resetFilters,
+        toggleTask: toggleTask,
+        downloadReceipt: downloadReceipt,
+        deleteRequirement: deleteRequirement
+      };
+    })();
+
+    document.addEventListener('DOMContentLoaded', function () {
+      EventFlowDashboard.init();
+    });
+  </script>
+</body>
+</html>

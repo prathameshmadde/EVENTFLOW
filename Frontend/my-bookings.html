@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Bookings & Event Management — EventFlow</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
+</head>
+<body>
+  <div class="ef-loader" id="ef-loader"><div class="ef-loader-mark">Event<span>Flow</span></div><div class="ef-loader-bar"><i></i></div></div>
+  <canvas class="ef-scene" id="ef-scene"></canvas>
+  <div class="ef-scene-veil"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a href="index.html" class="side-brand">
+        <div class="brand-mark">✦</div>
+        <strong>Event<span>Flow</span></strong>
+      </a>
+      <span class="side-section">Client Portal</span>
+      <a href="customer-dashboard.html" class="side-link">📊 Overview</a>
+      <a href="my-requirements.html" class="side-link">📋 My Requirements</a>
+      <a href="proposals.html" class="side-link">📑 Compare Proposals</a>
+      <a href="my-bookings.html" class="side-link active">🗓 My Bookings</a>
+      <a href="payments.html" class="side-link">💳 Payments & Escrow</a>
+      <a href="tasks.html" class="side-link">✅ Tasks Checklist</a>
+      <a href="guests.html" class="side-link">👥 Guest RSVPs</a>
+      <a href="feedback.html" class="side-link">⭐ Feedback & Reviews</a>
+
+      <span class="side-section" style="margin-top:20px;">Manager View</span>
+      <a href="manager-dashboard.html" class="side-link">⇄ Manager Dashboard</a>
+    </aside>
+
+    <div class="app-main">
+      <header class="app-top">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <button class="sidebar-toggle btn btn-outline btn-sm" aria-label="Toggle Navigation">
+            <span data-ef-icon="menu" data-size="18"></span>
+          </button>
+          <h1>My Event Bookings</h1>
+        </div>
+        <div class="top-tools">
+          <div class="eventflow-account"></div>
+          <a href="create-requirement.html" class="btn btn-primary btn-sm">+ Plan Another Event</a>
+        </div>
+      </header>
+
+      <main class="dash-content">
+        <div class="welcome">
+          <div>
+            <h2>Active Celebrations Under Management</h2>
+            <p>Your locked contracts, assigned event directors, milestones, and production deliverables.</p>
+          </div>
+        </div>
+
+        <div class="booking-list" id="bookings-container" style="margin-top:24px;">
+          <!-- Loaded dynamically -->
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script src="experience.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var container = document.getElementById('bookings-container');
+
+      
+      function getEventImage(type) {
+          if (!type) return 'assets/ganpati-4k-web.jpg';
+          type = type.toLowerCase();
+          if (type.includes('wedding')) return 'assets/category-wedding.jpg';
+          if (type.includes('birthday')) return 'assets/category-birthday.jpg';
+          if (type.includes('engagement')) return 'assets/category-engagement.jpg';
+          if (type.includes('corporate')) return 'assets/category-corporate.jpg';
+          if (type.includes('anniversary')) return 'assets/category-anniversary.jpg';
+          if (type.includes('baby')) return 'assets/category-babyshower.jpg';
+          if (type.includes('reception')) return 'assets/category-reception.jpg';
+          if (type.includes('college') || type.includes('fest')) return 'assets/category-concert.jpg';
+          return 'assets/ganpati-4k-web.jpg';
+      }
+      function loadBookings() {
+
+        EventFlow.apiGet('/bookings').then(function (res) {
+          // The API returns a bare array; older builds returned { bookings: [...] }.
+          var list = Array.isArray(res) ? res : (res.bookings || []);
+          if (!list.length) {
+            container.innerHTML =
+              '<div class="ef-empty-state">' +
+                '<h3>No Bookings Yet</h3>' +
+                '<p style="margin:10px auto 20px;">Accept a proposal from your requirements to lock in an event manager and initiate your booking.</p>' +
+                '<a href="proposals.html" class="btn btn-primary">Review Received Proposals →</a>' +
+              '</div>';
+            return;
+          }
+
+          container.innerHTML = list.map(function (b) {
+            // The API uses snake_case column names; keep the camelCase reads as
+            // fallbacks so either response shape renders.
+            var bookingId = b.id || b.booking_id;
+            var total = Number(b.totalAmount || b.final_amount || b.estimated_amount || 0);
+            var paid = Number(b.amountPaid || b.amount_paid || (total * 0.4));
+            var pct = total > 0 ? Math.round((paid / total) * 100) : 0;
+            var title = b.title || b.event_name;
+            var eventDate = b.eventDate || b.event_date || b.createdAt || b.created_at;
+            var city = b.city || b.location;
+            var managerName = b.managerName || b.business_name || b.manager_name;
+
+            return '<div class="booking-card">' +
+              
+            '<div class="booking-cover" style="background-image: url(\'' + getEventImage(b.event_type) + '\')"></div>' +
+
+              '<div>' +
+                '<div style="display:flex;align-items:center;gap:10px;">' +
+                  EventFlow.statusBadge(b.status || 'CONFIRMED') +
+                  '<span style="font-size:12px;font-weight:700;color:var(--magenta);">' + (managerName || 'Arjun Mehta & Co.') + '</span>' +
+                '</div>' +
+                '<h3>' + (title || 'Grand Royal Rajputana Wedding') + '</h3>' +
+                '<div class="booking-meta">' +
+                  '<span>📅 <strong>' + EventFlow.formatDate(eventDate) + '</strong></span>' +
+                  '<span>📍 <strong>' + (city || 'Udaipur') + '</strong></span>' +
+                  '<span>💰 Contract: <strong>' + EventFlow.formatCurrency(total) + '</strong></span>' +
+                '</div>' +
+                '<div style="margin-top:12px;max-width:460px;">' +
+                  '<div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;">' +
+                    '<span>Escrow Milestones (' + pct + '% Paid)</span>' +
+                    '<span>' + EventFlow.formatCurrency(paid) + ' / ' + EventFlow.formatCurrency(total) + '</span>' +
+                  '</div>' +
+                  '<div class="progress-track"><i style="width:' + pct + '%;"></i></div>' +
+                '</div>' +
+              '</div>' +
+              '<div style="display:flex;flex-direction:column;gap:8px;">' +
+                '<a href="booking.html?id=' + bookingId + '" class="btn btn-primary btn-sm">Manage Event Workspace →</a>' +
+                '<a href="payments.html?bookingId=' + bookingId + '" class="btn btn-outline btn-sm">Milestone Escrow</a>' +
+              '</div>' +
+            '</div>';
+          }).join('');
+        }).catch(function (err) {
+          container.innerHTML = '<div class="ef-empty-state"><h3>Unable to load bookings</h3><p>' + err.message + '</p></div>';
+        });
+      }
+
+      loadBookings();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <defs>
+    <linearGradient id="patGrad" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#c79a49" stop-opacity="0.6"/>
+      <stop offset="50%" stop-color="#c02577" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#5b32c9" stop-opacity="0.5"/>
+    </linearGradient>
+  </defs>
+  <!-- Outer Sacred Diamond -->
+  <path d="M100 10 L190 100 L100 190 L10 100 Z" stroke="url(#patGrad)" stroke-width="2.5"/>
+  <path d="M100 24 L176 100 L100 176 L24 100 Z" stroke="url(#patGrad)" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <!-- Intersecting Arcs / Petals -->
+  <circle cx="100" cy="100" r="54" stroke="url(#patGrad)" stroke-width="2"/>
+  <path d="M100 46 A54 54 0 0 1 154 100 A54 54 0 0 1 100 154 A54 54 0 0 1 46 100 A54 54 0 0 1 100 46 Z" stroke="url(#patGrad)" stroke-width="1.8"/>
+  <path d="M100 10 C100 65 135 100 190 100 C135 100 100 135 100 190 C100 135 65 100 10 100 C65 100 100 65 100 10 Z" stroke="url(#patGrad)" stroke-width="2"/>
+  <circle cx="100" cy="100" r="10" stroke="url(#patGrad)" stroke-width="2" fill="none"/>
+  <circle cx="100" cy="100" r="3" fill="#c79a49"/>
+  <!-- Corner Lotus Flourishes -->
+  <circle cx="100" cy="10" r="4" fill="#c02577"/>
+  <circle cx="190" cy="100" r="4" fill="#c02577"/>
+  <circle cx="100" cy="190" r="4" fill="#c02577"/>
+  <circle cx="10" cy="100" r="4" fill="#c02577"/>
+</svg>

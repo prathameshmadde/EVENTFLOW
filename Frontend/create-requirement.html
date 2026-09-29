@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post Event Requirement — EventFlow</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
+</head>
+<body>
+  <div class="ef-loader" id="ef-loader"><div class="ef-loader-mark">Event<span>Flow</span></div><div class="ef-loader-bar"><i></i></div></div>
+  <canvas class="ef-scene" id="ef-scene"></canvas>
+  <div class="ef-scene-veil"></div>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="brand">
+        <div class="brand-mark">✦</div>
+        <div><strong>Event<span>Flow</span></strong><small>Luxury Event Marketplace</small></div>
+      </a>
+      <nav class="desktop-nav">
+        <a href="index.html">Home</a>
+        <a href="customer-dashboard.html">Dashboard</a>
+        <a href="events.html">Events</a>
+        <a href="proposals.html">Proposals</a>
+        <a href="my-bookings.html">Bookings</a>
+        <a href="services.html">Services</a>
+      </nav>
+      <div class="nav-actions">
+        <div class="eventflow-account"></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container" style="max-width:840px;">
+      <div style="text-align:center;margin-bottom:34px;">
+        <span class="eyebrow">Guided Event Brief</span>
+        <h1 style="font-size:36px;margin-top:6px;">Tell Us About Your Celebration</h1>
+        <p style="font-size:15px;max-width:540px;margin:8px auto 0;">Complete this 2-minute brief. Verified event managers will evaluate feasibility and submit customized proposals.</p>
+      </div>
+
+      <!-- Stepper Header -->
+      <div class="stepper" id="brief-stepper">
+        <div class="sp current" id="st-1"><div class="dot">1</div><b>Occasion</b></div>
+        <div class="bar" id="sb-1"></div>
+        <div class="sp" id="st-2"><div class="dot">2</div><b>Logistics</b></div>
+        <div class="bar" id="sb-2"></div>
+        <div class="sp" id="st-3"><div class="dot">3</div><b>Budget & Scope</b></div>
+        <div class="bar" id="sb-3"></div>
+        <div class="sp" id="st-4"><div class="dot">4</div><b>Review</b></div>
+      </div>
+
+      <div class="panel" style="padding:36px;">
+        <form id="req-form">
+          <!-- Step 1: Occasion -->
+          <div class="step-panel active" id="pnl-1">
+            <h3 style="font-size:20px;margin-bottom:6px;">Step 1: Event Type & Vision</h3>
+            <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">What celebration are you planning?</p>
+
+            <div class="form-stack">
+              <label>
+                Event Category *
+                <select id="f-category" required>
+                  <option value="Festivals">Grand Festive & Religious Utsav (Ganeshotsav, Navratri, Diwali)</option>
+                  <option value="Wedding">Grand Wedding / Sangeet</option>
+                  <option value="Birthday">Milestone Birthday Party</option>
+                  <option value="Engagement">Engagement Ceremony</option>
+                  <option value="Corporate">Corporate Summit / Gala</option>
+                  <option value="Anniversary">Anniversary Celebration</option>
+                  <option value="Baby Shower">Baby Shower</option>
+                  <option value="Cocktail Party">Cocktail Reception / Soirée</option>
+                </select>
+              </label>
+
+              <label>
+                Event Title / Working Name *
+                <input type="text" id="f-title" placeholder="e.g. Ananya & Rohit's Royal Wedding Weekend" required>
+              </label>
+
+              <label>
+                Vision & Special Requirements
+                <textarea id="f-description" rows="4" placeholder="Describe the vibe, preferred color palette, thematic expectations, special rituals, or artistic requirements..."></textarea>
+              </label>
+
+              <div class="form-actions">
+                <button type="button" class="btn btn-primary" id="btn-next-1">Next: Date & Location →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Logistics -->
+          <div class="step-panel" id="pnl-2">
+            <h3 style="font-size:20px;margin-bottom:6px;">Step 2: Date & Guest Count</h3>
+            <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Where and when will the celebration unfold?</p>
+
+            <div class="form-grid">
+              <label>
+                Event Date *
+                <input type="date" id="f-date" required>
+              </label>
+
+              <label>
+                Destination City *
+                <input type="text" id="f-city" placeholder="e.g. Mumbai, Udaipur, Goa..." required>
+              </label>
+
+              <label>
+                Estimated Guest Count *
+                <input type="number" id="f-guests" placeholder="e.g. 350" min="10" required>
+              </label>
+
+              <label>
+                Venue Status
+                <select id="f-venue-status">
+                  <option value="Need Venue Recommendation">Need Manager to scout/recommend venue</option>
+                  <option value="Venue Already Booked">Venue already booked</option>
+                  <option value="Shortlisted Few Venues">Have shortlisted 2-3 venues</option>
+                </select>
+              </label>
+
+              <div class="form-actions full">
+                <button type="button" class="btn btn-outline" id="btn-prev-2">← Back</button>
+                <button type="button" class="btn btn-primary" id="btn-next-2">Next: Budget & Services →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Budget & Services -->
+          <div class="step-panel" id="pnl-3">
+            <h3 style="font-size:20px;margin-bottom:6px;">Step 3: Target Budget & Required Services</h3>
+            <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Define financial parameters and production scope.</p>
+
+            <div class="form-stack">
+              <label>
+                Target Overall Budget (in INR ₹) *
+                <input type="number" id="f-budget" placeholder="e.g. 1500000" min="50000" step="10000" required>
+              </label>
+
+              <div>
+                <span style="font-size:12.5px;font-weight:700;color:var(--ink-soft);display:block;margin-bottom:10px;">Select Required Production Pillars</span>
+                <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;font-size:13px;">
+                  <label style="flex-direction:row;align-items:center;gap:8px;"><input type="checkbox" id="srv-decor" checked> Stage & Floral Decor</label>
+                  <label style="flex-direction:row;align-items:center;gap:8px;"><input type="checkbox" id="srv-catering" checked> Banquet Catering & Bar</label>
+                  <label style="flex-direction:row;align-items:center;gap:8px;"><input type="checkbox" id="srv-av" checked> Sound, Lights & DJ</label>
+                  <label style="flex-direction:row;align-items:center;gap:8px;"><input type="checkbox" id="srv-photo" checked> Photography & Drone Film</label>
+                  <label style="flex-direction:row;align-items:center;gap:8px;"><input type="checkbox" id="srv-artist"> Celebrity / Live Artists</label>
+                  <label style="flex-direction:row;align-items:center;gap:8px;"><input type="checkbox" id="srv-transfers"> Guest Logistics & Cab Fleet</label>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn btn-outline" id="btn-prev-3">← Back</button>
+                <button type="button" class="btn btn-primary" id="btn-next-3">Review Brief →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4: Review & Submit -->
+          <div class="step-panel" id="pnl-4">
+            <h3 style="font-size:20px;margin-bottom:6px;">Step 4: Final Confirmation</h3>
+            <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Review your brief before broadcasting to verified event managers.</p>
+
+            <div class="step-review" id="review-summary">
+              <!-- Dynamically populated -->
+            </div>
+
+            <div style="margin-top:20px;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);">
+              <span>🛡️</span>
+              <span>Your contact information is strictly private. Only verified managers can send bids through the portal.</span>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-outline" id="btn-prev-4">← Back to Edit</button>
+              <button type="submit" class="btn btn-primary btn-lg" id="btn-submit-req">Publish Brief & Receive Proposals</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <span>© 2026 EventFlow Technologies Ltd. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+  <script src="experience.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var panels = [
+        document.getElementById('pnl-1'),
+        document.getElementById('pnl-2'),
+        document.getElementById('pnl-3'),
+        document.getElementById('pnl-4')
+      ];
+      var steps = [
+        document.getElementById('st-1'),
+        document.getElementById('st-2'),
+        document.getElementById('st-3'),
+        document.getElementById('st-4')
+      ];
+      var bars = [
+        document.getElementById('sb-1'),
+        document.getElementById('sb-2'),
+        document.getElementById('sb-3')
+      ];
+
+      function gotoStep(idx) {
+        panels.forEach(function (p, i) {
+          if (i === idx) p.classList.add('active');
+          else p.classList.remove('active');
+        });
+        steps.forEach(function (s, i) {
+          s.className = 'sp';
+          if (i < idx) s.classList.add('done');
+          else if (i === idx) s.classList.add('current');
+        });
+        bars.forEach(function (b, i) {
+          if (i < idx) b.classList.add('done');
+          else b.classList.remove('done');
+        });
+      }
+
+      // Pre-fill fields from URL query parameters if provided
+      var urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('category')) {
+        var cat = urlParams.get('category');
+        var catSelect = document.getElementById('f-category');
+        if (catSelect) {
+          for (var i = 0; i < catSelect.options.length; i++) {
+            if (catSelect.options[i].value.toLowerCase() === cat.toLowerCase()) {
+              catSelect.selectedIndex = i;
+              break;
+            }
+          }
+        }
+      }
+      if (urlParams.has('title')) {
+        var titleEl = document.getElementById('f-title');
+        if (titleEl) titleEl.value = urlParams.get('title');
+      }
+      if (urlParams.has('city')) {
+        var cityEl = document.getElementById('f-city');
+        if (cityEl) cityEl.value = urlParams.get('city');
+      }
+      if (urlParams.has('guests')) {
+        var guestsEl = document.getElementById('f-guests');
+        if (guestsEl) guestsEl.value = urlParams.get('guests');
+      }
+      if (urlParams.has('budget')) {
+        var budgetEl = document.getElementById('f-budget');
+        if (budgetEl) {
+          var cleanBudget = urlParams.get('budget').replace(/[^0-9]/g, '');
+          if (cleanBudget) budgetEl.value = cleanBudget;
+        }
+      }
+      if (urlParams.has('date')) {
+        var dateEl = document.getElementById('f-date');
+        if (dateEl) dateEl.value = urlParams.get('date');
+      }
+
+      document.getElementById('btn-next-1').addEventListener('click', function () {
+        var title = document.getElementById('f-title').value;
+        if (!title) { EventFlow.showToast('Please enter an event title', 'error'); return; }
+        gotoStep(1);
+      });
+
+      document.getElementById('btn-prev-2').addEventListener('click', function () { gotoStep(0); });
+      document.getElementById('btn-next-2').addEventListener('click', function () {
+        var date = document.getElementById('f-date').value;
+        var city = document.getElementById('f-city').value;
+        var guests = document.getElementById('f-guests').value;
+        if (!date || !city || !guests) {
+          EventFlow.showToast('Please complete date, city, and guest count', 'error');
+          return;
+        }
+        gotoStep(2);
+      });
+
+      document.getElementById('btn-prev-3').addEventListener('click', function () { gotoStep(1); });
+      document.getElementById('btn-next-3').addEventListener('click', function () {
+        var budget = document.getElementById('f-budget').value;
+        if (!budget || budget <= 0) {
+          EventFlow.showToast('Please provide a target budget', 'error');
+          return;
+        }
+        // Build review
+        var summary = document.getElementById('review-summary');
+        summary.innerHTML =
+          '<div><span>Event Occasion:</span><strong>' + document.getElementById('f-category').value + '</strong></div>' +
+          '<div><span>Title:</span><strong>' + document.getElementById('f-title').value + '</strong></div>' +
+          '<div><span>Date:</span><strong>' + EventFlow.formatDate(document.getElementById('f-date').value) + '</strong></div>' +
+          '<div><span>City:</span><strong>' + document.getElementById('f-city').value + '</strong></div>' +
+          '<div><span>Guests:</span><strong>' + document.getElementById('f-guests').value + ' Attendees</strong></div>' +
+          '<div><span>Target Budget:</span><strong>' + EventFlow.formatCurrency(document.getElementById('f-budget').value) + '</strong></div>' +
+          '<div><span>Venue Status:</span><strong>' + document.getElementById('f-venue-status').value + '</strong></div>';
+        gotoStep(3);
+      });
+
+      document.getElementById('btn-prev-4').addEventListener('click', function () { gotoStep(2); });
+
+      document.getElementById('req-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var submitBtn = document.getElementById('btn-submit-req');
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'Publishing Brief...';
+
+        var user = EventFlow.getUser();
+
+        // A real login/session is required for creating a customer requirement.
+        // The backend derives customer_id from the authenticated session token.
+        if (!user || !(user.user_id || user.id)) {
+          submitBtn.disabled = false;
+          submitBtn.innerText = 'Publish Brief & Receive Proposals';
+          EventFlow.showToast('Please log in before publishing an event requirement.', 'error');
+          setTimeout(function () {
+            window.location.href = 'login.html';
+          }, 800);
+          return;
+        }
+
+        // Match the existing UI category to a REAL event in MySQL.
+        // Do not hard-code event IDs because AUTO_INCREMENT values can differ
+        // between databases.
+        var category = document.getElementById('f-category').value;
+
+        var categoryToDbName = {
+          'Wedding': 'Wedding',
+          'Birthday': 'Birthday Party',
+          'Engagement': 'Engagement Ceremony',
+          'Corporate': 'Corporate Event',
+          'Anniversary': 'Anniversary',
+          'Baby Shower': 'Baby Shower',
+          'Cocktail Party': 'Reception',
+          'Festivals': 'College Fest'
+        };
+
+        var dbEventName = categoryToDbName[category];
+        var description = document.getElementById('f-description').value.trim();
+        var eventDate = document.getElementById('f-date').value;
+        var city = document.getElementById('f-city').value.trim();
+        var guestCount = parseInt(document.getElementById('f-guests').value, 10);
+        var budget = parseFloat(document.getElementById('f-budget').value);
+        var venueStatus = document.getElementById('f-venue-status').value;
+
+        var selectedServices = [];
+        var serviceChecks = [
+          ['srv-decor', 'Stage & Floral Decor'],
+          ['srv-catering', 'Banquet Catering & Bar'],
+          ['srv-av', 'Sound, Lights & DJ'],
+          ['srv-photo', 'Photography & Drone Film'],
+          ['srv-artist', 'Celebrity / Live Artists'],
+          ['srv-transfers', 'Guest Logistics & Cab Fleet']
+        ];
+
+        serviceChecks.forEach(function (item) {
+          var checkbox = document.getElementById(item[0]);
+          if (checkbox && checkbox.checked) {
+            selectedServices.push(item[1]);
+          }
+        });
+
+        if (!dbEventName) {
+          submitBtn.disabled = false;
+          submitBtn.innerText = 'Publish Brief & Receive Proposals';
+          EventFlow.showToast('Please select a valid event category.', 'error');
+          return;
+        }
+
+        if (!eventDate || !city || !guestCount || !budget) {
+          submitBtn.disabled = false;
+          submitBtn.innerText = 'Publish Brief & Receive Proposals';
+          EventFlow.showToast('Please complete all required event details.', 'error');
+          return;
+        }
+
+        // Load the current event list from MySQL and resolve the real event_id.
+        EventFlow.apiGet('/events')
+          .then(function (events) {
+            var list = Array.isArray(events) ? events : (events.events || []);
+
+            var selectedEvent = list.find(function (event) {
+              return String(event.event_name || '').trim().toLowerCase() ===
+                     String(dbEventName).trim().toLowerCase();
+            });
+
+            if (!selectedEvent || !selectedEvent.event_id) {
+              throw new Error('The selected event type is not available in the database.');
+            }
+
+            var payload = {
+              event_id: Number(selectedEvent.event_id),
+              requirement_title: document.getElementById('f-title').value.trim(),
+              description: description || 'Bespoke event production requirement.',
+              event_date: eventDate,
+              event_end_date: null,
+              guest_count: guestCount,
+              location: city,
+              budget: budget,
+              special_requirements: [
+                'Venue Status: ' + venueStatus,
+                selectedServices.length ? 'Required Services: ' + selectedServices.join(', ') : ''
+              ].filter(function (text) {
+                return text;
+              }).join(' | ')
+            };
+
+            return EventFlow.apiPost('/requirements', payload);
+          })
+          .then(function (res) {
+            EventFlow.showToast('Event brief published successfully! Verified managers are notified.', 'success');
+
+            // Redirect only after the backend confirms creation.
+            setTimeout(function () {
+              window.location.href = 'my-requirements.html';
+            }, 800);
+          })
+          .catch(function (err) {
+            console.error('Create requirement error:', err);
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'Publish Brief & Receive Proposals';
+            EventFlow.showToast(
+              err.message || 'Unable to publish the event requirement.',
+              'error'
+            );
+          });
+      });
+    });
+  </script>
+</body>
+</html>

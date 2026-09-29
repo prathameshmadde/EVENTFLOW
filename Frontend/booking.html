@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Booking Workspace — EventFlow</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
+</head>
+<body>
+  <div class="ef-loader" id="ef-loader"><div class="ef-loader-mark">Event<span>Flow</span></div><div class="ef-loader-bar"><i></i></div></div>
+  <canvas class="ef-scene" id="ef-scene"></canvas>
+  <div class="ef-scene-veil"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a href="index.html" class="side-brand">
+        <div class="brand-mark">✦</div>
+        <strong>Event<span>Flow</span></strong>
+      </a>
+      <span class="side-section">Event Workspace</span>
+      <a href="booking.html" class="side-link active">🗓 Booking Overview</a>
+      <a href="payments.html" class="side-link">💳 Escrow & Payments</a>
+      <a href="tasks.html" class="side-link">✅ Tasks Checklist</a>
+      <a href="guests.html" class="side-link">👥 Guest List & RSVPs</a>
+      <a href="feedback.html" class="side-link">⭐ Feedback & Reviews</a>
+      <a href="refunds.html" class="side-link">🛡️ Escrow Dispute / Refund</a>
+
+      <span class="side-section" style="margin-top:20px;">Navigation</span>
+      <a href="my-bookings.html" class="side-link">← All My Bookings</a>
+      <a href="customer-dashboard.html" class="side-link">📊 Client Dashboard</a>
+    </aside>
+
+    <div class="app-main">
+      <header class="app-top">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <a href="my-bookings.html" class="text-link">← Bookings</a>
+          <h1 style="font-size:22px;" id="bw-title-top">Grand Royal Rajputana Wedding</h1>
+        </div>
+        <div class="top-tools">
+          <div class="eventflow-account"></div>
+        </div>
+      </header>
+
+      <main class="dash-content">
+        <!-- Booking Live Hero -->
+        <div class="panel booking-detail-live" style="margin-bottom:24px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;">
+            <div>
+              <span class="badge confirmed" id="bw-badge">CONFIRMED & IN ESCROW</span>
+              <h1 id="bw-title">Grand Royal Rajputana Wedding</h1>
+              <p id="bw-meta" style="font-size:14px;color:var(--muted);margin-top:4px;">
+                Managed by <strong>Arjun Mehta & Co.</strong> • Venue: Jagmandir Island Palace, Udaipur • 450 Guests
+              </p>
+            </div>
+            <div style="display:flex;gap:10px;">
+              <button class="btn btn-outline btn-sm" id="btn-msg-mgr">💬 Contact Event Director</button>
+              <a href="feedback.html?bookingId=bk_1" class="btn btn-outline btn-sm">⭐ Rate Experience</a>
+            </div>
+          </div>
+
+          <!-- 4 Meta KPI Tiles -->
+          <div class="booking-hero-meta">
+            <div>
+              <small>Celebration Date</small>
+              <strong id="bw-date">15 Nov 2026</strong>
+            </div>
+            <div>
+              <small>Total Contract Value</small>
+              <strong id="bw-contract">₹ 24,50,000</strong>
+            </div>
+            <div>
+              <small>Protected in Escrow</small>
+              <strong id="bw-paid" style="color:var(--green);">₹ 9,80,000 (40%)</strong>
+            </div>
+            <div>
+              <small>Next Milestone Due</small>
+              <strong id="bw-due" style="color:var(--amber);">₹ 9,80,000</strong>
+            </div>
+          </div>
+
+          <!-- 5-Stage Visual Milestone Progress Timeline -->
+          <h4 style="font-size:14px;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;color:var(--faint);margin-top:20px;">
+            Milestone Production Roadmap
+          </h4>
+          <div class="booking-timeline-live">
+            <div class="timeline-step done">
+              <span>✓</span>
+              <small>1. Brief Published</small>
+            </div>
+            <div class="timeline-step done">
+              <span>✓</span>
+              <small>2. Proposal Selected</small>
+            </div>
+            <div class="timeline-step done">
+              <span>✓</span>
+              <small>3. Advance Escrow (40%)</small>
+            </div>
+            <div class="timeline-step current">
+              <span>4</span>
+              <small>4. Vendor Fabrication</small>
+            </div>
+            <div class="timeline-step">
+              <span>5</span>
+              <small>5. Event Day & Signoff</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-grid">
+          <!-- Left: Payment Next Steps & Tasks -->
+          <div>
+            <!-- Milestone Payment Box -->
+            <div id="dynamic-milestones-container"></div>
+
+            <!-- Tasks Checklist -->
+            <div class="panel" style="margin-top:24px;">
+              <div class="panel-head">
+                <div>
+                  <h3 style="font-size:18px;">Production Tasks Checklist</h3>
+                  <p style="font-size:12px;color:var(--muted);margin-top:2px;">Track critical planning milestones with your event manager.</p>
+                </div>
+                <a href="tasks.html" class="text-link">Full Task Board →</a>
+              </div>
+
+              <div class="list" id="bw-tasks-list">
+                <div class="list-row">
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <input type="checkbox" checked style="width:18px;height:18px;">
+                    <div>
+                      <strong>Finalize Palatial Mandap Floral Samples</strong>
+                      <small>Assigned to: Arjun Mehta • Due: 25 Oct 2026</small>
+                    </div>
+                  </div>
+                  <span class="badge completed">COMPLETED</span>
+                </div>
+                <div class="list-row">
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <input type="checkbox" checked style="width:18px;height:18px;">
+                    <div>
+                      <strong>Catering Menu Tasting (Rajasthani Thali)</strong>
+                      <small>Assigned to: Host & Manager • Due: 28 Oct 2026</small>
+                    </div>
+                  </div>
+                  <span class="badge completed">COMPLETED</span>
+                </div>
+                <div class="list-row">
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <input type="checkbox" style="width:18px;height:18px;">
+                    <div>
+                      <strong>Sound Line-Array Acoustic Test at Lake Venue</strong>
+                      <small>Assigned to: Sound Crew • Due: 08 Nov 2026</small>
+                    </div>
+                  </div>
+                  <span class="badge pending">IN PROGRESS</span>
+                </div>
+                <div class="list-row">
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <input type="checkbox" style="width:18px;height:18px;">
+                    <div>
+                      <strong>Airport VIP Cab Fleet Dispatch Schedule</strong>
+                      <small>Assigned to: Logistics Lead • Due: 12 Nov 2026</small>
+                    </div>
+                  </div>
+                  <span class="badge open">PENDING</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Services & Guest RSVPs -->
+          <div>
+            <!-- Contracted Services Inclusions -->
+            <div class="panel" style="margin-bottom:24px;">
+              <h3 style="font-size:18px;margin-bottom:12px;">Contract Inclusions</h3>
+              <div style="display:grid;gap:10px;font-size:13px;">
+                <div style="display:flex;gap:8px;"><span>✓</span><span><strong>Floral & Mandap Styling:</strong> 25,000 marigolds & tuberose chandeliers.</span></div>
+                <div style="display:flex;gap:8px;"><span>✓</span><span><strong>Artist Liaison:</strong> Classical Shehnai players & Sangeet DJ line-up.</span></div>
+                <div style="display:flex;gap:8px;"><span>✓</span><span><strong>Audio-Visual:</strong> JBL VTX Line Array and 40x20ft LED wall.</span></div>
+                <div style="display:flex;gap:8px;"><span>✓</span><span><strong>Hospitality:</strong> 8 dedicated hostess coordinators.</span></div>
+                <div style="display:flex;gap:8px;"><span>✓</span><span><strong>Cinematography:</strong> Dual 4K Sony FX6 cameras + licensed drone.</span></div>
+              </div>
+            </div>
+
+            <!-- Guest RSVPs Snapshot -->
+            <div class="panel">
+              <div class="panel-head">
+                <h3 style="font-size:18px;">Guest RSVPs (450 Total)</h3>
+                <a href="guests.html" class="text-link">Manage Guests →</a>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;text-align:center;margin-bottom:16px;">
+                <div style="padding:12px;background:var(--green-bg);border-radius:12px;">
+                  <strong style="display:block;font-size:18px;color:var(--green);">320</strong>
+                  <small style="font-size:10px;font-weight:800;color:var(--green);">CONFIRMED</small>
+                </div>
+                <div style="padding:12px;background:var(--amber-bg);border-radius:12px;">
+                  <strong style="display:block;font-size:18px;color:var(--amber);">95</strong>
+                  <small style="font-size:10px;font-weight:800;color:var(--amber);">PENDING</small>
+                </div>
+                <div style="padding:12px;background:var(--rose-bg);border-radius:12px;">
+                  <strong style="display:block;font-size:18px;color:var(--rose);">35</strong>
+                  <small style="font-size:10px;font-weight:800;color:var(--rose);">DECLINED</small>
+                </div>
+              </div>
+              <a href="guests.html" class="btn btn-outline btn-sm" style="width:100%;">View RSVP List & Send Reminders</a>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script src="experience.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var params = new URLSearchParams(window.location.search);
+      var bookingId = params.get('id');
+      
+      if (!bookingId) {
+        var mainEl = document.querySelector('.dash-content');
+        if (mainEl) {
+          mainEl.innerHTML = '<div class="ef-empty-state"><h3>Invalid Booking</h3><p>No booking ID provided in the URL.</p><a href="my-bookings.html" class="btn btn-primary">Go to My Bookings</a></div>';
+        }
+        return;
+      }
+      
+      EventFlow.apiGet('/bookings/' + bookingId).then(function (res) {
+        var b = res.booking || res;
+        if (!b) throw new Error('Booking not found');
+        
+        
+        var title = b.event_name || b.requirement_title || b.eventName || b.event_type || 'Event Booking';
+        var topTitle = document.getElementById('bw-title-top');
+        if (topTitle) topTitle.textContent = title;
+        
+        var mainTitle = document.getElementById('bw-title');
+        if (mainTitle) mainTitle.textContent = title;
+        
+        var badge = document.getElementById('bw-badge');
+        if (badge) {
+          badge.innerHTML = EventFlow.statusBadge(b.status || 'CONFIRMED');
+        }
+        
+        var meta = document.getElementById('bw-meta');
+        if (meta) {
+          meta.innerHTML = 'Managed by <strong>' + (b.business_name || b.managerName || 'Manager') + '</strong> &bull; Venue: ' + (b.venue || b.location || b.manager_location || 'TBD') + ' &bull; ' + (b.guest_count || b.guestCount || 0) + ' Guests';
+        }
+        
+        var dateEl = document.getElementById('bw-date');
+        if (dateEl) dateEl.textContent = EventFlow.formatDate(b.event_date || b.eventDate);
+        
+        var amt = b.final_amount || b.finalAmount || 0;
+        var paid = b.amount_paid || b.amountPaid || 0;
+        var due = amt - paid;
+        
+        var contractEl = document.getElementById('bw-contract');
+        if (contractEl) contractEl.textContent = EventFlow.formatCurrency(amt);
+        
+        var paidEl = document.getElementById('bw-paid');
+        if (paidEl) {
+          var pct = amt > 0 ? Math.round((paid / amt) * 100) : 0;
+          paidEl.textContent = EventFlow.formatCurrency(paid) + ' (' + pct + '%)';
+        }
+        
+        var dueEl = document.getElementById('bw-due');
+        if (dueEl) dueEl.textContent = EventFlow.formatCurrency(due);
+
+        // Fetch payments for this booking
+        EventFlow.apiGet('/bookings/' + bookingId + '/payments').then(function(paymentsRes) {
+            var payments = Array.isArray(paymentsRes) ? paymentsRes : (paymentsRes.payments || []);
+            var totalPaid = 0;
+            var paymentIds = {}; // to store successful payment IDs for receipts
+            payments.forEach(function(p) {
+                if (p.status === 'SUCCESS' || p.status === 'COMPLETED') {
+                    totalPaid += Number(p.amount);
+                    if (Number(p.amount) === (amt * 0.6)) paymentIds.stage1 = p.payment_id;
+                    if (Number(p.amount) === (amt * 0.4)) paymentIds.stage2 = p.payment_id;
+                    // fallback if amounts are slight off
+                    if (!paymentIds.stage1 && totalPaid >= amt * 0.5) paymentIds.stage1 = p.payment_id;
+                    else if (!paymentIds.stage2 && totalPaid >= amt * 0.9) paymentIds.stage2 = p.payment_id;
+                }
+            });
+
+            var stage1Amt = amt * 0.60;
+            var stage2Amt = amt * 0.40;
+            var s1Paid = totalPaid >= stage1Amt;
+            var s2Paid = totalPaid >= amt;
+
+            var milestoneContainer = document.getElementById('dynamic-milestones-container');
+            if (milestoneContainer) {
+                var htmlStr = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">' +
+                                '<h3>Payment Milestones</h3>' +
+                                '<button class="btn btn-outline btn-sm" onclick="window.open(\'http://localhost:5000/api/bookings/' + bookingId + '/statement?token=\' + EventFlow.getToken(), \'_blank\')"><span data-ef-icon="fileText" data-size="14"></span> Download Statement</button>' +
+                              '</div>';
+                
+                // Stage 1
+                htmlStr += '<div class="panel" style="margin-bottom:16px; border-left: 4px solid ' + (s1Paid ? '#10b981' : '#f59e0b') + ';">';
+                htmlStr += '<div style="display:flex; justify-content:space-between; align-items:center;">';
+                htmlStr += '<div>';
+                htmlStr += '<h4>Stage 1: Advance Booking (60%)</h4>';
+                htmlStr += '<p style="color:var(--muted); font-size:13px;">' + EventFlow.formatCurrency(stage1Amt) + '</p>';
+                htmlStr += '</div>';
+                if (s1Paid) {
+                    htmlStr += '<div style="display:flex; align-items:center; gap:12px;">';
+                    htmlStr += '<span style="color:#10b981; font-weight:bold;">&#10004; PAID</span>';
+                    htmlStr += '<button class="btn btn-outline btn-sm" onclick="window.open(\'http://localhost:5000/api/payments/' + (paymentIds.stage1 || payments[0].payment_id) + '/receipt?token=\' + EventFlow.getToken(), \'_blank\')">Receipt</button>';
+                    htmlStr += '</div>';
+                } else {
+                    htmlStr += '<button class="btn btn-primary btn-sm" id="btn-pay-stage1">Pay Now</button>';
+                }
+                htmlStr += '</div></div>';
+
+                // Stage 2
+                htmlStr += '<div class="panel" style="border-left: 4px solid ' + (s2Paid ? '#10b981' : (s1Paid ? '#f59e0b' : '#cbd5e1')) + ';">';
+                htmlStr += '<div style="display:flex; justify-content:space-between; align-items:center;">';
+                htmlStr += '<div>';
+                htmlStr += '<h4>Stage 2: Final Payment (40%)</h4>';
+                htmlStr += '<p style="color:var(--muted); font-size:13px;">' + EventFlow.formatCurrency(stage2Amt) + '</p>';
+                htmlStr += '</div>';
+                if (s2Paid) {
+                    htmlStr += '<div style="display:flex; align-items:center; gap:12px;">';
+                    htmlStr += '<span style="color:#10b981; font-weight:bold;">&#10004; PAID</span>';
+                    htmlStr += '<button class="btn btn-outline btn-sm" onclick="window.open(\'http://localhost:5000/api/payments/' + (paymentIds.stage2 || payments[payments.length-1].payment_id) + '/receipt?token=\' + EventFlow.getToken(), \'_blank\')">Receipt</button>';
+                    htmlStr += '</div>';
+                } else {
+                    htmlStr += '<button class="btn btn-primary btn-sm" id="btn-pay-stage2" ' + (s1Paid ? '' : 'disabled') + ' title="' + (s1Paid ? '' : 'Pay Stage 1 first') + '">Pay Now</button>';
+                }
+                htmlStr += '</div></div>';
+
+                milestoneContainer.innerHTML = htmlStr;
+
+                var btnPay1 = document.getElementById('btn-pay-stage1');
+                if (btnPay1) {
+                    btnPay1.onclick = function() {
+                        EventFlow.triggerPaymentModal(stage1Amt, bookingId, 'STAGE 1 (ADVANCE)', function() {
+                            EventFlow.showToast('Stage 1 payment completed successfully!', 'success');
+                            setTimeout(() => window.location.href = 'my-bookings.html', 1500);
+                        });
+                    };
+                }
+
+                var btnPay2 = document.getElementById('btn-pay-stage2');
+                if (btnPay2) {
+                    btnPay2.onclick = function() {
+                        EventFlow.triggerPaymentModal(stage2Amt, bookingId, 'STAGE 2 (FINAL)', function() {
+                            EventFlow.showToast('Stage 2 payment completed successfully!', 'success');
+                            setTimeout(() => window.location.href = 'my-bookings.html', 1500);
+                        });
+                    };
+                }
+            }
+        });
+
+        
+      }).catch(function (err) {
+        var mainEl = document.querySelector('.dash-content');
+        if (mainEl) {
+          mainEl.innerHTML = '<div class="ef-empty-state"><h3>Error loading booking</h3><p>' + err.message + '</p></div>';
+        }
+      });
+
+
+      var msgBtn = document.getElementById('btn-msg-mgr');
+      if (msgBtn) {
+        msgBtn.addEventListener('click', function () {
+          EventFlow.showToast('Connected to Manager via Priority Concierge', 'info');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

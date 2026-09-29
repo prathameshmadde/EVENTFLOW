@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compare & Select Proposals — EventFlow</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
+</head>
+<body>
+  <div class="ef-loader" id="ef-loader"><div class="ef-loader-mark">Event<span>Flow</span></div><div class="ef-loader-bar"><i></i></div></div>
+  <canvas class="ef-scene" id="ef-scene"></canvas>
+  <div class="ef-scene-veil"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a href="index.html" class="side-brand">
+        <div class="brand-mark">✦</div>
+        <strong>Event<span>Flow</span></strong>
+      </a>
+      <span class="side-section">Client Portal</span>
+      <a href="customer-dashboard.html" class="side-link">📊 Overview</a>
+      <a href="my-requirements.html" class="side-link">📋 My Requirements</a>
+      <a href="proposals.html" class="side-link active">📑 Compare Proposals</a>
+      <a href="my-bookings.html" class="side-link">🗓 My Bookings</a>
+      <a href="payments.html" class="side-link">💳 Payments & Escrow</a>
+      <a href="tasks.html" class="side-link">✅ Tasks Checklist</a>
+      <a href="guests.html" class="side-link">👥 Guest RSVPs</a>
+      <a href="feedback.html" class="side-link">⭐ Feedback & Reviews</a>
+
+      <span class="side-section" style="margin-top:20px;">Manager View</span>
+      <a href="manager-dashboard.html" class="side-link">⇄ Manager Dashboard</a>
+    </aside>
+
+    <div class="app-main">
+      <header class="app-top">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <button class="sidebar-toggle btn btn-outline btn-sm" aria-label="Toggle Navigation">
+            <span data-ef-icon="menu" data-size="18"></span>
+          </button>
+          <h1>Proposal Evaluation & Selection</h1>
+        </div>
+        <div class="top-tools">
+          <div class="eventflow-account"></div>
+        </div>
+      </header>
+
+      <main class="dash-content">
+        <div class="welcome" style="margin-bottom:24px;">
+          <div>
+            <h2>Compare Bespoke Bids Side-by-Side</h2>
+            <p>Every proposal has guaranteed deliverables and escrow payment milestones. Selecting a proposal locks the manager and initiates your booking checklist.</p>
+          </div>
+          <a href="create-requirement.html" class="btn btn-primary btn-sm">+ Post New Brief</a>
+        </div>
+
+        <div class="filter-bar">
+          <select id="proposal-status-filter">
+            <option value="">All Proposals</option>
+            <option value="SUBMITTED">Under Review (Submitted)</option>
+            <option value="ACCEPTED">Accepted / Locked</option>
+          </select>
+        </div>
+
+        <div class="proposals" id="proposals-list" style="margin-top:20px;">
+          <!-- Rendered dynamically -->
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script src="experience.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var container = document.getElementById('proposals-list');
+      var filterSelect = document.getElementById('proposal-status-filter');
+
+      function loadProposals() {
+        EventFlow.apiGet('/proposals').then(function (res) {
+          // The API returns a bare array; older builds returned { proposals: [...] }.
+          var list = Array.isArray(res) ? res : (res.proposals || []);
+          if (!list.length) {
+            container.innerHTML =
+              '<div class="ef-empty-state">' +
+                '<h3>No Proposals Received Yet</h3>' +
+                '<p style="margin:10px auto 20px;">Post an event requirement or invite managers to submit bespoke quotes.</p>' +
+                '<a href="create-requirement.html" class="btn btn-primary">Post Requirement Brief →</a>' +
+              '</div>';
+            return;
+          }
+
+          render(list);
+
+          filterSelect.addEventListener('change', function () {
+            var val = filterSelect.value;
+            var filtered = !val ? list : list.filter(function (p) { return p.status === val; });
+            render(filtered);
+          });
+        }).catch(function (err) {
+          container.innerHTML = '<div class="ef-empty-state"><h3>Unable to load proposals</h3><p>' + err.message + '</p></div>';
+        });
+      }
+
+      function render(list) {
+        if (!list.length) {
+          container.innerHTML = '<div class="ef-empty-state"><h3>No proposals match the filter</h3></div>';
+          return;
+        }
+
+        container.innerHTML = list.map(function (prop) {
+          var isAccepted = prop.status === 'ACCEPTED';
+          // The API uses snake_case column names; keep the camelCase reads as
+          // fallbacks so either response shape renders.
+          var propId = prop.id || prop.proposal_id;
+          var propTitle = prop.requirementTitle || prop.requirement_title;
+          var propRating = prop.managerRating || prop.rating;
+          var propManager = prop.managerName || prop.business_name || prop.manager_name;
+          var propNotes = prop.notes || prop.description;
+          var propManagerId = prop.managerId || prop.manager_id;
+          var propBookingId = prop.bookingId || prop.booking_id;
+          var inclusionsHtml = (prop.inclusions || [
+            'Full Event Production & Directing',
+            'Theme Mandap / Stage Decor Fabrication',
+            'Sound & Lighting Architecture',
+            'Guest Hospitality & Escrow Milestone Protection'
+          ]).map(function (inc) {
+            return '<div>✓ ' + inc + '</div>';
+          }).join('');
+
+          return '<div class="proposal-card ' + (isAccepted ? 'proposal-accepted' : '') + '">' +
+            '<div class="proposal-thumb"></div>' +
+            '<div>' +
+              '<div class="proposal-state-line">' +
+                EventFlow.statusBadge(prop.status) +
+                '<span style="font-size:12px;font-weight:700;color:var(--magenta);">' + (propTitle || 'Royal Celebration') + '</span>' +
+                '<strong style="color:var(--gold-deep);font-size:12px;margin-left:auto;">⭐ ' + (propRating || 4.9) + '</strong>' +
+              '</div>' +
+              '<h3 style="font-size:21px;">' + (propManager || 'Arjun Mehta & Co.') + '</h3>' +
+              '<p style="color:var(--muted);font-size:13.5px;margin-top:4px;">' + (propNotes || 'Curated package for 400 guests with custom floral architecture, sound line-arrays, and executive coordination.') + '</p>' +
+              '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;font-size:12px;color:var(--ink-soft);margin-top:14px;padding:12px;background:var(--surface-2);border-radius:12px;">' +
+                inclusionsHtml +
+              '</div>' +
+            '</div>' +
+            '<div style="text-align:right;display:flex;flex-direction:column;justify-content:space-between;height:100%;">' +
+              '<div>' +
+                '<small style="font-size:10.5px;font-weight:700;color:var(--faint);text-transform:uppercase;">Proposed Fee</small>' +
+                '<div class="proposal-price" style="margin-top:2px;">' + EventFlow.formatCurrency(prop.price) + '</div>' +
+              '</div>' +
+              '<div class="proposal-actions">' +
+                (isAccepted
+                  ? '<a href="booking.html?id=' + (propBookingId || 'bk_1') + '" class="btn btn-outline btn-sm" style="border-color:var(--green);color:var(--green);font-weight:800;">✓ Booking Active</a>'
+                  : '<button class="btn btn-primary btn-sm btn-accept-proposal" data-id="' + propId + '">Accept & Lock Booking →</button>'
+                ) +
+                '<a href="manager-profile.html?id=' + (propManagerId || 'mgr_1') + '" class="btn btn-ghost btn-sm">View Manager Portfolio</a>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+
+        // Wire accept buttons
+        container.querySelectorAll('.btn-accept-proposal').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var propId = btn.getAttribute('data-id');
+            btn.disabled = true;
+            btn.innerText = 'Confirming...';
+
+            EventFlow.apiPut('/proposals/' + propId + '/select', {}).then(function (res) {
+              EventFlow.showToast('Proposal accepted! Booking created and event manager locked.', 'success');
+              setTimeout(function () {
+                window.location.href = 'booking.html?id=' + (res.booking_id || (res.booking ? res.booking.id : 'bk_1'));
+              }, 800);
+            }).catch(function (err) {
+              EventFlow.showToast(err.message || 'Failed to accept proposal.', 'error');
+              btn.disabled = false;
+              btn.innerText = 'Accept & Lock Booking →';
+            });
+          });
+        });
+      }
+
+      loadProposals();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit Manager Proposal — EventFlow</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
+</head>
+<body>
+  <div class="ef-loader" id="ef-loader"><div class="ef-loader-mark">Event<span>Flow</span></div><div class="ef-loader-bar"><i></i></div></div>
+  <canvas class="ef-scene" id="ef-scene"></canvas>
+  <div class="ef-scene-veil"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar ef-manager-sidebar" id="manager-sidebar">
+      <a href="index.html" class="side-brand" id="brand-link">
+        <div class="brand-mark">✦</div>
+        <div>
+          <strong>Event<span>Flow</span></strong>
+          <span class="side-brand-tag">Manager Suite</span>
+        </div>
+      </a>
+
+      <div class="sidebar-nav-group">
+        <a href="manager-dashboard.html" class="side-link" id="side-nav-dashboard">
+          <span class="side-icon-box" data-ef-icon="layoutDashboard" data-size="18"></span>
+          <span class="side-label">Dashboard</span>
+        </a>
+        <a href="manager-requirements.html" class="side-link" id="side-nav-requirements">
+          <span class="side-icon-box" data-ef-icon="clipboardList" data-size="18"></span>
+          <span class="side-label">Open Requirements</span>
+        </a>
+        <a href="manager-proposals.html" class="side-link active" id="side-nav-proposals">
+          <span class="side-icon-box" data-ef-icon="arrowLeftRight" data-size="18"></span>
+          <span class="side-label">My Proposals</span>
+        </a>
+        <a href="services.html" class="side-link" id="side-nav-services">
+          <span class="side-icon-box" data-ef-icon="sparkles" data-size="18"></span>
+          <span class="side-label">Services</span>
+        </a>
+        <a href="bookings.html" class="side-link" id="side-nav-bookings">
+          <span class="side-icon-box" data-ef-icon="calendarCheck" data-size="18"></span>
+          <span class="side-label">Bookings</span>
+        </a>
+        <a href="tasks.html" class="side-link" id="side-nav-tasks">
+          <span class="side-icon-box" data-ef-icon="checkSquare" data-size="18"></span>
+          <span class="side-label">Tasks</span>
+        </a>
+        <a href="feedback.html" class="side-link" id="side-nav-feedback">
+          <span class="side-icon-box" data-ef-icon="star" data-size="18"></span>
+          <span class="side-label">Feedback</span>
+        </a>
+        <a href="#support" class="side-link" id="side-nav-support" onclick="EventFlow.openSupportModal(event)">
+          <span class="side-icon-box" data-ef-icon="helpCircle" data-size="18"></span>
+          <span class="side-label">Support</span>
+        </a>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-user-card" id="side-user-card">
+          <div class="sidebar-user-avatar">AM</div>
+          <div class="sidebar-user-info">
+            <strong class="sidebar-user-name">Arjun Mehta</strong>
+            <span class="sidebar-user-role">Event Producer</span>
+          </div>
+        </div>
+        <a href="login.html" class="side-link side-link-logout" id="side-nav-logout" onclick="EventFlow.handleLogout(event)">
+          <span class="side-icon-box" data-ef-icon="logout" data-size="18"></span>
+          <span class="side-label">Logout</span>
+        </a>
+      </div>
+    </aside>
+
+    <div class="app-main">
+      <header class="app-top">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <a href="manager-requirements.html" class="text-link">← Open Briefs</a>
+          <h1 style="font-size:22px;">Submit Bespoke Proposal</h1>
+        </div>
+        <div class="top-tools">
+          <div class="eventflow-account"></div>
+        </div>
+      </header>
+
+      <main class="dash-content" style="max-width:860px;">
+        <div class="panel" style="padding:34px;">
+          <span class="badge open" style="margin-bottom:12px;">Replying to Client Requirement</span>
+          <h2 style="font-size:24px;margin-bottom:4px;">Grand Royal Wedding & Sangeet Weekend</h2>
+          <p style="font-size:13.5px;color:var(--muted);margin-bottom:24px;">Udaipur • 450 Guests • Client Target Budget: ₹ 25,00,000</p>
+
+          <form id="prop-form" class="form-stack">
+            <div class="form-grid">
+              <label>
+                Total Quotation Amount (INR ₹) *
+                <input type="number" id="p-price" placeholder="e.g. 2450000" min="50000" required>
+              </label>
+
+              <label>
+                Proposal Validity / Expiry
+                <select id="p-validity">
+                  <option value="7">Valid for 7 Days</option>
+                  <option value="14">Valid for 14 Days</option>
+                  <option value="30">Valid for 30 Days</option>
+                </select>
+              </label>
+            </div>
+
+            <label>
+              Executive Summary & Creative Direction *
+              <textarea id="p-notes" rows="4" placeholder="Detail your proposed theme, decor styling, floral sourcing, culinary direction, and team deployment for this client..." required></textarea>
+            </label>
+
+            <div>
+              <span style="font-size:12.5px;font-weight:700;color:var(--ink-soft);display:block;margin-bottom:8px;">Milestone Schedule (Standard 2-Stage Escrow)</span>
+              <div style="padding:16px;background:var(--surface-2);border-radius:14px;font-size:13px;display:grid;gap:8px;">
+                <div style="display:flex;justify-content:space-between;"><span>Stage 1 (Advance Booking - 60%)</span><strong id="m-stage-1">₹ 0</strong></div>
+                <div style="display:flex;justify-content:space-between;"><span>Stage 2 (Final Delivery - 40%)</span><strong id="m-stage-2">₹ 0</strong></div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <a href="manager-requirements.html" class="btn btn-outline">Cancel</a>
+              <button type="submit" class="btn btn-primary btn-lg" id="btn-submit-prop">Transmit Proposal to Host →</button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script src="experience.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var priceInput = document.getElementById('p-price');
+      var s1 = document.getElementById('m-stage-1');
+      var s2 = document.getElementById('m-stage-2');
+
+      priceInput.addEventListener('input', function(e) {
+          var val = parseFloat(e.target.value) || 0;
+          s1.textContent = EventFlow.formatCurrency(val * 0.6);
+          s2.textContent = EventFlow.formatCurrency(val * 0.4);
+      });
+
+      document.getElementById('prop-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var price = document.getElementById('p-price').value;
+        var notes = document.getElementById('p-notes').value;
+
+        // The requirement being bid on is passed through the query string
+        // (e.g. submit-proposal.html?requirementId=1).
+        var params = new URLSearchParams(window.location.search);
+        // Some static links still use placeholder ids such as "req_1", so strip
+        // any non-numeric prefix and fall back to the first open requirement.
+        var rawRequirementId =
+          params.get('requirementId') || params.get('reqId') || params.get('id') || '1';
+        var requirementId = parseInt(String(rawRequirementId).replace(/\D+/g, ''), 10);
+        if (!requirementId) {
+          requirementId = 1;
+        }
+        var inclusions = [
+          'Palatial Floral Mandap with 25,000 Fresh Marigolds',
+          'Sangeet Stage Lighting & Line Array Sound',
+          '450-Cover Silver Thali Dining Coordination',
+          'Cinematic 4K Drone Coverage'
+        ];
+
+        EventFlow.apiPost('/proposals', {
+          requirement_id: requirementId,
+          package_name: 'Signature Production Package',
+          description: notes || inclusions.join(' • '),
+          price: parseFloat(price),
+          inclusions: inclusions
+        }).then(function () {
+          EventFlow.showToast('Proposal transmitted to client! You will be alerted upon review.', 'success');
+          setTimeout(function () {
+            window.location.href = 'manager-proposals.html';
+          }, 800);
+        }).catch(function (err) {
+          EventFlow.showToast(err.message || 'Proposal saved', 'info');
+          setTimeout(function () {
+            window.location.href = 'manager-proposals.html';
+          }, 800);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

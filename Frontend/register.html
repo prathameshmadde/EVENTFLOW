@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Your Account — EventFlow</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
+</head>
+<body>
+  <div class="ef-loader" id="ef-loader"><div class="ef-loader-mark">Event<span>Flow</span></div><div class="ef-loader-bar"><i></i></div></div>
+  <canvas class="ef-scene" id="ef-scene"></canvas>
+  <div class="ef-scene-veil"></div>
+
+  <div class="auth-wrap">
+    <div class="panel auth-box">
+      <div style="text-align:center;margin-bottom:24px;">
+        <a href="index.html" class="brand" style="justify-content:center;margin-bottom:12px;">
+          <div class="brand-mark">✦</div>
+          <strong style="font-size:22px;">Event<span style="color:var(--gold);">Flow</span></strong>
+        </a>
+        <h1 style="font-size:24px;margin-bottom:6px;">Join the Event Network</h1>
+        <p style="font-size:13.5px;color:var(--muted);">Post bespoke celebration briefs or bid as an accredited event producer.</p>
+      </div>
+
+      <form id="reg-form" class="form-stack">
+        <label>
+          Account Type *
+          <select id="r-role" required>
+            <option value="customer">Event Host / Client (Planning a Celebration)</option>
+            <option value="manager">Event Manager / Production Company (Bidding on Events)</option>
+          </select>
+        </label>
+
+        <label>
+          Full Name / Company Name *
+          <input type="text" id="r-name" placeholder="e.g. Kavita Kapoor or Kapoor Luxury Events" required>
+        </label>
+
+        <label>
+          Email Address *
+          <input type="email" id="r-email" placeholder="kavita@domain.com" required>
+        </label>
+
+        <div class="form-grid">
+          <label>
+            Primary City *
+            <input type="text" id="r-city" placeholder="e.g. Mumbai, Delhi, Jaipur" required>
+          </label>
+          <label>
+            Phone Number *
+            <input type="tel" id="r-phone" placeholder="+91 98200 00000" required>
+          </label>
+        </div>
+
+        <label>
+          Set Password *
+          <input type="password" id="r-pass" placeholder="At least 8 characters" required>
+        </label>
+
+        <button type="submit" class="btn btn-primary btn-lg" id="btn-reg" style="margin-top:10px;">Create Verified Account →</button>
+      </form>
+
+      <div style="text-align:center;margin-top:20px;font-size:13px;color:var(--muted);">
+        Already have an account? <a href="login.html" class="text-link" style="font-weight:700;">Sign In</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script src="experience.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.getElementById('reg-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var name = document.getElementById('r-name').value;
+        var email = document.getElementById('r-email').value;
+        var password = document.getElementById('r-pass').value;
+        var role = document.getElementById('r-role').value;
+        var city = document.getElementById('r-city').value;
+        var normalizedRole = role === 'manager' ? 'EVENT_MANAGER' : 'CUSTOMER';
+
+        EventFlow.apiPost('/auth/register', {
+          name: name,
+          email: email,
+          password: password,
+          role: normalizedRole,
+          location: city
+        }).then(function (res) {
+          EventFlow.setToken(res.session_token);
+          var registered = res.user || {
+            user_id: res.user_id,
+            name: name,
+            email: email,
+            role: res.role || normalizedRole
+          };
+          registered.city = city;
+          EventFlow.setUser(registered);
+          EventFlow.showToast('Account registered successfully! Welcome to EventFlow.', 'success');
+          setTimeout(function () {
+            window.location.href = role === 'manager' ? 'manager-dashboard.html' : 'customer-dashboard.html';
+          }, 600);
+        }).catch(function (err) {
+          EventFlow.showToast(err.message || 'Registration failed. Please try again.', 'error');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rate & Review Event Manager — EventFlow</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
+</head>
+<body>
+  <div class="ef-loader" id="ef-loader"><div class="ef-loader-mark">Event<span>Flow</span></div><div class="ef-loader-bar"><i></i></div></div>
+  <canvas class="ef-scene" id="ef-scene"></canvas>
+  <div class="ef-scene-veil"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar ef-customer-sidebar" id="customer-sidebar">
+      <a href="index.html" class="side-brand" id="brand-link">
+        <div class="brand-mark">o</div>
+        <div>
+          <strong>Event<span>Flow</span></strong>
+          <span class="side-brand-tag">Client Portal</span>
+        </div>
+      </a>
+
+      <div class="sidebar-nav-group">
+        <a href="customer-dashboard.html" class="side-link" id="side-nav-dashboard">
+          <span class="side-icon-box" data-ef-icon="layoutDashboard" data-size="18"></span>
+          <span class="side-label">Overview</span>
+        </a>
+        <a href="requirements.html" class="side-link" id="side-nav-requirements">
+          <span class="side-icon-box" data-ef-icon="clipboardList" data-size="18"></span>
+          <span class="side-label">My Requirements</span>
+        </a>
+        <a href="proposals.html" class="side-link" id="side-nav-proposals">
+          <span class="side-icon-box" data-ef-icon="arrowLeftRight" data-size="18"></span>
+          <span class="side-label">Compare Proposals</span>
+        </a>
+        <a href="my-bookings.html" class="side-link" id="side-nav-bookings">
+          <span class="side-icon-box" data-ef-icon="calendarCheck" data-size="18"></span>
+          <span class="side-label">My Bookings</span>
+        </a>
+        
+        <span class="side-section" style="margin-top:20px;">Feedback & Support</span>
+        <a href="feedback.html" class="side-link active" id="side-nav-feedback">
+          <span class="side-icon-box" data-ef-icon="star" data-size="18"></span>
+          <span class="side-label">Give Feedback</span>
+        </a>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-user-card" id="side-user-card">
+          <div class="sidebar-user-avatar" id="side-user-avatar">PS</div>
+          <div class="sidebar-user-info">
+            <strong class="sidebar-user-name" id="side-user-name">Prathamesh</strong>
+            <span class="sidebar-user-role" id="side-user-role">Host & Client</span>
+          </div>
+        </div>
+        <a href="login.html" class="side-link side-link-logout" id="side-nav-logout" onclick="EventFlow.handleLogout(event)">
+          <span class="side-icon-box" data-ef-icon="logout" data-size="18"></span>
+          <span class="side-label">Logout</span>
+        </a>
+      </div>
+    </aside>
+
+    <div class="app-main">
+      <header class="app-top">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <a href="booking.html" class="text-link">← Event</a>
+          <h1>Verified Experience Feedback</h1>
+        </div>
+        <div class="top-tools">
+          <div class="eventflow-account"></div>
+        </div>
+      </header>
+
+      <main class="dash-content" style="max-width:760px;">
+        <div class="panel" style="padding:36px;">
+          <span class="badge active" style="margin-bottom:12px;">Verified Host Signoff</span>
+          <h2 style="font-size:24px;margin-bottom:6px;">Rate Your Event Experience</h2>
+          <p style="font-size:13.5px;color:var(--muted);margin-bottom:24px;">
+            Your verified review helps other families and couples discover trustworthy event producers while celebrating outstanding craftsmanship.
+          </p>
+
+                    <form id="feedback-form" class="form-stack">
+            <label id="booking-select-wrapper" style="display:none;">
+              Select Event Booking
+              <select id="fb-booking-id" required>
+                <option value="">Loading your bookings...</option>
+              </select>
+            </label>
+            <div>
+              <span style="font-size:13px;font-weight:700;display:block;margin-bottom:8px;">Overall Star Rating</span>
+              <div style="font-size:32px;color:var(--gold);cursor:pointer;letter-spacing:4px;" id="star-picker">
+                ★★★★★
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <label>
+                Decor & Aesthetic Fidelity
+                <select>
+                  <option>5 - Exceeded expectations</option>
+                  <option>4 - Very good</option>
+                  <option>3 - Acceptable</option>
+                </select>
+              </label>
+
+              <label>
+                Coordination & Punctuality
+                <select>
+                  <option>5 - Flawless timing</option>
+                  <option>4 - Minor delays handled well</option>
+                  <option>3 - Standard</option>
+                </select>
+              </label>
+            </div>
+
+            <label>
+              Your Written Review *
+              <textarea id="fb-text" rows="5" placeholder="Share your experience: How did the decor look? How was the food and sound? Did the manager handle guest coordination effectively?" required></textarea>
+            </label>
+
+            <label style="flex-direction:row;align-items:center;gap:10px;">
+              <input type="checkbox" checked style="width:18px;height:18px;">
+              <span>I recommend this Event Producer to future hosts on EventFlow</span>
+            </label>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary btn-lg" id="fb-submit">Publish Verified Review</button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script src="experience.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var urlParams = new URLSearchParams(window.location.search);
+      var bookingId = urlParams.get('booking_id') || urlParams.get('id');
+      
+      if (!bookingId) {
+          document.getElementById('booking-select-wrapper').style.display = 'flex';
+          EventFlow.apiGet('/bookings').then(function(res) {
+              var bookings = Array.isArray(res) ? res : (res.bookings || []);
+              var select = document.getElementById('fb-booking-id');
+              select.innerHTML = '<option value="">-- Select an Event --</option>';
+              bookings.forEach(function(b) {
+                  var opt = document.createElement('option');
+                  opt.value = b.booking_id || b.id;
+                  opt.textContent = (b.requirement_title || b.event_name || 'Event') + ' (' + new Date(b.event_date).toLocaleDateString() + ')';
+                  select.appendChild(opt);
+              });
+          }).catch(function(err) {
+              document.getElementById('fb-booking-id').innerHTML = '<option value="">No bookings found</option>';
+          });
+      }
+
+      var userStr = localStorage.getItem('ef_user');
+      if (userStr) {
+        try {
+          var user = JSON.parse(userStr);
+          var nameEl = document.getElementById('side-user-name');
+          if (nameEl) nameEl.textContent = user.name;
+          var avatarEl = document.getElementById('side-user-avatar');
+          if (avatarEl) {
+             var initials = user.name.split(' ').map(function(n){ return n[0]; }).join('').substring(0,2).toUpperCase();
+             avatarEl.textContent = initials;
+          }
+        } catch (e) {}
+      }
+      document.getElementById('feedback-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        
+
+        var txt = document.getElementById('fb-text').value;
+        var selectedBookingId = document.getElementById('fb-booking-id') ? document.getElementById('fb-booking-id').value : null;
+
+        var urlParams = new URLSearchParams(window.location.search);
+        var bookingId = urlParams.get('booking_id') || urlParams.get('id');
+        var managerId = urlParams.get('manager_id');
+        
+        var payload = {
+          rating: 5,
+          comment: txt
+        };
+        if (bookingId) payload.booking_id = parseInt(bookingId);
+        else if (selectedBookingId) payload.booking_id = parseInt(selectedBookingId);
+        if (managerId) payload.manager_id = parseInt(managerId);
+
+        EventFlow.apiPost('/feedback', payload).then(function () {
+          EventFlow.showToast('Thank you! Your verified feedback has been published.', 'success');
+          setTimeout(function () {
+            window.location.href = 'customer-dashboard.html';
+          }, 900);
+        }).catch(function (err) {
+          EventFlow.showToast(err.message || 'Failed to submit feedback', 'error');
+          btn.disabled = false;
+          btn.innerText = 'Publish Verified Feedback';
+        });
+      });
+    });
+  </script>
+</body>
+</html>

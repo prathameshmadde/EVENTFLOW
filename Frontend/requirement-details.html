@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Requirement Overview & Bids — EventFlow</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
+</head>
+<body>
+  <div class="ef-loader" id="ef-loader"><div class="ef-loader-mark">Event<span>Flow</span></div><div class="ef-loader-bar"><i></i></div></div>
+  <canvas class="ef-scene" id="ef-scene"></canvas>
+  <div class="ef-scene-veil"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a href="index.html" class="side-brand">
+        <div class="brand-mark">✦</div>
+        <strong>Event<span>Flow</span></strong>
+      </a>
+      <span class="side-section">Client Portal</span>
+      <a href="customer-dashboard.html" class="side-link">📊 Overview</a>
+      <a href="my-requirements.html" class="side-link active">📋 My Requirements</a>
+      <a href="proposals.html" class="side-link">📑 Compare Proposals</a>
+      <a href="my-bookings.html" class="side-link">🗓 My Bookings</a>
+      <a href="payments.html" class="side-link">💳 Payments & Escrow</a>
+    </aside>
+
+    <div class="app-main">
+      <header class="app-top">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <a href="my-requirements.html" class="text-link">← Requirements</a>
+          <h1 style="font-size:22px;">Requirement Brief Details</h1>
+        </div>
+        <div class="top-tools">
+          <div class="eventflow-account"></div>
+        </div>
+      </header>
+
+      <main class="dash-content">
+        <div class="dash-grid">
+          <div>
+            <div class="panel" style="margin-bottom:24px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                <span class="badge open">OPEN FOR BIDS</span>
+                <span style="font-size:12px;font-weight:700;color:var(--magenta);">Occasion: Wedding</span>
+              </div>
+              <h2 style="font-size:26px;margin-bottom:12px;">Grand Royal Wedding & Sangeet Gala</h2>
+              <p style="font-size:14.5px;color:var(--muted);line-height:1.65;margin-bottom:20px;">
+                Seeking a bespoke luxury event management company to produce our 3-day royal wedding in Udaipur. Requirements include palatial mandap decor, floral architecture, catering liaison for 450 guests, lighting, and cinematic live stream.
+              </p>
+
+              <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:14px;padding:16px;background:var(--surface-2);border-radius:14px;">
+                <div><small style="font-size:10.5px;font-weight:700;color:var(--faint);text-transform:uppercase;">Event Date</small><strong style="display:block;font-size:14px;color:var(--ink);margin-top:2px;">15 Nov 2026</strong></div>
+                <div><small style="font-size:10.5px;font-weight:700;color:var(--faint);text-transform:uppercase;">Guests</small><strong style="display:block;font-size:14px;color:var(--ink);margin-top:2px;">450 Attendees</strong></div>
+                <div><small style="font-size:10.5px;font-weight:700;color:var(--faint);text-transform:uppercase;">Target Budget</small><strong style="display:block;font-size:14px;color:var(--ink);margin-top:2px;">₹ 25,00,000</strong></div>
+              </div>
+            </div>
+
+            <!-- Proposals Received for this requirement -->
+            <div class="panel">
+              <div class="panel-head">
+                <h3 style="font-size:18px;">Submitted Manager Proposals (2)</h3>
+                <a href="proposals.html" class="text-link">Side-by-Side Comparison →</a>
+              </div>
+
+              <div class="proposals" id="bids-list">
+                <div class="proposal-card">
+                  <div class="proposal-thumb"></div>
+                  <div>
+                    <div class="proposal-state-line">
+                      <span class="badge submitted">SUBMITTED</span>
+                      <strong style="color:var(--gold-deep);font-size:12px;">⭐ 4.95 (128 reviews)</strong>
+                    </div>
+                    <h3>Arjun Mehta & Co.</h3>
+                    <p>Signature Royal Mandap with 25,000 fresh marigolds, shehnai troupe, silver thali service & cinematic drone film.</p>
+                    <small>✓ Stage Decor & Floral • ✓ Artist Liaison • ✓ Sound & Lighting • ✓ Escrow Milestones Included</small>
+                  </div>
+                  <div>
+                    <div class="proposal-price">₹ 24,50,000</div>
+                    <div class="proposal-actions">
+                      <a href="proposals.html" class="btn btn-primary btn-sm">Select & Accept Bid</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="panel" style="position:sticky;top:100px;">
+              <h3 style="font-size:18px;margin-bottom:12px;">Brief Control</h3>
+              <p style="font-size:13px;color:var(--muted);margin-bottom:18px;">Need to adjust your date or budget? Update the parameters to notify all bidding managers.</p>
+              <a href="proposals.html" class="btn btn-primary" style="width:100%;margin-bottom:10px;">Compare Proposals Side-by-Side</a>
+              <a href="my-requirements.html" class="btn btn-outline" style="width:100%;">Return to Requirements</a>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script src="experience.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var urlParams = new URLSearchParams(window.location.search);
+      var reqId = urlParams.get('id');
+
+      if (!reqId) {
+        document.querySelector('.dash-content').innerHTML = '<div class="ef-empty-state"><h3>No Requirement ID Provided</h3><p>Please select a requirement to view details.</p></div>';
+        return;
+      }
+
+      function loadDetails() {
+        EventFlow.apiGet('/requirements/' + reqId).then(function(req) {
+          document.querySelector('h1').innerText = 'Requirement Brief Details';
+          
+          var reqTitle = req.title || req.requirementTitle || req.requirement_title || 'Event Requirement';
+          var reqCategory = req.category || req.eventName || req.event_name || 'Event';
+          var reqDate = req.date || req.eventDate || req.event_date;
+          var reqGuests = req.guestCount || req.guest_count || 0;
+          var reqDescription = req.description || req.specialRequirements || req.special_requirements || 'Bespoke event production requirement.';
+          var budget = req.budget || req.estimatedAmount || req.estimated_amount || 0;
+          var status = req.status || 'OPEN';
+
+          document.querySelector('.dash-grid > div:first-child .panel:first-child').innerHTML = 
+              '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">' +
+                EventFlow.statusBadge(status) +
+                '<span style="font-size:12px;font-weight:700;color:var(--magenta);">Occasion: ' + reqCategory + '</span>' +
+              '</div>' +
+              '<h2 style="font-size:26px;margin-bottom:12px;">' + reqTitle + '</h2>' +
+              '<p style="font-size:14.5px;color:var(--muted);line-height:1.65;margin-bottom:20px;">' + reqDescription + '</p>' +
+              '<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:14px;padding:16px;background:var(--surface-2);border-radius:14px;">' +
+                '<div><small style="font-size:10.5px;font-weight:700;color:var(--faint);text-transform:uppercase;">Event Date</small><strong style="display:block;font-size:14px;color:var(--ink);margin-top:2px;">' + (reqDate ? EventFlow.formatDate(reqDate) : '-') + '</strong></div>' +
+                '<div><small style="font-size:10.5px;font-weight:700;color:var(--faint);text-transform:uppercase;">Guests</small><strong style="display:block;font-size:14px;color:var(--ink);margin-top:2px;">' + reqGuests + ' Attendees</strong></div>' +
+                '<div><small style="font-size:10.5px;font-weight:700;color:var(--faint);text-transform:uppercase;">Target Budget</small><strong style="display:block;font-size:14px;color:var(--ink);margin-top:2px;">' + EventFlow.formatCurrency(budget) + '</strong></div>' +
+              '</div>';
+
+          // Load proposals
+          EventFlow.apiGet('/requirements/' + reqId + '/proposals').then(function(proposalsRes) {
+            var proposals = Array.isArray(proposalsRes) ? proposalsRes : (proposalsRes.proposals || []);
+            var bidsList = document.getElementById('bids-list');
+            var panelHead = bidsList.previousElementSibling;
+            
+            panelHead.querySelector('h3').innerText = 'Submitted Manager Proposals (' + proposals.length + ')';
+            
+            if (!proposals.length) {
+              bidsList.innerHTML = '<p style="color:var(--muted);font-size:14px;padding:20px 0;">No proposals received yet.</p>';
+              return;
+            }
+
+            bidsList.innerHTML = proposals.map(function(prop) {
+              var managerName = prop.managerName || prop.manager_name || prop.businessName || prop.business_name || 'Manager';
+              var desc = prop.description || prop.proposalDescription || prop.proposal_description || 'No description provided.';
+              var price = prop.price || prop.proposalPrice || prop.proposal_price || prop.estimatedAmount || prop.estimated_amount || 0;
+              
+              return '<div class="proposal-card">' +
+                '<div class="proposal-thumb"></div>' +
+                '<div>' +
+                  '<div class="proposal-state-line">' +
+                    '<span class="badge submitted">' + (prop.status || 'SUBMITTED') + '</span>' +
+                  '</div>' +
+                  '<h3>' + managerName + '</h3>' +
+                  '<p>' + desc + '</p>' +
+                '</div>' +
+                '<div>' +
+                  '<div class="proposal-price">' + EventFlow.formatCurrency(price) + '</div>' +
+                  '<div class="proposal-actions">' +
+                    '<a href="proposals.html?reqId=' + reqId + '" class="btn btn-primary btn-sm">Select & Accept Bid</a>' +
+                  '</div>' +
+                '</div>' +
+              '</div>';
+            }).join('');
+          }).catch(function(err) {
+             document.getElementById('bids-list').innerHTML = '<p style="color:red;">Error loading proposals: ' + err.message + '</p>';
+          });
+
+        }).catch(function(err) {
+          document.querySelector('.dash-content').innerHTML = '<div class="ef-empty-state"><h3>Error</h3><p>' + err.message + '</p></div>';
+        });
+      }
+
+      loadDetails();
+    });
+  </script>
+</body>
+</html>

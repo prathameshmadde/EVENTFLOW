@@ -1,0 +1,29 @@
+const fs = require('fs');
+
+let html = fs.readFileSync('customer-dashboard.html', 'utf8');
+
+// Fix payment status checks
+html = html.replace(/p\.status === 'COMPLETED'/g, "(p.status === 'COMPLETED' || p.status === 'SUCCESS')");
+
+// Add CSS for glow animation
+const cssToInject = `
+    @keyframes borderGlow {
+      0% { box-shadow: 0 0 5px rgba(212,175,55,0.2); border-color: rgba(212,175,55,0.5); }
+      50% { box-shadow: 0 0 15px rgba(212,175,55,0.8); border-color: rgba(212,175,55,1); }
+      100% { box-shadow: 0 0 5px rgba(212,175,55,0.2); border-color: rgba(212,175,55,0.5); }
+    }
+    .milestone-step-box {
+      transition: all 0.3s ease;
+      border: 1px solid var(--color-border);
+    }
+    .milestone-step-box:hover {
+      animation: borderGlow 1.5s infinite;
+      transform: translateY(-2px);
+    }
+`;
+
+html = html.replace('</style>', cssToInject + '\n  </style>');
+
+fs.writeFileSync('customer-dashboard.html', html);
+console.log('Fixed payment status bug and added glow animation');
+

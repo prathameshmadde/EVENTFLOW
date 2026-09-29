@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guest List & RSVP Management — EventFlow</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
+</head>
+<body>
+  <div class="ef-loader" id="ef-loader"><div class="ef-loader-mark">Event<span>Flow</span></div><div class="ef-loader-bar"><i></i></div></div>
+  <canvas class="ef-scene" id="ef-scene"></canvas>
+  <div class="ef-scene-veil"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a href="index.html" class="side-brand">
+        <div class="brand-mark">✦</div>
+        <strong>Event<span>Flow</span></strong>
+      </a>
+      <span class="side-section">Event Workspace</span>
+      <a href="booking.html" class="side-link">🗓 Booking Overview</a>
+      <a href="payments.html" class="side-link">💳 Escrow & Payments</a>
+      <a href="tasks.html" class="side-link">✅ Tasks Checklist</a>
+      <a href="guests.html" class="side-link active">👥 Guest List & RSVPs</a>
+      <a href="feedback.html" class="side-link">⭐ Feedback & Reviews</a>
+
+      <span class="side-section" style="margin-top:20px;">Navigation</span>
+      <a href="customer-dashboard.html" class="side-link">📊 Client Dashboard</a>
+    </aside>
+
+    <div class="app-main">
+      <header class="app-top">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <a href="booking.html" class="text-link">← Event</a>
+          <h1>Guest List & RSVP Management</h1>
+        </div>
+        <div class="top-tools">
+          <div class="eventflow-account"></div>
+          <button class="btn btn-primary btn-sm" id="btn-show-add-guest">+ Add Guest</button>
+        </div>
+      </header>
+
+      <main class="dash-content">
+        <div class="stats">
+          <div class="stat">
+            <small>Total Expected</small>
+            <strong>450</strong>
+            <small>Capacity: 500 Guests</small>
+          </div>
+          <div class="stat purple">
+            <small>Attending (RSVP Yes)</small>
+            <strong style="color:var(--green);">320</strong>
+            <small>Catering headcount locked</small>
+          </div>
+          <div class="stat gold">
+            <small>Awaiting Response</small>
+            <strong style="color:var(--amber);">95</strong>
+            <small>Reminders scheduled</small>
+          </div>
+          <div class="stat pink">
+            <small>Declined</small>
+            <strong style="color:var(--rose);">35</strong>
+            <small>Not attending</small>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2 style="font-size:20px;">Attendee Registry</h2>
+            </div>
+            <div class="filter-bar" style="margin-bottom:0;">
+              <input type="text" id="guest-search" placeholder="Search guests...">
+              <select id="rsvp-filter">
+                <option value="">All Statuses</option>
+                <option value="ATTENDING">Confirmed (Attending)</option>
+                <option value="PENDING">Pending</option>
+                <option value="DECLINED">Declined</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="table" id="guests-tbl">
+              <thead>
+                <tr>
+                  <th>Guest Name</th>
+                  <th>Contact Info</th>
+                  <th>Table / Accommodations</th>
+                  <th>Dietary Preference</th>
+                  <th>RSVP Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="guests-tbody">
+                <tr>
+                  <td><strong>Rajesh & Sunita Singhania</strong></td>
+                  <td>+91 98201 55678</td>
+                  <td>Lake Wing Suite 204</td>
+                  <td>Pure Vegetarian / Jain</td>
+                  <td><span class="badge confirmed">ATTENDING</span></td>
+                  <td><button class="btn btn-ghost btn-sm">Edit</button></td>
+                </tr>
+                <tr>
+                  <td><strong>Dr. Kabir Sen & Family</strong></td>
+                  <td>kabir.sen@senclinic.org</td>
+                  <td>Palace Courtyard Table 4</td>
+                  <td>No Seafood</td>
+                  <td><span class="badge confirmed">ATTENDING</span></td>
+                  <td><button class="btn btn-ghost btn-sm">Edit</button></td>
+                </tr>
+                <tr>
+                  <td><strong>Meera Varma</strong></td>
+                  <td>+91 98111 23456</td>
+                  <td>Pending Allocation</td>
+                  <td>Standard</td>
+                  <td><span class="badge pending">PENDING</span></td>
+                  <td><button class="btn btn-outline btn-sm" onclick="EventFlow.showToast('Reminder WhatsApp sent', 'success');">Send SMS</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script src="experience.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var urlParams = new URLSearchParams(window.location.search);
+      var bookingId = urlParams.get('id');
+      var tbody = document.getElementById('guests-tbody');
+      
+      if (!bookingId) {
+        tbody.innerHTML = '<tr><td colspan="6"><div class="ef-empty-state"><h3>No Booking ID Provided</h3><p>Please access this page from a booking.</p></div></td></tr>';
+        return;
+      }
+
+      function loadGuests() {
+        EventFlow.apiGet('/bookings/' + bookingId + '/guests').then(function (res) {
+          var list = Array.isArray(res) ? res : (res.guests || []);
+          if (!list.length) {
+             tbody.innerHTML = '<tr><td colspan="6"><div class="ef-empty-state"><h3>No Guests Found</h3><p>Start adding guests to build your registry.</p></div></td></tr>';
+             return;
+          }
+          
+          tbody.innerHTML = list.map(function(guest) {
+             var name = guest.name || 'Unknown';
+             var contact = guest.phone || guest.email || '-';
+             var type = guest.guestType || guest.guest_type || '-';
+             var reqs = guest.specialRequirements || guest.special_requirements || 'Standard';
+             var status = guest.rsvpStatus || guest.rsvp_status || 'PENDING';
+             var badgeClass = (status === 'ATTENDING' || status === 'CONFIRMED') ? 'confirmed' : (status === 'PENDING' ? 'pending' : 'declined');
+             return '<tr>' +
+               '<td><strong>' + name + '</strong></td>' +
+               '<td>' + contact + '</td>' +
+               '<td>' + type + '</td>' +
+               '<td>' + reqs + '</td>' +
+               '<td><span class="badge ' + badgeClass + '">' + status + '</span></td>' +
+               '<td><button class="btn btn-ghost btn-sm">Edit</button></td>' +
+             '</tr>';
+          }).join('');
+        }).catch(function(err) {
+          tbody.innerHTML = '<tr><td colspan="6"><div class="ef-empty-state"><h3>Error</h3><p>' + err.message + '</p></div></td></tr>';
+        });
+      }
+      
+      loadGuests();
+
+      var addBtn = document.getElementById('btn-show-add-guest');
+      if (addBtn) {
+        addBtn.addEventListener('click', function () {
+          var name = prompt('Enter Guest Name:');
+          if (name) {
+            EventFlow.apiPost('/guests', { booking_id: bookingId, name: name, rsvp_status: 'ATTENDING' }).then(function() {
+              EventFlow.showToast('Guest added to RSVP registry', 'success');
+              loadGuests();
+            }).catch(function(err) {
+              EventFlow.showToast(err.message, 'error');
+            });
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

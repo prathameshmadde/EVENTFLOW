@@ -1,0 +1,1652 @@
+Requirement created successfully',
+
+          requirement_id:
+            result.insertId,
+
+          id:
+            result.insertId,
+
+          requirement:
+            aliases(created)
+
+        });
+
+
+    } catch (error) {
+
+      return sendError(
+        res,
+        'Failed to create requirement',
+        error
+      );
+
+    }
+
+  }
+);
+
+
+/*
+  Update requirement
+*/
+
+app.put(
+  '/api/requirements/:id',
+  requireAuth,
+  async (
+    req,
+    res
+  ) => {
+
+    try {
+
+      const requirementId =
+        int(
+          req.params.id
+        );
+
+
+      const old =
+        await one(
+          `
+            SELECT *
+
+            FROM event_requirements
+
+            WHERE requirement_id = ?
+          `,
+          [
+            requirementId
+          ]
+        );
+
+
+      if (!old) {
+
+        return res
+          .status(404)
+          .json({
+            message:
+              'Requirement not found'
+          });
+
+      }
+
+
+      if (
+        req.auth.role !==
+        'ADMIN' &&
+
+        Number(
+          old.customer_id
+        ) !== Number(
+          req.auth.user_id
+        )
+      ) {
+
+        return res
+          .status(403)
+          .json({
+            message:
+              'You do not have access to this requirement'
+          });
+
+      }
+
+
+      await query(
+        `
+          UPDATE event_requirements
+
+          SET
+
+            event_id = ?,
+
+            requirement_title = ?,
+
+            event_date = ?,
+
+            event_end_date = ?,
+
+            guest_count = ?,
+
+            location = ?,
+
+            description = ?,
+
+            special_requirements = ?,
+
+            budget = ?
+
+          WHERE
+            requirement_id = ?
+        `,
+        [
+
+          int(
+            req.body.event_id ||
+            req.body.eventId
+          ) ||
+          old.event_id,
+
+          text(
+            req.body.requirement_title ||
+            req.body.requirementTitle ||
+            req.body.title,
+            old.requirement_title
+          ),
+
+          text(
+            req.body.event_date ||
+            req.body.eventDate ||
+            req.body.date,
+            old.event_date
+          ),
+
+          text(
+            req.body.event_end_date ||
+            req.body.eventEndDate,
+            old.event_end_date
+          ),
+
+          int(
+            req.body.guest_count ||
+            req.body.guestCount
+          ) ||
+          old.guest_count,
+
+          text(
+            req.body.location ||
+            req.body.city,
+            old.location
+          ),
+
+          text(
+            req.body.description,
+            old.description
+          ),
+
+          text(
+            req.body.special_requirements ||
+            req.body.specialRequirements,
+            old.special_requirements
+          ),
+
+          req.body.budget !==
+          undefined
+
+            ? num(
+                req.body.budget
+              )
+
+            : old.budget,
+
+          requirementId
+
+        ]
+      );
+
+
+      return res.json({
+        message:
+          'Requirement updated successfully'
+      });
+
+
+    } catch (error) {
+
+      return sendError(
+        res,
+        'Failed to update requirement',
+        error
+      );
+
+    }
+
+  }
+);
+
+
+/*
+  Requirement status
+*/
+
+app.put(
+  '/api/requirements/:id/status',
+  requireAuth,
+  async (
+    req,
+    res
+  ) => {
+
+    try {
+
+      const requirementId =
+        int(
+          req.params.id
+        );
+
+
+      const current =
+        await one(
+          `
+            SELECT *
+
+            FROM event_requirements
+
+            WHERE requirement_id = ?
+          `,
+          [requirementId]
+        );
+
+
+      if (!current) {
+
+        return res
+          .status(404)
+          .json({
+            message:
+              'Requirement not found'
+          });
+
+      }
+
+
+      if (
+        req.auth.role !==
+        'ADMIN' &&
+
+        Number(
+          current.customer_id
+        ) !== Number(
+          req.auth.user_id
+        )
+      ) {
+
+        return res
+          .status(403)
+          .json({
+            message:
+              'You do not have access to this requirement'
+          });
+
+      }
+
+
+      const status =
+        upper(
+          req.body.status
+        );
+
+
+      if (
+        ![
+          'OPEN',
+          'PROPOSALS_RECEIVED',
+          'MANAGER_SELECTED',
+          'CANCELLED',
+          'COMPLETED'
+        ].includes(status)
+      ) {
+
+        return res
+          .status(400)
+          .json({
+            message:
+              'Invalid requirement status'
+          });
+
+      }
+
+
+      await query(
+        `
+          UPDATE event_requirements
+
+          SET
+            status = ?
+
+          WHERE
+            requirement_id = ?
+        `,
+        [
+          status,
+          requirementId
+        ]
+      );
+
+
+      return res.json({
+        message:
+          'Requirement status updated successfully'
+      });
+
+
+    } catch (error) {
+
+      return sendError(
+        res,
+        'Failed to update requirement status',
+        error
+      );
+
+    }
+
+  }
+);
+
+
+/*
+  Delete requirement
+*/
+
+app.delete(
+  '/api/requirements/:id',
+  requireAuth,
+  async (
+    req,
+    res
+  ) => {
+
+    try {
+
+      const requirementId =
+        int(
+          req.params.id
+        );
+
+
+      const requirement =
+        await one(
+          `
+            SELECT *
+
+            FROM event_requirements
+
+            WHERE requirement_id = ?
+          `,
+          [requirementId]
+        );
+
+
+      if (!requirement) {
+
+        return res
+          .status(404)
+          .json({
+            message:
+              'Requirement not found'
+          });
+
+      }
+
+
+      if (
+        req.auth.role !==
+        'ADMIN' &&
+
+        Number(
+          requirement.customer_id
+        ) !== Number(
+          req.auth.user_id
+        )
+      ) {
+
+        return res
+          .status(403)
+          .json({
+            message:
+              'You do not have access to this requirement'
+          });
+
+      }
+
+
+      const proposalCount =
+        await one(
+          `
+            SELECT
+              COUNT(*) AS count
+
+            FROM proposals
+
+            WHERE
+              requirement_id = ?
+          `,
+          [requirementId]
+        );
+
+
+      if (
+        Number(
+          proposalCount.count
+        ) > 0
+      ) {
+
+        return res
+          .status(409)
+          .json({
+
+            message:
+              'Requirement has proposals. Cancel it instead of deleting it.'
+
+          });
+
+      }
+
+
+      await query(
+        `
+          DELETE FROM event_requirements
+
+          WHERE requirement_id = ?
+        `,
+        [
+          requirementId
+        ]
+      );
+
+
+      return res.json({
+        message:
+          'Requirement deleted successfully'
+      });
+
+
+    } catch (error) {
+
+      return sendError(
+        res,
+        'Failed to delete requirement',
+        error
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   PROPOSALS
+========================================================= */
+
+app.get(
+  '/api/proposals',
+  requireAuth,
+  async (
+    req,
+    res
+  ) => {
+
+    try {
+
+      let proposals;
+
+
+      if (
+        req.auth.role ===
+        'CUSTOMER'
+      ) {
+
+        proposals =
+          await query(
+            `
+              SELECT
+
+                p.*,
+
+                er.customer_id,
+
+                er.requirement_title,
+
+                er.event_date,
+
+                er.event_end_date,
+
+                er.guest_count,
+
+                er.location,
+
+                er.budget,
+
+                er.status AS requirement_status,
+
+                e.event_name,
+
+                emp.business_name,
+
+                emp.location AS manager_location,
+
+                emp.rating,
+
+                emp.experience,
+
+                u.name AS manager_name,
+
+                u.email AS manager_email,
+
+                b.booking_id
+
+
+              FROM proposals p
+
+
+              JOIN event_requirements er
+
+                ON
+                  p.requirement_id =
+                  er.requirement_id
+
+
+              JOIN events e
+
+                ON
+                  er.event_id =
+                  e.event_id
+
+
+              JOIN event_manager_profiles emp
+
+                ON
+                  p.manager_id =
+                  emp.manager_id
+
+
+              JOIN users u
+
+                ON
+                  emp.user_id =
+                  u.user_id
+
+
+              LEFT JOIN bookings b
+
+                ON
+                  b.proposal_id =
+                  p.proposal_id
+
+
+              WHERE
+                er.customer_id = ?
+
+
+              ORDER BY
+                p.created_at DESC
+            `,
+            [
+              req.auth.user_id
+            ]
+          );
+
+      }
+
+      else if (
+        req.auth.role ===
+        'EVENT_MANAGER'
+      ) {
+
+        const manager =
+          await getManagerProfile(
+            req.auth.user_id
+          );
+
+
+        if (!manager) {
+
+          return res
+            .status(404)
+            .json({
+              message:
+                'Manager profile not found'
+            });
+
+        }
+
+
+        proposals =
+          await query(
+            `
+              SELECT
+
+                p.*,
+
+                er.customer_id,
+
+                er.requirement_title,
+
+                er.event_date,
+
+                er.guest_count,
+
+                er.location,
+
+                er.budget,
+
+                e.event_name,
+
+                u.name AS customer_name,
+
+                b.booking_id
+
+
+              FROM proposals p
+
+
+              JOIN event_requirements er
+
+                ON
+                  p.requirement_id =
+                  er.requirement_id
+
+
+              JOIN events e
+
+                ON
+                  er.event_id =
+                  e.event_id
+
+
+              JOIN users u
+
+                ON
+                  er.customer_id =
+                  u.user_id
+
+
+              LEFT JOIN bookings b
+
+                ON
+                  b.proposal_id =
+                  p.proposal_id
+
+
+              WHERE
+                p.manager_id = ?
+
+
+              ORDER BY
+                p.created_at DESC
+            `,
+            [
+              manager.manager_id
+            ]
+          );
+
+      }
+
+      else {
+
+        proposals =
+          await query(
+            `
+              SELECT
+
+                p.*,
+
+                er.customer_id,
+
+                er.requirement_title,
+
+                e.event_name,
+
+                emp.business_name,
+
+                u.name AS manager_name,
+
+                b.booking_id
+
+
+              FROM proposals p
+
+
+              JOIN event_requirements er
+
+                ON
+                  p.requirement_id =
+                  er.requirement_id
+
+
+              JOIN events e
+
+                ON
+                  er.event_id =
+                  e.event_id
+
+
+              JOIN event_manager_profiles emp
+
+                ON
+                  p.manager_id =
+                  emp.manager_id
+
+
+              JOIN users u
+
+                ON
+                  emp.user_id =
+                  u.user_id
+
+
+              LEFT JOIN bookings b
+
+                ON
+                  b.proposal_id =
+                  p.proposal_id
+
+
+              ORDER BY
+                p.created_at DESC
+            `
+          );
+
+      }
+
+
+      return sendRows(
+        res,
+        proposals
+      );
+
+
+    } catch (error) {
+
+      return sendError(
+        res,
+        'Failed to load proposals',
+        error
+      );
+
+    }
+
+  }
+);
+
+
+/*
+  Customer proposals
+*/
+
+app.get(
+  '/api/customers/:customer_id/proposals',
+  requireAuth,
+  async (
+    req,
+    res
+  ) => {
+
+    try {
+
+      let customerId =
+        int(
+          req.params.customer_id
+        );
+
+
+      if (
+        req.auth.role ===
+        'CUSTOMER'
+      ) {
+
+        customerId =
+          Number(
+            req.auth.user_id
+          );
+
+      }
+
+
+      if (
+        req.auth.role !==
+        'CUSTOMER' &&
+
+        req.auth.role !==
+        'ADMIN'
+      ) {
+
+        return res
+          .status(403)
+          .json({
+            message:
+              'Not allowed'
+          });
+
+      }
+
+
+      const proposals =
+        await query(
+          `
+            SELECT
+
+              p.*,
+
+              er.customer_id,
+
+              er.requirement_title,
+
+              er.event_date,
+
+              er.guest_count,
+
+              er.location,
+
+              er.budget,
+
+              e.event_name,
+
+              emp.business_name,
+
+              emp.rating,
+
+              u.name AS manager_name,
+
+              b.booking_id
+
+
+            FROM proposals p
+
+
+            JOIN event_requirements er
+
+              ON
+                p.requirement_id =
+                er.requirement_id
+
+
+            JOIN events e
+
+              ON
+                er.event_id =
+                e.event_id
+
+
+            JOIN event_manager_profiles emp
+
+              ON
+                p.manager_id =
+                emp.manager_id
+
+
+            JOIN users u
+
+              ON
+                emp.user_id =
+                u.user_id
+
+
+            LEFT JOIN bookings b
+
+              ON
+                b.proposal_id =
+                p.proposal_id
+
+
+            WHERE
+              er.customer_id = ?
+
+
+            ORDER BY
+              p.created_at DESC
+          `,
+          [customerId]
+        );
+
+
+      return sendRows(
+        res,
+        proposals
+      );
+
+
+    } catch (error) {
+
+      return sendError(
+        res,
+        'Failed to load customer proposals',
+        error
+      );
+
+    }
+
+  }
+);
+
+
+/*
+  Proposal by ID
+*/
+
+app.get(
+  '/api/proposals/:id',
+  requireAuth,
+  async (
+    req,
+    res
+  ) => {
+
+    try {
+
+      const proposalId =
+        int(req.params.id);
+
+
+      const proposal =
+        await one(
+          `
+            SELECT
+
+              p.*,
+
+              er.customer_id,
+
+              er.requirement_title,
+
+              er.event_date,
+
+              er.event_end_date,
+
+              er.guest_count,
+
+              er.location,
+
+              er.budget,
+
+              er.status AS requirement_status,
+
+              e.event_name,
+
+              emp.business_name,
+
+              emp.location AS manager_location,
+
+              emp.rating,
+
+              emp.experience,
+
+              u.name AS manager_name,
+
+              b.booking_id
+
+
+            FROM proposals p
+
+
+            JOIN event_requirements er
+
+              ON
+                p.requirement_id =
+                er.requirement_id
+
+
+            JOIN events e
+
+              ON
+                er.event_id =
+                e.event_id
+
+
+            JOIN event_manager_profiles emp
+
+              ON
+                p.manager_id =
+                emp.manager_id
+
+
+            JOIN users u
+
+              ON
+                emp.user_id =
+                u.user_id
+
+
+            LEFT JOIN bookings b
+
+              ON
+                b.proposal_id =
+                p.proposal_id
+
+
+            WHERE
+              p.proposal_id = ?
+          `,
+          [
+            proposalId
+          ]
+        );
+
+
+      if (!proposal) {
+
+        return res
+          .status(404)
+          .json({
+            message:
+              'Proposal not found'
+          });
+
+      }
+
+
+      let allowed =
+        req.auth.role ===
+        'ADMIN';
+
+
+      if (
+        req.auth.role ===
+        'CUSTOMER' &&
+        Number(
+          proposal.customer_id
+        ) ===
+        Number(
+          req.auth.user_id
+        )
+      ) {
+
+        allowed = true;
+
+      }
+
+
+      if (
+        req.auth.role ===
+        'EVENT_MANAGER'
+      ) {
+
+        const manager =
+          await getManagerProfile(
+            req.auth.user_id
+          );
+
+
+        if (
+          manager &&
+          Number(
+            manager.manager_id
+          ) ===
+          Number(
+            proposal.manager_id
+          )
+        ) {
+
+          allowed = true;
+
+        }
+
+      }
+
+
+      if (!allowed) {
+
+        return res
+          .status(403)
+          .json({
+            message:
+              'You do not have access to this proposal'
+          });
+
+      }
+
+
+      return res.json(
+        aliases(proposal)
+      );
+
+
+    } catch (error) {
+
+      return sendError(
+        res,
+        'Failed to load proposal',
+        error
+      );
+
+    }
+
+  }
+);
+
+
+/*
+  Requirement -> proposals
+*/
+
+app.get(
+  '/api/requirements/:requirement_id/proposals',
+  requireAuth,
+  async (
+    req,
+    res
+  ) => {
+
+    try {
+
+      const requirementId =
+        int(
+          req.params.requirement_id
+        );
+
+
+      const requirement =
+        await one(
+          `
+            SELECT *
+
+            FROM event_requirements
+
+            WHERE
+              requirement_id = ?
+          `,
+          [
+            requirementId
+          ]
+        );
+
+
+      if (!requirement) {
+
+        return res
+          .status(404)
+          .json({
+            message:
+              'Requirement not found'
+          });
+
+      }
+
+
+      if (
+        req.auth.role ===
+        'CUSTOMER' &&
+
+        Number(
+          requirement.customer_id
+        ) !== Number(
+          req.auth.user_id
+        )
+      ) {
+
+        return res
+          .status(403)
+          .json({
+            message:
+              'You do not have access to this requirement'
+          });
+
+      }
+
+
+      const proposals =
+        await query(
+          `
+            SELECT
+
+              p.*,
+
+              emp.business_name,
+
+              emp.description AS manager_description,
+
+              emp.experience,
+
+              emp.location AS manager_location,
+
+              emp.rating,
+
+              u.name AS manager_name,
+
+              u.email AS manager_email,
+
+              b.booking_id
+
+
+            FROM proposals p
+
+
+            JOIN event_manager_profiles emp
+
+              ON
+                p.manager_id =
+                emp.manager_id
+
+
+            JOIN users u
+
+              ON
+                emp.user_id =
+                u.user_id
+
+
+            LEFT JOIN bookings b
+
+              ON
+                b.proposal_id =
+                p.proposal_id
+
+
+            WHERE
+              p.requirement_id = ?
+
+
+            ORDER BY
+              p.price ASC
+          `,
+          [
+            requirementId
+          ]
+        );
+
+
+      return sendRows(
+        res,
+        proposals
+      );
+
+
+    } catch (error) {
+
+      return sendError(
+        res,
+        'Failed to load requirement proposals',
+        error
+      );
+
+    }
+
+  }
+);
+
+
+/*
+  Manager open requirements
+*/
+
+app.get(
+  '/api/manager/open-requirements',
+  requireAuth,
+  requireRole(
+    'EVENT_MANAGER'
+  ),
+  async (
+    req,
+    res
+  ) => {
+
+    try {
+
+      const manager =
+        await getManagerProfile(
+          req.auth.user_id
+        );
+
+
+      if (!manager) {
+
+        return res
+          .status(404)
+          .json({
+            message:
+              'Manager profile not found'
+          });
+
+      }
+
+
+      const requirements =
+        await query(
+          `
+            SELECT
+
+              er.*,
+
+              e.event_name,
+
+              u.name AS customer_name,
+
+              (
+
+                SELECT
+                  COUNT(*)
+
+                FROM proposals p1
+
+                WHERE
+                  p1.requirement_id =
+                  er.requirement_id
+
+              ) AS proposal_count,
+
+              (
+
+                SELECT
+                  COUNT(*)
+
+                FROM proposals p2
+
+                WHERE
+
+                  p2.requirement_id =
+                  er.requirement_id
+
+                  AND
+
+                  p2.manager_id =
+                  ?
+
+              ) AS my_proposal_count
+
+
+            FROM event_requirements er
+
+
+            JOIN events e
+
+              ON
+                er.event_id =
+                e.event_id
+
+
+            JOIN users u
+
+              ON
+                er.customer_id =
+                u.user_id
+
+
+            WHERE
+
+              er.status IN
+              (
+                'OPEN',
+                'PROPOSALS_RECEIVED'
+              )
+                -- AND er.customer_id <> ?
+
+
+            ORDER BY
+              er.created_at DESC
+          `,
+          [
+            manager.manager_id,
+            req.auth.user_id
+          ]
+        );
+
+
+      return sendRows(
+        res,
+        requirements
+      );
+
+
+    } catch (error) {
+
+      return sendError(
+        res,
+        'Failed to load open requirements',
+        error
+      );
+
+    }
+
+  }
+);
+
+
+/*
+  Create proposal
+*/
+
+app.post(
+  '/api/proposals',
+  requireAuth,
+  requireRole(
+    'EVENT_MANAGER'
+  ),
+  async (
+    req,
+    res
+  ) => {
+
+    try {
+
+      const manager =
+        await getManagerProfile(
+          req.auth.user_id
+        );
+
+
+      if (
+        !manager ||
+        upper(
+          manager.status
+        ) !==
+        'ACTIVE'
+      ) {
+
+        return res
+          .status(403)
+          .json({
+            message:
+              'Active manager profile required'
+          });
+
+      }
+
+
+      const requirementId =
+        int(
+          req.body.requirement_id ||
+          req.body.requirementId
+        );
+
+
+      const packageName =
+        text(
+          req.body.package_name ||
+          req.body.packageName
+        );
+
+
+      const description =
+        text(
+          req.body.description
+        );
+
+
+      const price =
+        num(
+          req.body.price
+        );
+
+
+      if (
+        !requirementId ||
+        !packageName ||
+        !price ||
+        price <= 0
+      ) {
+
+        return res
+          .status(400)
+          .json({
+
+            message:
+              'requirement_id, package_name and price are required'
+
+          });
+
+      }
+
+
+      const requirement =
+        await one(
+          `
+            SELECT *
+
+            FROM event_requirements
+
+            WHERE
+              requirement_id = ?
+          `,
+          [
+            requirementId
+          ]
+        );
+
+
+      if (!requirement) {
+
+        return res
+          .status(404)
+          .json({
+            message:
+              'Requirement not found'
+          });
+
+      }
+
+
+      if (
+        Number(
+          requirement.customer_id
+        ) ===
+        Number(
+          req.auth.user_id
+        )
+      ) {
+
+        return res
+          .status(400)
+          .json({
+            message:
+              'You cannot bid on your own requirement'
+          });
+
+      }
+
+
+      if (
+        ![
+          'OPEN',
+          'PROPOSALS_RECEIVED'
+        ].includes(
+          upper(
+            requirement.status
+          )
+        )
+      ) {
+
+        return res
+          .status(409)
+          .json({
+            message:
+              'This requirement is no longer accepting proposals'
+          });
+
+      }
+
+
+      const duplicate =
+        await one(
+          `
+            SELECT proposal_id
+
+            FROM proposals
+
+            WHERE
+
+              requirement_id = ?
+
+              AND manager_id = ?
+
+              AND status = 'SUBMITTED'
+          `,
+          [
+            requirementId,
+            manager.manager_id
+          ]
+        );
+
+
+      if (duplicate) {
+
+        return res
+          .status(409)
+          .json({
+            message:
+              'You already have a submitted proposal for this requirement'
+          });
+
+      }
+
+
+      const [
+        result
+      ] =
+        await db.execute(
+          `
+            INSERT INTO proposals
+            (
+              requirement_id,
+              manager_id,
+              package_name,
+              description,
+              price,
+              status
+            )
+
+            VALUES
+            (
+              ?,
+              ?,
+              ?,
+              ?,
+              ?,
+              ?
+            )
+          `,
+          [
+
+            requirementId,
+
+            manager.manager_id,
+
+            packageName,
+
+            description,
+
+            price,
+
+            'SUBMITTED'
+
+          ]
+        );
+
+
+      await query(
+        `
+          UPDATE event_requirements
+
+          SET
+            status = 'PROPOSALS_RECEIVED'
+
+          WHERE
+
+            requirement_id = ?
+
+            AND status = 'OPEN'
+        `,
+        [
+          requirementId
+        ]
+      );
+
+
+      return res
+        .status(201)
+        .json({
+
+          message:
+            '

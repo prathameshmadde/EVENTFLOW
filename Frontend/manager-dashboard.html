@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Manager Production Dashboard — EventFlow</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
+</head>
+<body>
+  <div class="ef-loader" id="ef-loader"><div class="ef-loader-mark">Event<span>Flow</span></div><div class="ef-loader-bar"><i></i></div></div>
+  <canvas class="ef-scene" id="ef-scene"></canvas>
+  <div class="ef-scene-veil"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar ef-manager-sidebar" id="manager-sidebar">
+      <a href="index.html" class="side-brand" id="brand-link">
+        <div class="brand-mark">✦</div>
+        <div>
+          <strong>Event<span>Flow</span></strong>
+          <span class="side-brand-tag">Manager Suite</span>
+        </div>
+      </a>
+
+      <div class="sidebar-nav-group">
+        <a href="manager-dashboard.html" class="side-link active" id="side-nav-dashboard">
+          <span class="side-icon-box" data-ef-icon="layoutDashboard" data-size="18"></span>
+          <span class="side-label">Dashboard</span>
+        </a>
+        <a href="manager-requirements.html" class="side-link" id="side-nav-requirements">
+          <span class="side-icon-box" data-ef-icon="clipboardList" data-size="18"></span>
+          <span class="side-label">Open Requirements</span>
+        </a>
+        <a href="manager-proposals.html" class="side-link" id="side-nav-proposals">
+          <span class="side-icon-box" data-ef-icon="arrowLeftRight" data-size="18"></span>
+          <span class="side-label">My Proposals</span>
+        </a>
+        <a href="services.html" class="side-link" id="side-nav-services">
+          <span class="side-icon-box" data-ef-icon="sparkles" data-size="18"></span>
+          <span class="side-label">Services</span>
+        </a>
+        <a href="bookings.html" class="side-link" id="side-nav-bookings">
+          <span class="side-icon-box" data-ef-icon="calendarCheck" data-size="18"></span>
+          <span class="side-label">Bookings</span>
+        </a>
+        <a href="tasks.html" class="side-link" id="side-nav-tasks">
+          <span class="side-icon-box" data-ef-icon="checkSquare" data-size="18"></span>
+          <span class="side-label">Tasks</span>
+        </a>
+        <a href="feedback.html" class="side-link" id="side-nav-feedback">
+          <span class="side-icon-box" data-ef-icon="star" data-size="18"></span>
+          <span class="side-label">Feedback</span>
+        </a>
+        <a href="#support" class="side-link" id="side-nav-support" onclick="EventFlow.openSupportModal(event)">
+          <span class="side-icon-box" data-ef-icon="helpCircle" data-size="18"></span>
+          <span class="side-label">Support</span>
+        </a>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-user-card" id="side-user-card">
+          <div class="sidebar-user-avatar" id="side-user-avatar">AM</div>
+          <div class="sidebar-user-info">
+            <strong class="sidebar-user-name" id="side-user-name">Event Producer</strong>
+            <span class="sidebar-user-role" id="side-user-role">Event Producer</span>
+          </div>
+        </div>
+        <a href="login.html" class="side-link side-link-logout" id="side-nav-logout" onclick="EventFlow.handleLogout(event)">
+          <span class="side-icon-box" data-ef-icon="logout" data-size="18"></span>
+          <span class="side-label">Logout</span>
+        </a>
+      </div>
+    </aside>
+
+    <div class="app-main">
+      <header class="app-top">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <button class="sidebar-toggle btn btn-outline btn-sm" aria-label="Toggle Navigation">
+            <span data-ef-icon="menu" data-size="18"></span>
+          </button>
+          <h1>Producer Command Center</h1>
+        </div>
+        <div class="top-tools">
+          <div class="eventflow-account"></div>
+          <a href="manager-requirements.html" class="btn btn-primary btn-sm">Find New Briefs</a>
+        </div>
+      </header>
+
+      <main class="dash-content">
+        <!-- Welcome Hero -->
+        <div class="welcome">
+          <div>
+            <h2 id="welcome-title">Event Producer Production Suite &#128081;</h2>
+            <p>You have <strong>4 open client briefs</strong> matching your expertise in royal weddings and luxury destination celebrations.</p>
+          </div>
+          <a href="manager-requirements.html" class="btn btn-primary btn-sm">Browse Matching Briefs →</a>
+        </div>
+
+        <!-- KPI Metrics Grid -->
+        <div class="stats">
+          <div class="stat gold">
+            <small>Pipeline Revenue</small>
+            <strong>₹ 48.5L</strong>
+            <small>Active contracts & bids</small>
+          </div>
+          <div class="stat purple">
+            <small>Active Bookings</small>
+            <strong>3</strong>
+            <small>Under management</small>
+          </div>
+          <div class="stat pink">
+            <small>Pending Proposals</small>
+            <strong>2</strong>
+            <small>Awaiting client signoff</small>
+          </div>
+          <div class="stat">
+            <small>Host Satisfaction</small>
+            <strong>4.95 ⭐</strong>
+            <small>128 verified reviews</small>
+          </div>
+        </div>
+
+        <!-- 2 Column Master Grid -->
+        <div class="dash-grid">
+          <div>
+            <!-- Open Client Briefs Matching Specialty -->
+            <div class="panel" style="margin-bottom:24px;">
+              <div class="panel-head">
+                <div>
+                  <h3 style="font-size:18px;">Open Client Requirements</h3>
+                  <p style="font-size:12.5px;color:var(--muted);margin-top:2px;">Recent requests posted by hosts looking for verified managers.</p>
+                </div>
+                <a href="manager-requirements.html" class="text-link">View All Briefs →</a>
+              </div>
+
+              <div class="list">
+                <div class="list-row">
+                  <div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+                      <span class="badge open">OPEN FOR BIDS</span>
+                      <strong>Grand Royal Rajputana Wedding</strong>
+                    </div>
+                    <small>Udaipur • 450 Guests • Budget: ₹ 25 Lakhs • Host: Priyanshu Sharma</small>
+                  </div>
+                  <a href="submit-proposal.html?reqId=req_1" class="btn btn-primary btn-sm">Bid on Brief</a>
+                </div>
+
+                <div class="list-row">
+                  <div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+                      <span class="badge open">OPEN FOR BIDS</span>
+                      <strong>Sunset Beachfront Engagement Soirée</strong>
+                    </div>
+                    <small>South Goa • 120 Guests • Budget: ₹ 6.5 Lakhs • Host: Ritu V.</small>
+                  </div>
+                  <a href="submit-proposal.html?reqId=req_3" class="btn btn-primary btn-sm">Bid on Brief</a>
+                </div>
+
+                <div class="list-row">
+                  <div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+                      <span class="badge open">OPEN FOR BIDS</span>
+                      <strong>Executive AI Tech Leadership Gala</strong>
+                    </div>
+                    <small>Bengaluru • 600 Guests • Budget: ₹ 18 Lakhs • Corporate Client</small>
+                  </div>
+                  <a href="submit-proposal.html?reqId=req_4" class="btn btn-primary btn-sm">Bid on Brief</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Active Production Schedule -->
+            <div class="panel">
+              <div class="panel-head">
+                <h3 style="font-size:18px;">Active Confirmed Productions</h3>
+                <a href="bookings.html" class="text-link">All Bookings →</a>
+              </div>
+
+              <div class="list">
+                <div class="list-row">
+                  <div>
+                    <strong>Grand Royal Rajputana Wedding (BK-2026-089)</strong>
+                    <small>Jagmandir Island Palace • Milestone 2 in Progress • Escrow: ₹ 9.8L</small>
+                  </div>
+                  <a href="booking.html?id=bk_1" class="btn btn-outline btn-sm">Event Workspace</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Quick Payouts & Profile Quality -->
+          <div>
+            <div class="panel accent" style="margin-bottom:24px;">
+              <span class="eyebrow light">Escrow Guarantee</span>
+              <h2>Bank-Grade Payouts</h2>
+              <p>Milestone 1 (Advance ₹ 9,80,000) has been cleared into your verified business bank account. Milestone 2 is currently in secure escrow.</p>
+              <a href="payments.html" class="btn btn-light" style="width:100%;text-align:center;">View Escrow Ledger</a>
+            </div>
+
+            <div class="panel">
+              <h3 style="font-size:18px;margin-bottom:12px;">Producer Reputation Score</h3>
+              <div style="display:grid;gap:12px;font-size:13px;">
+                <div style="display:flex;justify-content:space-between;"><span>Profile Completion</span><strong>100% (Verified)</strong></div>
+                <div style="display:flex;justify-content:space-between;"><span>Proposal Response Speed</span><strong style="color:var(--green);">1.8 Hours (Elite)</strong></div>
+                <div style="display:flex;justify-content:space-between;"><span>On-Time Milestone Rate</span><strong style="color:var(--green);">99.4%</strong></div>
+                <div style="display:flex;justify-content:space-between;"><span>Dispute-Free Record</span><strong style="color:var(--green);">100% Clean</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script src="experience.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      EventFlow.apiGet('/manager/dashboard').then(function (res) {
+        var d = res || {};
+
+        var u = EventFlow.getUser();
+        if (u) {
+            var n = u.business_name || u.name || 'Event Producer';
+            var init = n.charAt(0).toUpperCase();
+            var titleEl = document.getElementById('welcome-title');
+            if (titleEl) titleEl.innerHTML = n + ' Production Suite &#128081;';
+            var sName = document.getElementById('side-user-name');
+            if (sName) sName.textContent = n;
+            var sAv = document.getElementById('side-user-avatar');
+            if (sAv) sAv.textContent = init;
+            var sRole = document.getElementById('side-user-role');
+            if (sRole) sRole.textContent = 'Event Producer';
+        }
+
+        
+        var statsEl = document.querySelector('.stats');
+        if (statsEl) {
+          var revenue = d.totalRevenue || d.pipeline_revenue || 0;
+          var bookings = d.activeBookings || 0;
+          var pending = d.pendingProposals || 0;
+          var rating = d.rating || '4.95';
+          var reviews = d.reviews || 128;
+          
+          statsEl.innerHTML = 
+            '<div class="stat gold">' +
+              '<small>Pipeline Revenue</small>' +
+              '<strong>' + EventFlow.formatCurrency(revenue) + '</strong>' +
+              '<small>Active contracts & bids</small>' +
+            '</div>' +
+            '<div class="stat purple">' +
+              '<small>Active Bookings</small>' +
+              '<strong>' + bookings + '</strong>' +
+              '<small>Under management</small>' +
+            '</div>' +
+            '<div class="stat pink">' +
+              '<small>Pending Proposals</small>' +
+              '<strong>' + pending + '</strong>' +
+              '<small>Awaiting client signoff</small>' +
+            '</div>' +
+            '<div class="stat">' +
+              '<small>Host Satisfaction</small>' +
+              '<strong>' + rating + ' ⭐</strong>' +
+              '<small>' + reviews + ' verified reviews</small>' +
+            '</div>';
+        }
+        
+        var reqList = document.querySelector('.dash-grid > div:first-child .panel:first-child .list');
+        if (reqList) {
+          var reqs = d.openRequirements || d.requirements || [];
+          if (!reqs.length) {
+            reqList.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--muted);">No open requirements found.</div>';
+          } else {
+            reqList.innerHTML = reqs.map(function (req) {
+              return '<div class="list-row">' +
+                '<div>' +
+                  '<div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">' +
+                    EventFlow.statusBadge('OPEN') +
+                    '<strong>' + (req.requirement_title || req.title || req.event_name || 'Event') + '</strong>' +
+                  '</div>' +
+                  '<small>' + (req.city || req.location || 'India') + ' • ' + (req.guestCount || req.guest_count || 0) + ' Guests • Budget: ' + EventFlow.formatCurrency(req.budget) + '</small>' +
+                '</div>' +
+                '<a href="submit-proposal.html?reqId=' + (req.id || req.requirement_id) + '" class="btn btn-primary btn-sm">Bid on Brief</a>' +
+              '</div>';
+            }).join('');
+          }
+        }
+        
+        var bookList = document.querySelector('.dash-grid > div:first-child .panel:nth-child(2) .list');
+        if (bookList) {
+          var books = d.bookingsList || d.recentBookings || d.bookings || d.activeBookingsList || [];
+          if (!books.length) {
+            bookList.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--muted);">No active bookings.</div>';
+          } else {
+            bookList.innerHTML = books.map(function (bk) {
+              return '<div class="list-row">' +
+                '<div>' +
+                  '<strong>' + (bk.event_name || bk.requirement_title || bk.eventName || 'Event') + ' (BK-' + (bk.id || bk.booking_id) + ')</strong>' +
+                  '<small>' + (bk.location || bk.venue || 'Venue TBD') + ' • ' + (bk.status || 'CONFIRMED') + '</small>' +
+                '</div>' +
+                '<a href="booking.html?id=' + (bk.id || bk.booking_id) + '" class="btn btn-outline btn-sm">Event Workspace</a>' +
+              '</div>';
+            }).join('');
+          }
+        }
+        
+      }).catch(function (err) {
+        console.error('Manager dashboard error:', err);
+      });
+    });
+  </script>
+</body>
+</html>

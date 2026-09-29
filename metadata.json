@@ -1,0 +1,6 @@
+{
+  "name": "EventFlow - Event Management & Proposal Marketplace",
+  "description": "Professional event planning marketplace connecting customers with verified event managers. Post requirements, compare tailored proposals, manage bookings, guests, tasks, and payments.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

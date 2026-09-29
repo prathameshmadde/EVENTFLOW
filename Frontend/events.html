@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events & Production Themes — EventFlow</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
+</head>
+<body>
+  <div class="ef-loader" id="ef-loader"><div class="ef-loader-mark">Event<span>Flow</span></div><div class="ef-loader-bar"><i></i></div></div>
+  <canvas class="ef-scene" id="ef-scene"></canvas>
+  <div class="ef-scene-veil"></div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="brand">
+        <div class="brand-mark">✦</div>
+        <div><strong>Event<span>Flow</span></strong><small>Luxury Event Marketplace</small></div>
+      </a>
+      <nav class="desktop-nav">
+        <a href="index.html">Home</a>
+        <a href="customer-dashboard.html">Dashboard</a>
+        <a href="events.html" class="active">Events</a>
+        <a href="proposals.html">Proposals</a>
+        <a href="my-bookings.html">Bookings</a>
+        <a href="services.html">Services</a>
+      </nav>
+      <div class="nav-actions">
+        <div class="eventflow-account"></div>
+        <a href="create-requirement.html" class="btn btn-primary btn-sm">Post Requirement</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Production Portfolio</span>
+          <h1>Signature Celebrations & Themes</h1>
+          <p>Explore curated event formats produced by our network of verified event managers across India.</p>
+        </div>
+        <a href="create-requirement.html" class="btn btn-primary">Custom Requirement Brief +</a>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="filter-bar">
+        <input type="text" id="event-search" placeholder="Search by occasion, theme, or keyword...">
+        <select id="event-category-select">
+          <option value="">All Categories</option>
+          <option value="Festivals">Festivals & Utsav (Dagdusheth Ganpati)</option>
+          <option value="Wedding">Weddings & Sangeet</option>
+          <option value="Birthday">Birthday Parties & Galas</option>
+          <option value="Corporate">Corporate Summits & Galas</option>
+          <option value="Engagement">Engagements</option>
+          <option value="Anniversary">Anniversaries</option>
+          <option value="Baby Shower">Baby Showers</option>
+          <option value="Reception">Cocktail & Reception</option>
+          <option value="Concert">Concerts & Cultural Fests</option>
+        </select>
+        <select id="event-budget-select">
+          <option value="">All Budgets</option>
+          <option value="low">Under ₹ 3 Lakhs</option>
+          <option value="mid">₹ 3 - ₹ 10 Lakhs</option>
+          <option value="high">₹ 10 Lakhs & Above</option>
+        </select>
+      </div>
+
+      <div class="event-grid" id="events-container" style="margin-top:24px;">
+        <!-- Filled dynamically via main.js or rendered default -->
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <span>© 2026 EventFlow Technologies Ltd. All rights reserved.</span>
+      <span>Curated event management infrastructure.</span>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+  <script src="experience.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var container = document.getElementById('events-container');
+      var searchInput = document.getElementById('event-search');
+      var catSelect = document.getElementById('event-category-select');
+      var budgetSelect = document.getElementById('event-budget-select');
+
+      var defaultEvents = [
+        { id: 'ev_0', title: 'Shreemant Dagdusheth Ganpati Maha Utsav', category: 'Festivals', budget: 1500000, guests: 5000, city: 'Pune', img: 'assets/ganpati-4k-web.jpg', desc: 'Divine Sarvajanik Ganpati pandal production modeled after Pune’s sacred Shreemant Dagdusheth Halwai Mandir. Golden replica palace, 100-member Puneri Dhol-Tasha, 4K darshan streaming, and VIP queue management.' },
+        { id: 'ev_w1', title: 'Grand Royal Palatial Wedding & Sangeet', category: 'Wedding', budget: 2500000, guests: 800, city: 'Udaipur / Jaipur', img: 'assets/category-wedding.jpg', desc: 'Palatial mandap architecture, couture floral installations, bespoke banquets, royal sangeet stage, and celebrity artist performances.' },
+        { id: 'ev_b1', title: 'Milestone 50th Birthday Gala Celebration', category: 'Birthday', budget: 350000, guests: 200, city: 'Mumbai', img: 'assets/category-birthday.jpg', desc: 'Immersive thematic decor, custom artisanal cakes, celebrity entertainers, interactive cocktail mixology, and ambient lighting.' },
+        { id: 'ev_e1', title: 'Fairy-Lit Twilight Engagement Ceremony', category: 'Engagement', budget: 450000, guests: 250, city: 'Bengaluru', img: 'assets/category-engagement.jpg', desc: 'Fairy-lit floral arches, acoustic musical ensembles, bespoke ring ceremonies, champagne toasts, and candlelit banquet walkways.' },
+        { id: 'ev_c1', title: 'Global Tech Leadership Summit & Gala', category: 'Corporate', budget: 1200000, guests: 1200, city: 'Hyderabad', img: 'assets/category-corporate.jpg', desc: 'Keynote audiovisual production, dynamic LED stage wall mapping, executive catering, seamless badge coordination, and product launch lasers.' },
+        { id: 'ev_a1', title: 'Golden 50th Anniversary Candlelight Banquet', category: 'Anniversary', budget: 400000, guests: 150, city: 'Delhi NCR', img: 'assets/category-anniversary.jpg', desc: 'Nostalgic storytelling exhibits, classical live orchestra, candlelight banquets, floral centerpieces, and intimate vow renewal stage.' },
+        { id: 'ev_bs1', title: 'Bespoke Whimsical Pastel Baby Shower', category: 'Baby Shower', budget: 180000, guests: 100, city: 'Pune', img: 'assets/category-babyshower.jpg', desc: 'Whimsical pastel florals, organic balloon garlands, bespoke nursery-themed dessert bars, and curated family games.' },
+        { id: 'ev_r1', title: 'Crystal Chandelier Cocktail & Reception Soirée', category: 'Reception', budget: 650000, guests: 400, city: 'Goa / Mumbai', img: 'assets/category-reception.jpg', desc: 'Crystal chandeliers, modern lounge styling, molecular mixology bars, high-energy live DJs, and ambient mood lighting.' },
+        { id: 'ev_co1', title: 'Arena Concert & Mega Cultural Fest', category: 'Concert', budget: 3000000, guests: 10000, city: 'Bengaluru', img: 'assets/category-concert.jpg', desc: 'Large-scale stadium trusses, line array audio arrays, LED stage mapping, artist liaisons, and precision crowd safety architecture.' },
+        { id: 'ev_1', title: 'Krishna Janmashtami & Dahi Handi Mahotsav', category: 'Festivals', budget: 1200000, guests: 6000, city: 'Mumbai', img: 'assets/janmashtami-dahi-handi-4k-web.jpg', desc: 'High-energy Gokulashtami Dahi Handi arena setups with 9-tier Govinda safety harness rigging, certified impact cranes, concert acoustic line arrays, and floral darshan sanctum.' },
+        { id: 'ev_2', title: 'Lalbaugcha Raja & Grand Visarjan Shobha Yatra', category: 'Festivals', budget: 1800000, guests: 10000, city: 'Mumbai', img: 'assets/ganpati-4k-web.jpg', desc: 'Historic Lalbaugcha Raja Ganpati Visarjan Shobha Yatra with illuminated mobile sound floats, hydraulic flower shower rigs, traditional percussion pathaks, and police liaison coordination.' },
+        { id: 'ev_3', title: 'Navratri Dandiya & Garba Raas Vadodara', category: 'Festivals', budget: 2200000, guests: 8000, city: 'Vadodara', img: 'assets/navratri-garba-vadodara-4k-web.jpg', desc: '9 nights of non-stop Navratri Garba with stadium-grade acoustic line arrays, synchronized circular moving head lighting trusses, spring wooden dance turf, and VIP hospitality.' },
+        { id: 'ev_4', title: 'Kolkata Durga Puja & Sharad Utsav Pandals', category: 'Festivals', budget: 2800000, guests: 15000, city: 'Kolkata', img: 'assets/durga-puja-pandal-kolkata-4k-web.jpg', desc: 'UNESCO Heritage Durga Puja pandal architecture with authentic clay idol sanctums, traditional Dhaak drumming ensembles, artisanal theme decor, and 4K live multicam streaming.' },
+        { id: 'ev_5', title: 'Ayodhya Deepotsav & Grand Royal Diwali Gala', category: 'Festivals', budget: 2500000, guests: 3000, city: 'Ayodhya / Delhi NCR', img: 'assets/diwali-celebration-lights-4k-web.jpg', desc: 'Grand royal Diwali illumination with 10,000+ clay diyas, synchronized cold pyro laser fireworks, luxury corporate banquet spreads, and curated festive cultural performances.' },
+        { id: 'ev_6', title: 'Shri Krishna Sacred Jhula Darshan & Sangeet', category: 'Festivals', budget: 850000, guests: 1500, city: 'Mathura / Vrindavan', img: 'assets/krishna-janmashtami-darshan-4k-web.jpg', desc: 'Intimate Janmashtami floral swing darshan with 5,000 fresh fragrant lotus and jasmine blooms, soulful classical bhajan artists, and sacred prasad banquet.' },
+        { id: 'ev_7', title: 'Pune Sarvajanik Ganeshotsav & Dhol-Tasha Mahasangam', category: 'Festivals', budget: 1600000, guests: 7500, city: 'Pune', img: 'assets/ganpati-4k-web.jpg', desc: 'Signature Sarvajanik Ganeshotsav with multi-tier carved temple facade, 100-member live Puneri Dhol-Tasha pathaks, LED visual wall, and dedicated emergency medical response.' },
+        { id: 'ev_8', title: 'Shree Siddhivinayak & Sarvajanik Ganpati Maha Darshan', category: 'Festivals', budget: 2000000, guests: 12000, city: 'Mumbai', img: 'assets/ganpati-4k-web.jpg', desc: 'Magnificent 4K Sarvajanik Ganpati Bappa sanctum setup with 24-karat gold ornamentation, flower showers, Vedic chanting pandits, and 24/7 high-definition live webcast.' }
+      ];
+
+      function render(list) {
+        if (!container) return;
+        if (!list.length) {
+          container.innerHTML = '<div class="ef-empty-state" style="grid-column:1/-1;"><h3>No events found</h3><p>Try clearing your filters or search keywords.</p></div>';
+          return;
+        }
+        container.innerHTML = list.map(function (ev) {
+          return '<a href="event-details.html?id=' + ev.id + '" class="event-card tilt">' +
+            '<div class="cover" style="background-image:url(\'' + ev.img + '\');"></div>' +
+            '<h3>' + ev.title + '</h3>' +
+            '<p>' + ev.desc + '</p>' +
+            '<div class="event-meta">' +
+              '<span>' + EventFlow.formatCurrency(ev.budget) + '</span>' +
+              '<span>' + ev.city + ' • ' + ev.guests + ' Guests</span>' +
+            '</div>' +
+          '</a>';
+        }).join('');
+      }
+
+      function filter() {
+        var q = (searchInput && searchInput.value ? searchInput.value : '').toLowerCase();
+        var cat = (catSelect && catSelect.value ? catSelect.value : '').toLowerCase();
+        var b = (budgetSelect && budgetSelect.value ? budgetSelect.value : '');
+
+        var filtered = defaultEvents.filter(function (e) {
+          var matchQ = !q || e.title.toLowerCase().indexOf(q) !== -1 || e.desc.toLowerCase().indexOf(q) !== -1 || e.city.toLowerCase().indexOf(q) !== -1;
+          var matchCat = !cat || e.category.toLowerCase().indexOf(cat) !== -1 || cat.indexOf(e.category.toLowerCase()) !== -1;
+          var matchBudget = true;
+          if (b === 'low') matchBudget = e.budget < 300000;
+          else if (b === 'mid') matchBudget = e.budget >= 300000 && e.budget <= 1000000;
+          else if (b === 'high') matchBudget = e.budget > 1000000;
+          return matchQ && matchCat && matchBudget;
+        });
+        render(filtered);
+      }
+
+      if (searchInput) searchInput.addEventListener('input', filter);
+      if (catSelect) catSelect.addEventListener('change', filter);
+      if (budgetSelect) budgetSelect.addEventListener('change', filter);
+
+      // Check URL query parameters (e.g. ?cat=wedding or ?cat=birthday)
+      var params = new URLSearchParams(window.location.search);
+      var queryCat = params.get('cat');
+      if (queryCat && catSelect) {
+        var queryLow = queryCat.toLowerCase();
+        for (var i = 0; i < catSelect.options.length; i++) {
+          var optVal = catSelect.options[i].value.toLowerCase();
+          if (optVal && (optVal.indexOf(queryLow) !== -1 || queryLow.indexOf(optVal) !== -1)) {
+            catSelect.selectedIndex = i;
+            break;
+          }
+        }
+      }
+
+      filter();
+
+      // Fetch from backend API or retain curated events
+      EventFlow.apiGet('/events').then(function (res) {
+        if (res && Array.isArray(res) && res.length) {
+          // Keep default curated list with images
+          filter();
+        }
+      }).catch(function () {
+        filter();
+      });
+    });
+  </script>
+</body>
+</html>
